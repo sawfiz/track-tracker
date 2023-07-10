@@ -7,7 +7,7 @@ import { auth, googleProvider } from '../config/firebase';
 import { UserContext } from '../contexts/UserContext';
 
 export const Auth = () => {
-  const { setLoggedIn, setUserId } = useContext(UserContext);
+  const { setLoggedIn, setUserId, checkUser, getUserInfo } = useContext(UserContext);
 
   const signinWithGoogle = async (e) => {
     e.preventDefault();
@@ -15,6 +15,8 @@ export const Auth = () => {
       await signInWithPopup(auth, googleProvider);
       setLoggedIn(true);
       setUserId(auth.currentUser.uid);
+      checkUser(auth.currentUser.uid);
+      getUserInfo(auth.currentUser.uid);
     } catch (err) {
       console.log('Error');
     }

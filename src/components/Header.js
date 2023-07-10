@@ -74,7 +74,7 @@ export const Header = () => {
     width: 2rem;
     height: 2ram;
     border-radius: 50%;
-    border: 1px solid lightgray;
+    border: 1px solid lightgray;  
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   `;
 
@@ -94,7 +94,9 @@ export const Header = () => {
   return (
     <S.Header>
       <S.SplashImgContainer>
-        <S.SplashImg src={athleliteImg} alt="Team Athlelite" />
+        <a href="/" >
+          <S.SplashImg src={athleliteImg} alt="Team Athlelite" />
+          </a>
       </S.SplashImgContainer>
       <S.H1>Team Athlelite</S.H1>
       {!loggedIn && <Auth />}

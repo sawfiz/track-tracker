@@ -1,17 +1,41 @@
-import './App.css';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import { Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { auth } from './config/firebase';
 
-import UserContextProvider from './contexts/UserContext';
+import { UserContext } from './contexts/UserContext';
 
 import { Header } from './components/Header';
 import { Home } from './components/Home';
+import Admin from './components/Admin';
 import Footer from './components/Footer';
 
+import './App.css';
 
 function App() {
+  const { setLoggedIn, setUserId, getUserInfo } = useContext(UserContext);
+
+  // Keep user logged in after a page refresh
+  useEffect(() => {
+    // Listen for authentication state changes
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is logged in
+        setLoggedIn(true);
+        setUserId(user.uid);
+        getUserInfo(user.uid);
+      } else {
+        // User is logged out
+        setLoggedIn(false);
+        setUserId('');
+      }
+    });
+    // Clean up the subscription on unmount
+    return () => unsubscribe();
+  }, []);
+
   const S = {};
   S.App = styled.div`
     background: var(--color-light);
@@ -25,28 +49,11 @@ function App() {
   return (
     <>
       <S.App>
-        <UserContextProvider>
-          <Header />
-          <Home />
-          {/* <Auth /> */}
-          {/* <Routes>
-          <Route path="/" element={<Auth />} />
-          {/* <Route
-            path="/home"
-            element={
-              loggedIn && (
-                // <BookListContextProvider>
-                //   <BookDetailsContextProvider>
-                //     <Header />
-                //     <BooksHeader />
-                //     <Books />
-                //   </BookDetailsContextProvider>
-                // </BookListContextProvider>
-              )
-            } */
-          /* />
-        </Routes> */}
-        </UserContextProvider>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/admin" element={<Admin />} />
+        </Routes>
       </S.App>
       <Footer />
     </>

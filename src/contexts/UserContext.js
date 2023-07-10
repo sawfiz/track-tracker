@@ -9,6 +9,7 @@ export const UserContext = createContext();
 export default function UserContextProvider(props) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userId, setUserId] = useState('');
+  const [userInfo, setUserInfo] = useState({})
 
   const userCollection = collection(db, 'users');
 
@@ -27,9 +28,14 @@ export default function UserContextProvider(props) {
     }
   };
 
+  const getUserInfo = async (id) => {
+    const docSnapshot = await getDoc(doc(userCollection, id))
+    const data = docSnapshot.data();
+    setUserInfo(data)
+  }
 
   return (
-    <UserContext.Provider value={{ loggedIn, setLoggedIn, userId, setUserId, checkUser }}>
+    <UserContext.Provider value={{ loggedIn, setLoggedIn, userId, setUserId, checkUser, getUserInfo, userInfo }}>
       {props.children}
     </UserContext.Provider>
   );

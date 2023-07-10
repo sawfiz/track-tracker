@@ -1,13 +1,11 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { auth } from '../config/firebase';
-
 import { UserContext } from '../contexts/UserContext';
 
 export const Home = () => {
-  const { loggedIn, setLoggedIn, setUserId } = useContext(UserContext);
-  const user = auth.currentUser;
+  const { loggedIn, userInfo } = useContext(UserContext);
+  console.log('🚀 ~ file: Home.js:12 ~ Home ~ userInfo:', userInfo);
 
   const S = {};
   S.HomePage = styled.div`
@@ -24,7 +22,12 @@ export const Home = () => {
 
   return (
     <S.HomePage>
-      {loggedIn && <p>Hello, {user.displayName}</p>}
+      {loggedIn && <p>Hello, {userInfo.name}</p>}
+      {userInfo.role === 'admin' && (
+        <p>
+          <a href="/admin">Admin Tools</a>
+        </p>
+      )}
       <S.Section>
         <S.H2>News</S.H2>
         <p>
