@@ -24,14 +24,7 @@ export default function Footer() {
   return (
     <S.Footer>
       <p>
-        Copyright © 2023 sawfiz{' '}
-        <S.GitHub
-          href="https://github.com/sawfiz"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <FaGithub />
-        </S.GitHub>
+        Copyright © 2023 VZ 
       </p>
     </S.Footer>
   );

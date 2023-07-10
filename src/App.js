@@ -4,12 +4,14 @@ import styled from 'styled-components';
 
 import { auth } from './config/firebase';
 
-import { Auth } from './components/Auth';
+import UserContextProvider from './contexts/UserContext';
+
+import { Header } from './components/Header';
+import { Home } from './components/Home';
 import Footer from './components/Footer';
 
 
 function App() {
-
   const S = {};
   S.App = styled.div`
     background: var(--color-light);
@@ -17,13 +19,17 @@ function App() {
     margin: auto;
     position: relative;
     height: calc(100vh - 1rem);
+    border-radius: 5px;
   `;
 
   return (
     <>
       <S.App>
-        <Auth />
-        {/* <Routes>
+        <UserContextProvider>
+          <Header />
+          <Home />
+          {/* <Auth /> */}
+          {/* <Routes>
           <Route path="/" element={<Auth />} />
           {/* <Route
             path="/home"
@@ -37,9 +43,10 @@ function App() {
                 //   </BookDetailsContextProvider>
                 // </BookListContextProvider>
               )
-            } */}
-          />
-        {/* </Routes> */} */}
+            } */
+          /* />
+        </Routes> */}
+        </UserContextProvider>
       </S.App>
       <Footer />
     </>
