@@ -3,12 +3,6 @@ import { db } from '../config/firebase';
 import {
   collection,
   getDocs,
-  query,
-  where,
-  addDoc,
-  setDoc,
-  updateDoc,
-  Timestamp,
 } from 'firebase/firestore';
 
 export const AttendanceContext = createContext();
@@ -16,13 +10,11 @@ export const AttendanceContext = createContext();
 export default function AttendenceContextProvider( props ) {
   const [attendanceList, setAttendanceList] = useState([]);
 
-  const attendenceCollection = collection(db, 'attendence');
+  const attendanceCollection = collection(db, 'attendance');
 
   const getAttendances = async () => {
-    const docRefs = await getDocs(attendenceCollection);
-    // const snapshots = docRefs.docs.filter((doc) => {
-    //   return doc.data().role === role;
-    // });
+    const docRefs = await getDocs(attendanceCollection);
+    console.log("🚀 ~ file: AttendanceContext.js:23 ~ getAttendances ~ docRefs:", docRefs.docs)
     setAttendanceList(docRefs.docs);
   };
 

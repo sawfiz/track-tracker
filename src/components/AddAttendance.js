@@ -41,7 +41,7 @@ S.Button = styled.button`
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 `;
 
-export default function AddAttendence() {
+export default function AddAttendance() {
   useEffect(() => {
     getUsers('athlete');
   }, []);
@@ -131,7 +131,7 @@ export default function AddAttendence() {
       <p>
         <a href="/admin">Admin Tools</a>
       </p>
-      <h2>Add Attendence</h2>
+      <h2>Add Attendance</h2>
       <form onSubmit={handleSubmit}>
         <S.Container>
           <h3>Date</h3>
