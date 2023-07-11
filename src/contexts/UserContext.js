@@ -10,7 +10,8 @@ export default function UserContextProvider(props) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userId, setUserId] = useState('');
   const [userInfo, setUserInfo] = useState({});
-  const [userList, setUserList] = useState([]);
+  const [athletes, setAthletes] = useState([])
+ 
 
   const userCollection = collection(db, 'users');
 
@@ -35,19 +36,13 @@ export default function UserContextProvider(props) {
     setUserInfo(data);
   };
 
-  const getUsers = async (role) => {
+  const getAthletes = async () => {
     const docRefs = await getDocs(userCollection);
     const snapshots = docRefs.docs.filter((doc) => {
-      return doc.data().role === role;
+      return doc.data().role === 'athlete';
     });
-    setUserList(snapshots)
-  };
-
-  const getName = async (id) => {
-    const docSnapshot = await getDoc(doc(userCollection, id));
-    const data = docSnapshot.data();
-    return data.name;
-  };
+    setAthletes(snapshots)
+  }
 
   return (
     <UserContext.Provider
@@ -60,9 +55,8 @@ export default function UserContextProvider(props) {
         checkUser,
         getUserInfo,
         userInfo,
-        userList,
-        getUsers,
-        getName,
+        athletes,
+        getAthletes,
       }}
     >
       {props.children}

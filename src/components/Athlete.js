@@ -6,10 +6,14 @@ S.Li = styled.li`
 list-style: none;
 margin: 1rem 0;
 `
-export default function Athlete({athlete, addAttendee}) {
+export default function Athlete({athlete, addAttendee, removeAttendee}) {
 
-  const handleChange = () => {
+  const handleChange = (e) => {
+    if (e.target.checked) {
     addAttendee(athlete.id)
+    } else {
+      removeAttendee(athlete.id)
+    }
   }
   
   return (

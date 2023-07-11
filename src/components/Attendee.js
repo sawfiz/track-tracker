@@ -1,23 +1,21 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../contexts/UserContext';
+import React, { useEffect, useState } from 'react';
+import { db } from '../config/firebase';
+import { collection, doc, getDoc } from 'firebase/firestore';
 
 export default function Attendee({ athlete }) {
-  const { getName } = useContext(UserContext);
+  const [athleteName, setAthleteName] = useState([])
 
-  const [name, setName] = useState('');
+  const userCollection = collection(db, 'users');
+
+  const getAthleteName = async (id) => {
+    const docSnapshot = await getDoc(doc(userCollection, id));
+    const athleteName = docSnapshot.data().name;
+    setAthleteName(athleteName)
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await getName(athlete);
-      setName(data);
-    };
-
-    fetchData();
+    getAthleteName(athlete);
   }, []);
 
-  return (
-    <div>
-      {name}
-    </div>
-  );
+  return <div>{athleteName}</div>;
 }

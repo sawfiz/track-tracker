@@ -10,7 +10,6 @@ import {
   addDoc,
   setDoc,
   updateDoc,
-  Timestamp,
 } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
@@ -43,18 +42,23 @@ S.Button = styled.button`
 
 export default function AddAttendance() {
   useEffect(() => {
-    getUsers('athlete');
+    getAthletes();
   }, []);
 
-  const { userList, getUsers } = useContext(UserContext);
+  const { athletes, getAthletes } = useContext(UserContext);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [stadium, setStadium] = useState('')
+  const [stadium, setStadium] = useState('');
   const [attendeeList, setAttendeeList] = useState([]);
   const [existingDoc, setExistingDoc] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const addAttendee = (id) => {
     setAttendeeList([...attendeeList, id]);
+    console.log(attendeeList);
+  };
+
+  const removeAttendee = (id) => {
+    setAttendeeList(attendeeList.filter((attendeeId) => attendeeId !== id));
     console.log(attendeeList);
   };
 
@@ -65,36 +69,41 @@ export default function AddAttendance() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (attendeeList.length) {
-      try {
-        // Check if doc with the same date already exists
-        const existingDocRef = await getDocs(
-          query(
-            collection(db, 'attendance'),
-            where('date', '==', startOfSelectedDate)
-          )
-        );
+      console.log(
+        '🚀 ~ file: AddAttendance.js:67 ~ handleSubmit ~ attendeeList.length:',
+        attendeeList.length
+      );
+      if (stadium) {
+        try {
+          // Check if doc with the same date already exists
+          const existingDocRef = await getDocs(
+            query(
+              collection(db, 'attendance'),
+              where('date', '==', startOfSelectedDate)
+            )
+          );
 
-        if (existingDocRef.docs.length > 0) {
-          console.log('modal should show up now');
-          setExistingDoc(existingDocRef.docs[0]);
-          setIsOpen(true);
-        } else {
-          const data = {
-            date: startOfSelectedDate,
-            stadium,
-            attendeeList,
-          };
-          await addDoc(attendenceCollection, data);
-          console.log('New attendance record added.');
-          alert('New attendance record added.');
+          if (existingDocRef.docs.length > 0) {
+            setExistingDoc(existingDocRef.docs[0]);
+            setIsOpen(true);
+          } else {
+            const data = {
+              date: startOfSelectedDate,
+              stadium,
+              attendeeList,
+            };
+            await addDoc(attendenceCollection, data);
+            console.log('New attendance record added.');
+            alert('New attendance record added.');
+          }
+        } catch (err) {
+          console.log('Error adding or updating attendance', err.message);
         }
-
-        // navigate('/admin');
-      } catch (err) {
-        console.log('Error adding or updating attendance', err.message);
+      } else {
+        alert('Please select a stadium.');
       }
     } else {
-      alert('Empty attendee list. Not submitted.');
+      alert('Please select attendees.');
     }
   };
 
@@ -111,7 +120,19 @@ export default function AddAttendance() {
 
   const handleMerge = async () => {
     const existingAttendeeList = existingDoc.data().attendeeList;
-    const mergedAttendeeList = [...existingAttendeeList, ...attendeeList];
+
+    // Create a set with existing attendees
+    const uniqueAttendeeSet = new Set(existingAttendeeList); 
+
+    // Add unique attendees from attendeeList to the set
+    // The Set data structure automatically removes duplicates.
+    attendeeList.forEach((attendee) => {
+      uniqueAttendeeSet.add(attendee);
+    });
+
+    // Convert the set back to an array
+    const mergedAttendeeList = Array.from(uniqueAttendeeSet);
+
     const data = {
       date: startOfSelectedDate,
       stadium,
@@ -131,7 +152,7 @@ export default function AddAttendance() {
       <p>
         <a href="/admin">Admin Tools</a>
       </p>
-      <h2>Add Attendance</h2>
+      <h2>Track Attendance</h2>
       <form onSubmit={handleSubmit}>
         <S.Container>
           <h3>Date</h3>
@@ -143,7 +164,7 @@ export default function AddAttendance() {
         </S.Container>
         <S.Container>
           <h3>Stadium</h3>
-          <select onChange={(e)=>setStadium(e.target.value)}>
+          <select onChange={(e) => setStadium(e.target.value)}>
             <option>-</option>
             <option>Bukit Gombak</option>
             <option>Choa Chu Kang</option>
@@ -151,12 +172,13 @@ export default function AddAttendance() {
           </select>
         </S.Container>
         <ul>
-          {userList.map((athlete) => {
+          {athletes.map((athlete) => {
             return (
               <Athlete
                 key={athlete.id}
                 athlete={athlete}
                 addAttendee={addAttendee}
+                removeAttendee={removeAttendee}
               />
             );
           })}
