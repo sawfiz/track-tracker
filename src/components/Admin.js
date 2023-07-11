@@ -18,13 +18,14 @@ export default function Admin() {
         <a href="/attendance">Show Attendence</a>
       </p>
       <p>
+        <a href="/athletes">Manage athletes</a>
+      </p>
+        <hr></hr>
+      <p>
         <a href="/users">Manage users</a>
       </p>
       <p>
         <a href="/parents">Manage parents</a>
-      </p>
-      <p>
-        <a href="/athletes">Manage athletes</a>
       </p>
     </main>
   );
