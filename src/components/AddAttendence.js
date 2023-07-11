@@ -20,9 +20,10 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import Athlete from './Athlete';
+import SubmitAttendanceModal from '../modals/SubmitAttendanceModal';
 
 const S = {};
-S.DateContainer = styled.div`
+S.Container = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
@@ -47,7 +48,10 @@ export default function AddAttendence() {
 
   const { userList, getUsers } = useContext(UserContext);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [stadium, setStadium] = useState('')
   const [attendeeList, setAttendeeList] = useState([]);
+  const [existingDoc, setExistingDoc] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   const addAttendee = (id) => {
     setAttendeeList([...attendeeList, id]);
@@ -56,11 +60,11 @@ export default function AddAttendence() {
 
   const attendenceCollection = collection(db, 'attendance');
   const navigate = useNavigate();
+  const startOfSelectedDate = startOfDay(selectedDate);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (attendeeList.length) {
-      const startOfSelectedDate = startOfDay(selectedDate)
       try {
         // Check if doc with the same date already exists
         const existingDocRef = await getDocs(
@@ -71,41 +75,55 @@ export default function AddAttendence() {
         );
 
         if (existingDocRef.docs.length > 0) {
-          const overwrite = window.confirm(
-            'A record with the same date already exists. Do you want to overwrite it?'
-          );
-          if (overwrite) {
-            const data = { date: startOfSelectedDate, attendeeList };
-            await setDoc(existingDocRef.docs[0].ref, data);
-            console.log('Attendance record overwritten.');
-          } else {
-            const existingAttendeeList =
-              existingDocRef.docs[0].data().attendeeList;
-            const mergedAttendeeList = [
-              ...existingAttendeeList,
-              ...attendeeList,
-            ];
-            const data = { date: startOfSelectedDate, attendeeList: mergedAttendeeList };
-            await updateDoc(existingDocRef.docs[0].ref, data);
-            console.log('Attendance record merged.');
-          }
+          console.log('modal should show up now');
+          setExistingDoc(existingDocRef.docs[0]);
+          setIsOpen(true);
         } else {
           const data = {
             date: startOfSelectedDate,
-            attendees: attendeeList,
+            stadium,
+            attendeeList,
           };
           await addDoc(attendenceCollection, data);
           console.log('New attendance record added.');
           alert('New attendance record added.');
         }
 
-        navigate('/admin');
+        // navigate('/admin');
       } catch (err) {
         console.log('Error adding or updating attendance', err.message);
       }
     } else {
       alert('Empty attendee list. Not submitted.');
     }
+  };
+
+  const handleCancel = () => {
+    navigate('/admin');
+  };
+
+  const handleOverwrite = async () => {
+    const data = { date: startOfSelectedDate, stadium, attendeeList };
+    await setDoc(existingDoc.ref, data);
+    console.log('Attendance record overwritten.');
+    navigate('/admin');
+  };
+
+  const handleMerge = async () => {
+    const existingAttendeeList = existingDoc.data().attendeeList;
+    const mergedAttendeeList = [...existingAttendeeList, ...attendeeList];
+    const data = {
+      date: startOfSelectedDate,
+      stadium,
+      attendeeList: mergedAttendeeList,
+    };
+    await updateDoc(existingDoc.ref, data);
+    console.log('Attendance record merged.');
+    navigate('/admin');
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
   };
 
   return (
@@ -115,14 +133,23 @@ export default function AddAttendence() {
       </p>
       <h2>Add Attendence</h2>
       <form onSubmit={handleSubmit}>
-        <S.DateContainer>
+        <S.Container>
           <h3>Date</h3>
           <DatePicker
             selected={selectedDate}
             onChange={(date) => setSelectedDate(date)}
             dateFormat="yyyy/MM/dd"
           />
-        </S.DateContainer>
+        </S.Container>
+        <S.Container>
+          <h3>Stadium</h3>
+          <select onChange={(e)=>setStadium(e.target.value)}>
+            <option>-</option>
+            <option>Bukit Gombak</option>
+            <option>Choa Chu Kang</option>
+            <option>Clementi</option>
+          </select>
+        </S.Container>
         <ul>
           {userList.map((athlete) => {
             return (
@@ -136,8 +163,17 @@ export default function AddAttendence() {
         </ul>
         <S.ButtonContainer>
           <S.Button>Submit</S.Button>
+          <S.Button onClick={handleCancel}>Cancel</S.Button>
         </S.ButtonContainer>
       </form>
+      {isOpen && (
+        <SubmitAttendanceModal
+          isOpen={isOpen}
+          handleClose={handleClose}
+          handleOverwrite={handleOverwrite}
+          handleMerge={handleMerge}
+        />
+      )}
     </main>
   );
 }
