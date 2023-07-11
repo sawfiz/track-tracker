@@ -15,9 +15,22 @@
   padding: 0;
   box-sizing: border-box;
   /* border: 1px hotpink solid; */
+  font-family:Arial, Helvetica, sans-serif
 }
 
 body {
   background: var(--color-background);
   height: 100vh;
+}
+
+main {
+  margin: 1rem;
+}
+
+h2 {
+  margin: 1rem 0 0.5rem 0;
+}
+
+h3 {
+  margin: 0.5rem 0;
 }

@@ -6,6 +6,17 @@ import { auth, googleProvider } from '../config/firebase';
 
 import { UserContext } from '../contexts/UserContext';
 
+const S = {};
+  S.SignInImg = styled.img`
+    width: 90px;
+    height: 20px;
+  `;
+
+  S.Button = styled.button`
+    cursor: pointer;
+    margin-right: 2%;
+  `;
+
 export const Auth = () => {
   const { setLoggedIn, setUserId, checkUser, getUserInfo } = useContext(UserContext);
 
@@ -22,16 +33,7 @@ export const Auth = () => {
     }
   };
 
-  const S = {};
-  S.SignInImg = styled.img`
-    width: 90px;
-    height: 20px;
-  `;
-
-  S.Button = styled.button`
-    cursor: pointer;
-    margin-right: 2%;
-  `;
+  
 
   return (
       <S.Button onClick={(e) => signinWithGoogle(e)}>

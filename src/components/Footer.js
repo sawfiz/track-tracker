@@ -2,8 +2,7 @@ import React from 'react';
 import { FaGithub } from 'react-icons/fa';
 import styled from 'styled-components';
 
-export default function Footer() {
-  const S = {};
+const S = {};
   S.Footer = styled.div`
     position: fixed;
     bottom: 0;
@@ -21,6 +20,9 @@ export default function Footer() {
     color: white;
   `;
 
+
+export default function Footer() {
+  
   return (
     <S.Footer>
       <p>

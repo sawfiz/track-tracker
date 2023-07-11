@@ -7,12 +7,24 @@ import { auth } from './config/firebase';
 
 import { UserContext } from './contexts/UserContext';
 
+import './App.css';
+
 import { Header } from './components/Header';
 import { Home } from './components/Home';
 import Admin from './components/Admin';
 import Footer from './components/Footer';
+import AddAttendence from './components/AddAttendence';
 
-import './App.css';
+
+const S = {};
+S.App = styled.div`
+  background: var(--color-light);
+  width: clamp(var(--min-content-width), 100%, var(--max-content-width));
+  margin: auto;
+  position: relative;
+  height: calc(100vh - 1rem);
+  border-radius: 5px;
+`;
 
 function App() {
   const { setLoggedIn, setUserId, getUserInfo } = useContext(UserContext);
@@ -36,16 +48,6 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  const S = {};
-  S.App = styled.div`
-    background: var(--color-light);
-    width: clamp(var(--min-content-width), 100%, var(--max-content-width));
-    margin: auto;
-    position: relative;
-    height: calc(100vh - 1rem);
-    border-radius: 5px;
-  `;
-
   return (
     <>
       <S.App>
@@ -53,6 +55,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/add-attendence" element={<AddAttendence />} />
         </Routes>
       </S.App>
       <Footer />
