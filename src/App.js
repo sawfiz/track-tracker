@@ -8,6 +8,7 @@ import { auth } from './config/firebase';
 import { UserContext } from './contexts/UserContext';
 
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Header } from './components/Header';
 import { Home } from './components/Home';

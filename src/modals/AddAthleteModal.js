@@ -1,7 +1,9 @@
-import React from 'react';
-import Modal from 'react-modal';
+import React from 'react'
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
-Modal.setAppElement('#root'); // Set the root element for the modal
 
 const S = {};
 S.Section = styled.div`
@@ -24,64 +26,74 @@ S.Button = styled.button`
   margin: auto;
 `;
 
-export default function AddAthleteModal({ isOpen, closeModal }) {
-  const handleModalClose = () => {
-    closeModal();
-  };
+export default function AddAthleteModal({ show, handleClose }) {
   return (
-    <Modal isOpen={isOpen} onRequestClose={handleModalClose}>
-      <h3>New Athlete</h3>
-      <form>
-        <S.Section>
-          <S.Entry>
-            <label>Name</label>
-            <S.Input type="text" />
-          </S.Entry>
-          <S.Entry>
-            <label>Gender</label>
-            <S.Select>
-              <option>-</option>
-              <option>Male</option>
-              <option>Female</option>
-            </S.Select>
-          </S.Entry>
-          <S.Entry>
-            <label>Birth date</label>
-            <S.Input type="date" />
-          </S.Entry>
-          <S.Entry>
-            <label>School</label>
-            <S.Input type="text" />
-          </S.Entry>
-          <S.Entry>
-            <label>Phone</label>
-            <S.Input type="phone" />
-          </S.Entry>
-        </S.Section>
+    <div
+      className="modal show"
+      style={{ display: 'block', position: 'initial' }}
+    >
+      <Modal show={show} onHide={handleClose} backdrop="static" centered>
+        <Modal.Dialog>
+          <Modal.Header closeButton>
+            <Modal.Title>New Athlete</Modal.Title>
+          </Modal.Header>
 
-        <S.Section>
-          <S.Entry>
-            <label>Father</label>
-            <S.Input type="text" />
-          </S.Entry>
-          <S.Entry>
-            <label>Phone</label>
-            <S.Input type="phone" />
-          </S.Entry>
-        </S.Section>
+          <Modal.Body>
+            <Form>
+              <S.Section>
+                <S.Entry>
+                  <Form.Control autoFocus placeholder="name" />
+                </S.Entry>
+                <S.Entry>
+                  <Form.Select>
+                    <option>Gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </Form.Select>
+                </S.Entry>
+                <S.Entry>
+                  <InputGroup className="mb-3">
+                    <InputGroup.Text id="basic-addon1">
+                      Birthdate
+                    </InputGroup.Text>
+                    <Form.Control
+                      type="date"
+                      name="dob"
+                      placeholder="Date of Birth"
+                    />
+                  </InputGroup>
+                </S.Entry>
+                <S.Entry>
+                  <Form.Control placeholder="school" />
+                </S.Entry>
+                <S.Entry>
+                  <Form.Control placeholder="phone" />
+                </S.Entry>
+              </S.Section>
 
-        <S.Section>
-          <S.Entry>
-            <label>Mother</label>
-            <S.Input type="text" />
-          </S.Entry>
-          <S.Entry>
-            <label>Phone</label>
-            <S.Input type="phone" />
-          </S.Entry>
-        </S.Section>
-        <S.Button>Add</S.Button>
-      </form>
-    </Modal>
+              <S.Section>
+                <S.Entry>
+                  <Form.Select>
+                    <option>Father</option>
+                  </Form.Select>
+                </S.Entry>
+                <S.Entry>
+                  <Form.Select>
+                    <option>Mother</option>
+                  </Form.Select>
+                </S.Entry>
+              </S.Section>
+            </Form>
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary">Save changes</Button>
+          </Modal.Footer>
+        </Modal.Dialog>
+      </Modal>
+    </div>
   );
 }

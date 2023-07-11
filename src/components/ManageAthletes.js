@@ -10,7 +10,7 @@ export default function ManageAthletes() {
     getAthletes();
   }, []);
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const closeModal = () => {
     setIsOpen(false)
@@ -28,7 +28,7 @@ export default function ManageAthletes() {
         })}
       </ul>
       <button onClick={() => setIsOpen(true)}>Add an athlete</button>
-      {isOpen && <AddAthleteModal isOpen={isOpen} closeModal={closeModal}/>}
+      {isOpen && <AddAthleteModal show={isOpen} handleClose={closeModal}/>}
     </main>
   );
 }
