@@ -14,6 +14,7 @@ import { Home } from './components/Home';
 import Admin from './components/Admin';
 import Footer from './components/Footer';
 import AddAttendence from './components/AddAttendence';
+import ShowAttendance from './components/ShowAttendance';
 
 
 const S = {};
@@ -56,6 +57,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/add-attendence" element={<AddAttendence />} />
+          <Route path="/attendence" element={<ShowAttendance />} />
         </Routes>
       </S.App>
       <Footer />

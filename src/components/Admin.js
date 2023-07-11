@@ -16,6 +16,9 @@ export default function Admin() {
         <a href="/add-attendence">Add Attendence</a>
       </p>
       <p>
+        <a href="/attendence">Show Attendence</a>
+      </p>
+      <p>
         <a href="/users">Manage users</a>
       </p>
       <p>

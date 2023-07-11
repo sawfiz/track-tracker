@@ -1,7 +1,16 @@
 import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import { db } from '../config/firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  addDoc,
+  setDoc,
+  updateDoc,
+  Timestamp,
+} from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
 import { UserContext } from '../contexts/UserContext';
@@ -39,25 +48,83 @@ export default function AddAttendence() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [attendeeList, setAttendeeList] = useState([]);
 
-  
   const addAttendee = (id) => {
     setAttendeeList([...attendeeList, id]);
     console.log(attendeeList);
   };
-  
+
   const attendenceCollection = collection(db, 'attendence');
   const navigate = useNavigate();
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (attendeeList.length) {
+  //     try {
+  //     const data = { selectedDate, attendeeList };
+  //     await addDoc(attendenceCollection, data)
+  //     navigate('/admin');
+  //     } catch (err) {
+  //       console.log('Error adding attendence', err.message);
+  //     }
+  //   } else {
+  //     alert('Empty attendee list.  Not submitted.')
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (attendeeList.length) {
       try {
-      const data = { selectedDate, attendeeList };
-      await addDoc(attendenceCollection, data)
-      navigate('/admin');
+        const selectedDateTimestamp = Timestamp.fromDate(selectedDate);
+
+        // Set the start and end timestamps of the selectedDate
+        const startTimestamp = new Timestamp(selectedDateTimestamp.seconds, 0);
+        console.log("🚀 ~ file: AddAttendence.js:82 ~ handleSubmit ~ startTimestamp:", startTimestamp)
+        const endTimestamp = new Timestamp(
+          selectedDateTimestamp.seconds + 24 * 60 * 60, // Add 24 hours in seconds
+          0
+        );
+        // Check if doc with the same date already exists
+        const existingDocRef = await getDocs(
+          query(
+            collection(db, 'attendence'),
+            where('date', '>=', startTimestamp),
+            where('date', '<=', endTimestamp)
+          )
+        );
+
+        if (existingDocRef.docs.length > 0) {
+          const overwrite = window.confirm(
+            'A record with the same date already exists. Do you want to overwrite it?'
+          );
+          if (overwrite) {
+            const data = { selectedDate, attendeeList };
+            await setDoc(existingDocRef.docs[0].ref, data);
+            console.log('Attendance record overwritten.');
+          } else {
+            const existingAttendeeList =
+              existingDocRef.docs[0].data().attendeeList;
+            const mergedAttendeeList = [
+              ...existingAttendeeList,
+              ...attendeeList,
+            ];
+            const data = { selectedDate, attendeeList: mergedAttendeeList };
+            await updateDoc(existingDocRef.docs[0].ref, data);
+            console.log('Attendance record merged.');
+          }
+        } else {
+          const data = { date: selectedDate, attendees: attendeeList };
+          await addDoc(attendenceCollection, data);
+          console.log('New attendance record added.');
+          alert('New attendance record added.');
+        }
+
+        navigate('/admin');
       } catch (err) {
-        console.log('Error adding attendence', err.message);
+        console.log('Error adding or updating attendance', err.message);
       }
+    } else {
+      alert('Empty attendee list. Not submitted.');
     }
   };
 

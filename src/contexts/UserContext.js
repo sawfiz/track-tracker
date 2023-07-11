@@ -41,9 +41,12 @@ export default function UserContextProvider(props) {
       return doc.data().role === role;
     });
     setUserList(snapshots)
-    // const data = snapshots.map((snapshot) => snapshot.data())
-    // console.log("🚀 ~ file: UserContext.js:43 ~ filteredData ~ filteredData:", data)
-    // setUserList(data);
+  };
+
+  const getName = async (id) => {
+    const docSnapshot = await getDoc(doc(userCollection, id));
+    const data = docSnapshot.data();
+    return data.name;
   };
 
   return (
@@ -59,6 +62,7 @@ export default function UserContextProvider(props) {
         userInfo,
         userList,
         getUsers,
+        getName,
       }}
     >
       {props.children}
