@@ -14,8 +14,13 @@ export default function AttendenceContextProvider( props ) {
 
   const getAttendances = async () => {
     const docRefs = await getDocs(attendanceCollection);
-    console.log("🚀 ~ file: AttendanceContext.js:23 ~ getAttendances ~ docRefs:", docRefs.docs)
-    setAttendanceList(docRefs.docs);
+    // Sort date in descending order
+    const sortedAttendances = docRefs.docs.sort((a, b) => {
+      const dateA = a.data().date.toDate();
+      const dateB = b.data().date.toDate();
+      return dateB - dateA; 
+    });
+    setAttendanceList(sortedAttendances);
   };
 
   return (
