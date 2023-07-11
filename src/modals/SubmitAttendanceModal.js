@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
-import Modal from 'react-modal';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import styled from 'styled-components';
 
-Modal.setAppElement('#root'); // Set the root element for the modal
+const S = {};
+S.Section = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
 
-const SubmitAttendanceModal = ({
-  isOpen,
+export default function SubmitAttendanceModal ({
+  show,
   handleClose,
   handleOverwrite,
   handleMerge,
-}) => {
+}) {
   const [selectedOption, setSelectedOption] = useState(null);
 
   const handleOptionSelect = (option) => {
@@ -30,33 +36,29 @@ const SubmitAttendanceModal = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={handleModalClose}>
-      <div>
-        <h1>Choose an Option</h1>
-      </div>
-      <div>
-        <button
-          onClick={() => handleOptionSelect('overwrite')}
-        >
-          Overwrite
-        </button>
-        <button  onClick={() => handleOptionSelect('merge')}>
-          Merge
-        </button>
-        <button onClick={handleModalClose}>
-          Cancel
-        </button>
-      </div>
-      <div>
-        <button
-          onClick={handleConfirm}
-          disabled={!selectedOption}
-        >
+    <Modal show={show} onHide={handleModalClose} centered backdrop="static">
+      <Modal.Header >
+        <Modal.Title>Data on this day already exists.</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+      <p>Make a choice</p>
+        <S.Section>
+          <Button variant="primary" onClick={() => handleOptionSelect('overwrite')}>
+            Overwrite
+          </Button>
+          <Button variant="primary" onClick={() => handleOptionSelect('merge')}>
+            Merge
+          </Button>
+          <Button variant="secondary" onClick={handleModalClose}>
+            Cancel
+          </Button>
+        </S.Section>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="primary" onClick={handleConfirm} disabled={!selectedOption}>
           Confirm
-        </button>
-      </div>
+        </Button>
+      </Modal.Footer>
     </Modal>
   );
 };
-
-export default SubmitAttendanceModal;

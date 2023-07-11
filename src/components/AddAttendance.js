@@ -122,7 +122,7 @@ export default function AddAttendance() {
     const existingAttendeeList = existingDoc.data().attendeeList;
 
     // Create a set with existing attendees
-    const uniqueAttendeeSet = new Set(existingAttendeeList); 
+    const uniqueAttendeeSet = new Set(existingAttendeeList);
 
     // Add unique attendees from attendeeList to the set
     // The Set data structure automatically removes duplicates.
@@ -190,7 +190,7 @@ export default function AddAttendance() {
       </form>
       {isOpen && (
         <SubmitAttendanceModal
-          isOpen={isOpen}
+          show={isOpen}
           handleClose={handleClose}
           handleOverwrite={handleOverwrite}
           handleMerge={handleMerge}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -40,49 +40,49 @@ export default function AddAthleteModal({ show, handleClose }) {
 
           <Modal.Body>
             <Form>
-              <S.Section>
-                <S.Entry>
-                  <Form.Control autoFocus placeholder="name" />
-                </S.Entry>
-                <S.Entry>
+              <S.Entry>
+                <Form.Control autoFocus placeholder="Name" />
+              </S.Entry>
+              <S.Entry>
+                <InputGroup className="mb-3">
+                  <InputGroup.Text id="basic-addon1">Gender </InputGroup.Text>
                   <Form.Select>
-                    <option>Gender</option>
+                    <option>-</option>
                     <option>Male</option>
                     <option>Female</option>
                   </Form.Select>
-                </S.Entry>
-                <S.Entry>
-                  <InputGroup className="mb-3">
-                    <InputGroup.Text id="basic-addon1">
-                      Birthdate
-                    </InputGroup.Text>
-                    <Form.Control
-                      type="date"
-                      name="dob"
-                      placeholder="Date of Birth"
-                    />
-                  </InputGroup>
-                </S.Entry>
-                <S.Entry>
-                  <Form.Control placeholder="school" />
-                </S.Entry>
-                <S.Entry>
-                  <Form.Control placeholder="phone" />
-                </S.Entry>
-              </S.Section>
+                </InputGroup>
+              </S.Entry>
 
-              <S.Section>
-                <S.Entry>
-                  <Form.Select>
-                    <option>Father</option>
-                  </Form.Select>
-                </S.Entry>
-                <S.Entry>
-                  <Form.Select>
-                    <option>Mother</option>
-                  </Form.Select>
-                </S.Entry>
-              </S.Section>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="basic-addon1">Birthdate</InputGroup.Text>
+                <Form.Control
+                  type="date"
+                  name="dob"
+                  placeholder="Date of Birth"
+                />
+              </InputGroup>
+
+              <S.Entry>
+                <Form.Control placeholder="School" />
+              </S.Entry>
+              <S.Entry>
+                <Form.Control placeholder="Phone" />
+              </S.Entry>
+
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="basic-addon1">Father </InputGroup.Text>
+                <Form.Select>
+                  <option>-</option>
+                </Form.Select>
+              </InputGroup>
+
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="basic-addon1">Mother </InputGroup.Text>
+                <Form.Select>
+                  <option>-</option>
+                </Form.Select>
+              </InputGroup>
             </Form>
           </Modal.Body>
 
