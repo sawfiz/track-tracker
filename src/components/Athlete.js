@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AthleteContext } from '../contexts/AthleteContext';
-import Button from 'react-bootstrap/esm/Button';
+import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
 import styled from 'styled-components';
+import EditAthleteModal from '../modals/EditAthleteModal';
 
 const S = {};
 
@@ -26,6 +27,7 @@ S.EditButton = styled.button`
 
 export default function Athlete({ athleteID }) {
   const { getAthleteName } = useContext(AthleteContext);
+  const { showEditModal, editAthlete } = useContext(AthleteDetailsContext);
   const [athleteName, setAthleteName] = useState('');
 
   useEffect(() => {
@@ -36,9 +38,16 @@ export default function Athlete({ athleteID }) {
     fetchAthleteName();
   }, []);
 
+  const handleClick = () => {
+    editAthlete(athleteID);
+  };
+
   return (
-    <S.Athlete>
-      {athleteName} <S.EditButton>✍️</S.EditButton>
-    </S.Athlete>
+    <div>
+      <S.Athlete>
+        {athleteName} <S.EditButton onClick={handleClick}>✍️</S.EditButton>
+      </S.Athlete>
+      {showEditModal && <EditAthleteModal show={showEditModal}/>}
+    </div>
   );
 }
