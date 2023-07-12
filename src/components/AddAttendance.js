@@ -11,6 +11,7 @@ import {
   query,
   where,
   addDoc,
+  setDoc,
   updateDoc,
 } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
@@ -170,14 +171,14 @@ export default function AddAttendance() {
     navigate('/admin');
   };
 
-  // const handleOverwrite = async () => {
-  //   const data = { date: startOfSelectedDate, stadium, attendeeList };
-  //   await setDoc(existingDoc.ref, data);
-  //   console.log('Attendance record overwritten.');
-  //   navigate('/admin');
-  // };
-
   const handleOverwrite = async () => {
+    const data = { date: startOfSelectedDate, stadium, attendeeList };
+    await setDoc(existingDoc.ref, data);
+    console.log('Attendance record overwritten.');
+    navigate('/admin');
+  };
+
+  const handleMerge = async () => {
     const existingAttendeeList = existingDoc.data().attendeeList;
 
     // Create a set with existing attendees
