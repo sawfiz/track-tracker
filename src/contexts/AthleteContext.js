@@ -12,10 +12,13 @@ export default function AthleteContextProvider(props) {
 
   const getAthletes = async () => {
     const docRefs = await getDocs(userCollection);
-    const snapshots = docRefs.docs.filter((doc) => {
+    const athletes = docRefs.docs.filter((doc) => {
       return doc.data().role === 'athlete';
     });
-    setAthletes(snapshots);
+    const sortedAthletes = athletes.sort((a, b) =>
+      a.data().name > b.data().name ? 1 : -1
+    );
+    setAthletes(sortedAthletes);
   };
 
   const getAthleteName = async (id) => {
