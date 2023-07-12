@@ -43,16 +43,14 @@ export default function AddAthleteModal({ show, handleClose }) {
               <S.Entry>
                 <Form.Control autoFocus placeholder="Name" />
               </S.Entry>
-              <S.Entry>
-                <InputGroup className="mb-3">
-                  <InputGroup.Text id="basic-addon1">Gender </InputGroup.Text>
-                  <Form.Select>
-                    <option>-</option>
-                    <option>Male</option>
-                    <option>Female</option>
-                  </Form.Select>
-                </InputGroup>
-              </S.Entry>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="basic-addon1">Gender </InputGroup.Text>
+                <Form.Select>
+                  <option>-</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                </Form.Select>
+              </InputGroup>
 
               <InputGroup className="mb-3">
                 <InputGroup.Text id="basic-addon1">Birthdate</InputGroup.Text>

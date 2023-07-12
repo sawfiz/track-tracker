@@ -1,5 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import startOfDay from 'date-fns/startOfDay';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import { db } from '../config/firebase';
 import {
@@ -15,9 +18,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { UserContext } from '../contexts/UserContext';
 
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-
 import Athlete from './Athlete';
 import SubmitAttendanceModal from '../modals/SubmitAttendanceModal';
 
@@ -30,14 +30,7 @@ S.Container = styled.div`
 
 S.ButtonContainer = styled.div`
   display: flex;
-`;
-
-S.Button = styled.button`
-  margin: auto;
-  padding: 0.3rem;
-  cursor: pointer;
-  font-weight: bold;
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  justify-content: space-around;
 `;
 
 export default function AddAttendance() {
@@ -64,15 +57,11 @@ export default function AddAttendance() {
 
   const attendenceCollection = collection(db, 'attendance');
   const navigate = useNavigate();
-  const startOfSelectedDate = startOfDay(selectedDate);
+  const startOfSelectedDate = startOfDay(new Date(selectedDate))
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (attendeeList.length) {
-      console.log(
-        '🚀 ~ file: AddAttendance.js:67 ~ handleSubmit ~ attendeeList.length:',
-        attendeeList.length
-      );
       if (stadium) {
         try {
           // Check if doc with the same date already exists
@@ -95,12 +84,13 @@ export default function AddAttendance() {
             await addDoc(attendenceCollection, data);
             console.log('New attendance record added.');
             alert('New attendance record added.');
+            navigate('/admin');
           }
         } catch (err) {
           console.log('Error adding or updating attendance', err.message);
         }
       } else {
-        alert('Please select a stadium.');
+        // alert('Please select a stadium.');
       }
     } else {
       alert('Please select attendees.');
@@ -153,24 +143,24 @@ export default function AddAttendance() {
         <a href="/admin">Admin Tools</a>
       </p>
       <h2>Track Attendance</h2>
-      <form onSubmit={handleSubmit}>
-        <S.Container>
-          <h3>Date</h3>
-          <DatePicker
-            selected={selectedDate}
-            onChange={(date) => setSelectedDate(date)}
-            dateFormat="yyyy/MM/dd"
+      <form >
+        <InputGroup className="mb-3">
+          <InputGroup.Text required id="basic-addon1">Date</InputGroup.Text>
+          <Form.Control
+            type="date"
+            onChange={(e) => setSelectedDate(e.target.value)}
           />
-        </S.Container>
-        <S.Container>
-          <h3>Stadium</h3>
-          <select onChange={(e) => setStadium(e.target.value)}>
+        </InputGroup>
+        <InputGroup className="mb-3">
+          <InputGroup.Text id="basic-addon1">Stadium </InputGroup.Text>
+          <Form.Select required onChange={(e) => setStadium(e.target.value)}>
             <option>-</option>
             <option>Bukit Gombak</option>
             <option>Choa Chu Kang</option>
             <option>Clementi</option>
-          </select>
-        </S.Container>
+          </Form.Select>
+        </InputGroup>
+
         <ul>
           {athletes.map((athlete) => {
             return (
@@ -184,8 +174,10 @@ export default function AddAttendance() {
           })}
         </ul>
         <S.ButtonContainer>
-          <S.Button>Submit</S.Button>
-          <S.Button onClick={handleCancel}>Cancel</S.Button>
+          <Button variant="primary" onClick={handleSubmit}>Save</Button>
+          <Button variant="secondary" onClick={handleCancel}>
+            Cancel
+          </Button>
         </S.ButtonContainer>
       </form>
       {isOpen && (

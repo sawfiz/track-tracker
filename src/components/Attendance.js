@@ -8,6 +8,7 @@ S.Li = styled.li`
   margin: 1rem 0;
 `;
 export default function Attendance({ attendance }) {
+  // const date = attendance.data().date.toDate().toDateString();
   const date = attendance.data().date.toDate().toDateString();
   const stadium = attendance.data().stadium
   const attendees = attendance.data().attendeeList;
