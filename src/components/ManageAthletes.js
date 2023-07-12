@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AthleteContext } from '../contexts/AthleteContext';
-import Athlete from './Athlete';
+import AthleteName from './AthleteName';
 import AddAthleteModal from '../modals/AddAthleteModal';
 
 export default function ManageAthletes() {
@@ -30,7 +30,7 @@ export default function ManageAthletes() {
         {/* athletes is an array of document snapshots
         Need to pass in athlete.id to retrieve names */}
         {athletes.map((athlete) => {
-          return <Athlete key={athlete.id} athlete={athlete.id} />;
+          return <AthleteName key={athlete.id} athlete={athlete.id} />;
         })}
       </ul>
       <button onClick={() => setIsOpen(true)}>Add an athlete</button>
