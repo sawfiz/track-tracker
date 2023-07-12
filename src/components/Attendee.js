@@ -1,21 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import { db } from '../config/firebase';
-import { collection, doc, getDoc } from 'firebase/firestore';
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 
-export default function Attendee({ athlete }) {
-  const [athleteName, setAthleteName] = useState([])
+const S = {};
+S.Li = styled.div`
+  list-style: none;
+  margin: 0.2rem;
+`;
+export default function Attendee({
+  athlete,
+  attendeeList,
+  addAttendee,
+  removeAttendee,
+}) {
+  const [isChecked, setIsChecked] = useState(false);
 
-  const userCollection = collection(db, 'users');
+  // Perhaps attendeeList is updated after the initial rendering
+  useEffect(() => {
+    setIsChecked(attendeeList.includes(athlete.id));
+  }, [attendeeList]);
 
-  const getAthleteName = async (id) => {
-    const docSnapshot = await getDoc(doc(userCollection, id));
-    const athleteName = docSnapshot.data().name;
-    setAthleteName(athleteName)
+  const handleChange = (e) => {
+    if (e.target.checked) {
+      setIsChecked(true);
+      addAttendee(athlete.id);
+    } else {
+      setIsChecked(false);
+      removeAttendee(athlete.id);
+    }
   };
 
-  useEffect(() => {
-    getAthleteName(athlete);
-  }, []);
-
-  return <div>{athleteName}</div>;
+  return (
+    <S.Li>
+      <input type="checkbox" checked={isChecked} onChange={handleChange} />{' '}
+      {athlete.data().name}
+    </S.Li>
+  );
 }

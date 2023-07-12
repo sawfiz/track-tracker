@@ -2,7 +2,7 @@ import React, { createContext, useState } from 'react';
 import { db } from '../config/firebase';
 import { auth } from '../config/firebase';
 
-import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
 
 export const UserContext = createContext();
 
@@ -10,8 +10,6 @@ export default function UserContextProvider(props) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userId, setUserId] = useState('');
   const [userInfo, setUserInfo] = useState({});
-  const [athletes, setAthletes] = useState([])
- 
 
   const userCollection = collection(db, 'users');
 
@@ -36,14 +34,6 @@ export default function UserContextProvider(props) {
     setUserInfo(data);
   };
 
-  const getAthletes = async () => {
-    const docRefs = await getDocs(userCollection);
-    const snapshots = docRefs.docs.filter((doc) => {
-      return doc.data().role === 'athlete';
-    });
-    setAthletes(snapshots)
-  }
-
   return (
     <UserContext.Provider
       value={{
@@ -55,8 +45,6 @@ export default function UserContextProvider(props) {
         checkUser,
         getUserInfo,
         userInfo,
-        athletes,
-        getAthletes,
       }}
     >
       {props.children}

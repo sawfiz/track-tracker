@@ -1,38 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import React, { useContext, useEffect, useState } from 'react';
+import { AthleteContext } from '../contexts/AthleteContext';
 
-const S = {};
-S.Li = styled.div`
-  list-style: none;
-  margin: 0.2rem;
-`;
-export default function Athlete({
-  athlete,
-  attendeeList,
-  addAttendee,
-  removeAttendee,
-}) {
-  const [isChecked, setIsChecked] = useState(false);
+export default function Athlete({ athlete }) {
+  console.log("🚀 ~ file: Athlete.js:5 ~ Athlete ~ athlete:", athlete)
+  const { getAthleteName } = useContext(AthleteContext);
+  const [athleteName, setAthleteName] = useState('');
 
-  // Perhaps attendeeList is updated after the initial rendering
   useEffect(() => {
-    setIsChecked(attendeeList.includes(athlete.id));
-  }, [attendeeList]);
+    const fetchAthleteName = async () => {
+      const name = await getAthleteName(athlete);
+      setAthleteName(name);
+    };
+    fetchAthleteName();
+  }, []);
 
-  const handleChange = (e) => {
-    if (e.target.checked) {
-      setIsChecked(true);
-      addAttendee(athlete.id);
-    } else {
-      setIsChecked(false);
-      removeAttendee(athlete.id);
-    }
-  };
-
-  return (
-    <S.Li>
-      <input type="checkbox" checked={isChecked} onChange={handleChange} />{' '}
-      {athlete.data().name}
-    </S.Li>
-  );
+  return <div>{athleteName}</div>;
 }

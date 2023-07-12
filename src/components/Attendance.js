@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Attendee from './Attendee';
+import Athlete from './Athlete';
 
 const S = {};
 S.Li = styled.li`
@@ -10,16 +10,15 @@ S.Li = styled.li`
 export default function Attendance({ attendance }) {
   // const date = attendance.data().date.toDate().toDateString();
   const date = attendance.data().date.toDate().toDateString();
-  const stadium = attendance.data().stadium
+  const stadium = attendance.data().stadium;
   const attendees = attendance.data().attendeeList;
+  console.log("🚀 ~ file: Attendance.js:15 ~ Attendance ~ attendees:", attendees)
 
   return (
     <S.Li>
-      {date}
-      {' '}
-      {stadium}
+      {date} {stadium}
       {attendees.map((athlete) => (
-        <Attendee key={athlete} athlete={athlete} />
+        <Athlete key={athlete} athlete={athlete} />
       ))}
     </S.Li>
   );

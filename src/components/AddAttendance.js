@@ -11,16 +11,14 @@ import {
   query,
   where,
   addDoc,
-  setDoc,
   updateDoc,
 } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
-import { UserContext } from '../contexts/UserContext';
-
-import Athlete from './Athlete';
+import Attendee from './Attendee';
 import SubmitAttendanceModal from '../modals/SubmitAttendanceModal';
 import { AttendanceContext } from '../contexts/AttendanceContext';
+import { AthleteContext } from '../contexts/AthleteContext';
 
 const S = {};
 S.Container = styled.div`
@@ -44,7 +42,7 @@ S.Grid = styled.div`
 
 export default function AddAttendance() {
   const { record, getAttendance } = useContext(AttendanceContext);
-  const { athletes, getAthletes } = useContext(UserContext);
+  const { athletes, getAthletes } = useContext(AthleteContext);
 
   // ^ Very import that selectedDate is initialize by calling a function
   // Not just `new Date()`
@@ -249,7 +247,7 @@ export default function AddAttendance() {
         <S.Grid>
           {athletes.map((athlete) => {
             return (
-              <Athlete
+              <Attendee
                 key={athlete.id}
                 attendeeList={attendeeList}
                 athlete={athlete}
