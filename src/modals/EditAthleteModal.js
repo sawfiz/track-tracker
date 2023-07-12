@@ -28,14 +28,19 @@ S.Button = styled.button`
 `;
 
 export default function EditAthleteModal({ show }) {
-  const { athleteToEdit, athleteInfo, getAthleteInfo, closeEditModal } =
-  useContext(AthleteDetailsContext);
-    
-    useEffect(() => {
-      getAthleteInfo(athleteToEdit);
-    }, []);
+  const { athleteToEdit, getAthleteInfo, closeEditModal } = useContext(
+    AthleteDetailsContext
+  );
 
+  const [athleteInfo, setAthleteInfo] = useState({});
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const name = await getAthleteInfo(athleteToEdit);
+      setAthleteInfo(name);
+    };
+    fetchData();
+  }, []);
 
   const [hasNoName, setHasNoName] = useState(false);
   const [hasNoGender, setHasNoGendar] = useState(false);
@@ -135,18 +140,22 @@ export default function EditAthleteModal({ show }) {
 
             <InputGroup className="mb-3">
               <InputGroup.Text>Father </InputGroup.Text>
-              <Form.Select name="father" 
-              value={athleteInfo.father}
-              onChange={handleChange}>
+              <Form.Select
+                name="father"
+                value={athleteInfo.father}
+                onChange={handleChange}
+              >
                 <option>-</option>
               </Form.Select>
             </InputGroup>
 
             <InputGroup className="mb-3">
               <InputGroup.Text>Mother </InputGroup.Text>
-              <Form.Select name="mother" 
-               value={athleteInfo.mother}
-               onChange={handleChange}>
+              <Form.Select
+                name="mother"
+                value={athleteInfo.mother}
+                onChange={handleChange}
+              >
                 <option>-</option>
               </Form.Select>
             </InputGroup>

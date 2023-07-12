@@ -13,7 +13,6 @@ export default function AthleteDetailsContextProvider(props) {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [athleteToEdit, setAthleteToEdit] = useState(null);
-  const [athleteInfo, setAthleteInfo] = useState({});
 
   // Function to open/close the AddAthleteModal
   const openAddModal = () => {
@@ -48,7 +47,8 @@ export default function AthleteDetailsContextProvider(props) {
       const docRef = doc(userCollection, athlete)
       const docDoc = await getDoc(docRef)
       const docData = docDoc.data()
-      setAthleteInfo(docData)
+      // setAthleteInfo(docData)
+      return docData;
     }
     catch (error) {
       console.log('Error getting documents: ', error);
@@ -57,7 +57,6 @@ export default function AthleteDetailsContextProvider(props) {
 
   // Set bookToEdit when a book's edit button is clicked
   const editAthlete = (athleteID) => {
-    console.log("🚀 ~ file: AthleteDetailsContext.js:60 ~ editAthlete ~ athleteID:", athleteID)
     setAthleteToEdit(athleteID);
     openEditModal();
   };
@@ -88,7 +87,6 @@ export default function AthleteDetailsContextProvider(props) {
         editAthlete,
         closeEditModal,
         athleteToEdit,
-        athleteInfo,
         getAthleteInfo,
       }}
     >
