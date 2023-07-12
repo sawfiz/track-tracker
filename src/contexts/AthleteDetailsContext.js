@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext } from 'react';
-import { collection, doc, addDoc, updateDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, addDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../config/firebase';
 
 import { AthleteContext } from './AthleteContext';
@@ -13,6 +13,7 @@ export default function AthleteDetailsContextProvider(props) {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [athleteToEdit, setAthleteToEdit] = useState(null);
+  const [athleteInfo, setAthleteInfo] = useState({});
 
   // Function to open/close the AddAthleteModal
   const openAddModal = () => {
@@ -42,9 +43,22 @@ export default function AthleteDetailsContextProvider(props) {
     getAthletes();
   };
 
+  const getAthleteInfo = async (athlete) => {
+    try{
+      const docRef = doc(userCollection, athlete)
+      const docDoc = await getDoc(docRef)
+      const docData = docDoc.data()
+      setAthleteInfo(docData)
+    }
+    catch (error) {
+      console.log('Error getting documents: ', error);
+    }
+  }
+
   // Set bookToEdit when a book's edit button is clicked
-  const editAthlete = (athlete) => {
-    setAthleteToEdit(athlete);
+  const editAthlete = (athleteID) => {
+    console.log("🚀 ~ file: AthleteDetailsContext.js:60 ~ editAthlete ~ athleteID:", athleteID)
+    setAthleteToEdit(athleteID);
     openEditModal();
   };
 
@@ -73,6 +87,9 @@ export default function AthleteDetailsContextProvider(props) {
         showEditModal,
         editAthlete,
         closeEditModal,
+        athleteToEdit,
+        athleteInfo,
+        getAthleteInfo,
       }}
     >
       {props.children}

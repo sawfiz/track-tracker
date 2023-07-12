@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { AthleteContext } from '../contexts/AthleteContext';
 import Athlete from './Athlete';
 import AddAthleteModal from '../modals/AddAthleteModal';
+import EditAthleteModal from '../modals/EditAthleteModal';
 import styled from 'styled-components';
 import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
 
@@ -15,9 +16,10 @@ S.AthletesGrid = styled.div`
 
 export default function ManageAthletes() {
   const { athletes, getAthletes } = useContext(AthleteContext);
-  const { showAddModal, openAddModal, closeAddModal } = useContext(
+  const { showAddModal, openAddModal } = useContext(
     AthleteDetailsContext
   );
+  const { showEditModal } = useContext(AthleteDetailsContext);
 
   useEffect(() => {
     getAthletes();
@@ -37,8 +39,9 @@ export default function ManageAthletes() {
         })}
       </S.AthletesGrid>
       <button onClick={openAddModal}>Add an athlete</button>
-      {showAddModal && (
-        <AddAthleteModal show={showAddModal} />
+      {showAddModal && <AddAthleteModal show={showAddModal} />}
+      {showEditModal && (
+        <EditAthleteModal show={showEditModal} />
       )}
     </main>
   );

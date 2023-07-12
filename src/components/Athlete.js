@@ -27,7 +27,7 @@ S.EditButton = styled.button`
 
 export default function Athlete({ athleteID }) {
   const { getAthleteName } = useContext(AthleteContext);
-  const { showEditModal, editAthlete } = useContext(AthleteDetailsContext);
+  const { editAthlete } = useContext(AthleteDetailsContext);
   const [athleteName, setAthleteName] = useState('');
 
   useEffect(() => {
@@ -39,15 +39,13 @@ export default function Athlete({ athleteID }) {
   }, []);
 
   const handleClick = () => {
+    console.log("🚀 ~ file: Athlete.js:43 ~ handleClick ~ athleteID:", athleteID)
     editAthlete(athleteID);
   };
 
   return (
-    <div>
-      <S.Athlete>
-        {athleteName} <S.EditButton onClick={handleClick}>✍️</S.EditButton>
-      </S.Athlete>
-      {showEditModal && <EditAthleteModal show={showEditModal}/>}
-    </div>
+    <S.Athlete>
+      {athleteName} <S.EditButton onClick={handleClick}>✍️</S.EditButton>
+    </S.Athlete>
   );
 }

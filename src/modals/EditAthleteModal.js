@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -28,21 +28,14 @@ S.Button = styled.button`
 `;
 
 export default function EditAthleteModal({ show }) {
-  const { closeEditModal } = useContext(AthleteDetailsContext);
+  const { athleteToEdit, athleteInfo, getAthleteInfo, closeEditModal } =
+  useContext(AthleteDetailsContext);
+    
+    useEffect(() => {
+      getAthleteInfo(athleteToEdit);
+    }, []);
 
-  // Input fields in the form
-  const [formData, setFormData] = useState({
-    name: '',
-    gender: '',
-    birthdate: '',
-    school: '',
-    phone: 0,
-    father: '',
-    mother: '',
-    role: 'athlete',
-    status: 'active',
-  });
-  const { name, gender, birthdate, school, father, mother, status } = formData;
+
 
   const [hasNoName, setHasNoName] = useState(false);
   const [hasNoGender, setHasNoGendar] = useState(false);
@@ -56,11 +49,11 @@ export default function EditAthleteModal({ show }) {
       setHasNoGendar(false);
     }
 
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    console.log(
-      '🚀 ~ file: AddAthleteModal.js:52 ~ handleChange ~ formData:',
-      formData
-    );
+    // setFormData({ ...formData, [e.target.name]: e.target.value });
+    // console.log(
+    //   '🚀 ~ file: EditAthleteModal.js:80 ~ handleChange ~ formData:',
+    //   formData
+    // );
   };
 
   // const handleSubmit = async (e) => {
@@ -79,91 +72,95 @@ export default function EditAthleteModal({ show }) {
   // };
 
   return (
-    <div
-    className="modal show"
-    style={{ display: 'block', position: 'initial' }}
-    >
-      <Modal show={show} onHide={closeEditModal} backdrop="static" centered>
-        <Modal.Dialog>
-          <Modal.Header closeButton>
-            <Modal.Title>New Athlete</Modal.Title>
-          </Modal.Header>
+    <Modal show={show} onHide={closeEditModal} backdrop="static" centered>
+      <Modal.Dialog>
+        <Modal.Header closeButton>
+          <Modal.Title>New Athlete</Modal.Title>
+        </Modal.Header>
 
-          <Modal.Body>
-            <Form>
-              <S.Entry>
-                <Form.Control
-                  isInvalid={hasNoName}
-                  autoFocus
-                  placeholder="Name"
-                  name="name"
-                  onChange={handleChange}
-                />
-              </S.Entry>
-              <InputGroup className="mb-3">
-                <InputGroup.Text>Gender </InputGroup.Text>
-                <Form.Select
-                  isInvalid={hasNoGender}
-                  name="gender"
-                  onChange={handleChange}
-                >
-                  <option>-</option>
-                  <option>Male</option>
-                  <option>Female</option>
-                </Form.Select>
-              </InputGroup>
+        <Modal.Body>
+          <Form>
+            <S.Entry>
+              <Form.Control
+                isInvalid={hasNoName}
+                autoFocus
+                placeholder="Name"
+                name="name"
+                value={athleteInfo.name}
+                onChange={handleChange}
+              />
+            </S.Entry>
+            <InputGroup className="mb-3">
+              <InputGroup.Text>Gender </InputGroup.Text>
+              <Form.Select
+                isInvalid={hasNoGender}
+                name="gender"
+                value={athleteInfo.gender}
+                onChange={handleChange}
+              >
+                <option>-</option>
+                <option>Male</option>
+                <option>Female</option>
+              </Form.Select>
+            </InputGroup>
 
-              <InputGroup className="mb-3">
-                <InputGroup.Text>Birthdate</InputGroup.Text>
-                <Form.Control
-                  type="date"
-                  name="birthdate"
-                  onChange={handleChange}
-                  placeholder="Date of Birth"
-                />
-              </InputGroup>
+            <InputGroup className="mb-3">
+              <InputGroup.Text>Birthdate</InputGroup.Text>
+              <Form.Control
+                type="date"
+                name="birthdate"
+                value={athleteInfo.birthdate}
+                onChange={handleChange}
+                placeholder="Date of Birth"
+              />
+            </InputGroup>
 
-              <S.Entry>
-                <Form.Control
-                  placeholder="School"
-                  name="school"
-                  onChange={handleChange}
-                />
-              </S.Entry>
-              <S.Entry>
-                <Form.Control
-                  type="number"
-                  placeholder="Phone"
-                  name="phone"
-                  onChange={handleChange}
-                />
-              </S.Entry>
+            <S.Entry>
+              <Form.Control
+                placeholder="School"
+                name="school"
+                value={athleteInfo.school}
+                onChange={handleChange}
+              />
+            </S.Entry>
+            <S.Entry>
+              <Form.Control
+                type="number"
+                placeholder="Phone"
+                name="phone"
+                value={athleteInfo.phone}
+                onChange={handleChange}
+              />
+            </S.Entry>
 
-              <InputGroup className="mb-3">
-                <InputGroup.Text>Father </InputGroup.Text>
-                <Form.Select name="father" onChange={handleChange}>
-                  <option>-</option>
-                </Form.Select>
-              </InputGroup>
+            <InputGroup className="mb-3">
+              <InputGroup.Text>Father </InputGroup.Text>
+              <Form.Select name="father" 
+              value={athleteInfo.father}
+              onChange={handleChange}>
+                <option>-</option>
+              </Form.Select>
+            </InputGroup>
 
-              <InputGroup className="mb-3">
-                <InputGroup.Text>Mother </InputGroup.Text>
-                <Form.Select name="mother" onChange={handleChange}>
-                  <option>-</option>
-                </Form.Select>
-              </InputGroup>
-            </Form>
-          </Modal.Body>
+            <InputGroup className="mb-3">
+              <InputGroup.Text>Mother </InputGroup.Text>
+              <Form.Select name="mother" 
+               value={athleteInfo.mother}
+               onChange={handleChange}>
+                <option>-</option>
+              </Form.Select>
+            </InputGroup>
+          </Form>
+        </Modal.Body>
 
-          <Modal.Footer>
-            <Button variant="secondary" onClick={closeEditModal}>
-              Close
-            </Button>
-            {/* <Button variant="primary" onClick={handleSubmit}> */}
-            <Button variant="primary">Save changes</Button>
-          </Modal.Footer>
-        </Modal.Dialog>
-      </Modal>
-    </div>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeEditModal}>
+            Close
+          </Button>
+          {/* <Button variant="primary" onClick={handleSubmit}> */}
+          <Button variant="primary">Save changes</Button>
+        </Modal.Footer>
+      </Modal.Dialog>
+    </Modal>
   );
 }
