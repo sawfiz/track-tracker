@@ -27,19 +27,23 @@ S.EditButton = styled.button`
 
 export default function Athlete({ athleteID }) {
   const { getAthleteName } = useContext(AthleteContext);
-  const { editAthlete } = useContext(AthleteDetailsContext);
+  const { editAthlete, showEditModal } = useContext(AthleteDetailsContext);
   const [athleteName, setAthleteName] = useState('');
 
+  const fetchAthleteName = async () => {
+    const name = await getAthleteName(athleteID);
+    setAthleteName(name);
+  };
+  
   useEffect(() => {
-    const fetchAthleteName = async () => {
-      const name = await getAthleteName(athleteID);
-      setAthleteName(name);
-    };
+    fetchAthleteName();
+  }, [showEditModal]);
+
+  useEffect(() => {
     fetchAthleteName();
   }, []);
 
   const handleClick = () => {
-    console.log("🚀 ~ file: Athlete.js:43 ~ handleClick ~ athleteID:", athleteID)
     editAthlete(athleteID);
   };
 

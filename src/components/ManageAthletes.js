@@ -1,10 +1,11 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect,useState } from 'react';
 import { AthleteContext } from '../contexts/AthleteContext';
 import Athlete from './Athlete';
 import AddAthleteModal from '../modals/AddAthleteModal';
 import EditAthleteModal from '../modals/EditAthleteModal';
 import styled from 'styled-components';
 import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
+import Button from 'react-bootstrap/esm/Button';
 
 const S = {};
 S.AthletesGrid = styled.div`
@@ -38,7 +39,7 @@ export default function ManageAthletes() {
           return <Athlete key={athlete.id} athleteID={athlete.id} />;
         })}
       </S.AthletesGrid>
-      <button onClick={openAddModal}>Add an athlete</button>
+      <Button onClick={openAddModal}>Add an athlete</Button>
       {showAddModal && <AddAthleteModal show={showAddModal} />}
       {showEditModal && (
         <EditAthleteModal show={showEditModal} />
