@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -28,9 +28,49 @@ S.Button = styled.button`
 `;
 
 export default function AddAthleteModal({ show, handleClose }) {
-  const {  closeAddModal } = useContext(
-    AthleteDetailsContext
-  );
+  const { closeAddModal, addAthlete } = useContext(AthleteDetailsContext);
+
+  // Input fields in the form
+  const [formData, setFormData] = useState({
+    name: '',
+    gender: '',
+    birthdate: '',
+    school: '',
+    phone: 0,
+    father: '',
+    mother: '',
+    role: 'athlete',
+    status: 'active',
+  });
+  const { name, gender, birthdate, school, father, mother, status } = formData;
+
+  const [hasNoName, setHasNoName] = useState(false);
+  const [hasNoGender, setHasNoGendar] = useState(false);
+
+  // Function to handle changes in the form
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    console.log(
+      '🚀 ~ file: AddAthleteModal.js:52 ~ handleChange ~ formData:',
+      formData
+    );
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (name) {
+      setHasNoName(false);
+      if (gender) {
+        setHasNoGendar(false);
+        addAthlete(formData);
+        closeAddModal();
+      } else {
+        setHasNoGendar(true);
+      }
+      setHasNoName(true);
+    }
+  };
+
   return (
     <div
       className="modal show"
@@ -45,11 +85,21 @@ export default function AddAthleteModal({ show, handleClose }) {
           <Modal.Body>
             <Form>
               <S.Entry>
-                <Form.Control autoFocus placeholder="Name" />
+                <Form.Control
+                  isInvalid={hasNoName}
+                  autoFocus
+                  placeholder="Name"
+                  name="name"
+                  onChange={handleChange}
+                />
               </S.Entry>
               <InputGroup className="mb-3">
-                <InputGroup.Text id="basic-addon1">Gender </InputGroup.Text>
-                <Form.Select>
+                <InputGroup.Text>Gender </InputGroup.Text>
+                <Form.Select
+                  isInvalid={hasNoGender}
+                  name="gender"
+                  onChange={handleChange}
+                >
                   <option>-</option>
                   <option>Male</option>
                   <option>Female</option>
@@ -57,31 +107,41 @@ export default function AddAthleteModal({ show, handleClose }) {
               </InputGroup>
 
               <InputGroup className="mb-3">
-                <InputGroup.Text id="basic-addon1">Birthdate</InputGroup.Text>
+                <InputGroup.Text>Birthdate</InputGroup.Text>
                 <Form.Control
                   type="date"
-                  name="dob"
+                  name="birthdate"
+                  onChange={handleChange}
                   placeholder="Date of Birth"
                 />
               </InputGroup>
 
               <S.Entry>
-                <Form.Control placeholder="School" />
+                <Form.Control
+                  placeholder="School"
+                  name="school"
+                  onChange={handleChange}
+                />
               </S.Entry>
               <S.Entry>
-                <Form.Control placeholder="Phone" />
+                <Form.Control
+                  type="number"
+                  placeholder="Phone"
+                  name="phone"
+                  onChange={handleChange}
+                />
               </S.Entry>
 
               <InputGroup className="mb-3">
-                <InputGroup.Text id="basic-addon1">Father </InputGroup.Text>
-                <Form.Select>
+                <InputGroup.Text>Father </InputGroup.Text>
+                <Form.Select name="father" onChange={handleChange}>
                   <option>-</option>
                 </Form.Select>
               </InputGroup>
 
               <InputGroup className="mb-3">
-                <InputGroup.Text id="basic-addon1">Mother </InputGroup.Text>
-                <Form.Select>
+                <InputGroup.Text>Mother </InputGroup.Text>
+                <Form.Select name="mother" onChange={handleChange}>
                   <option>-</option>
                 </Form.Select>
               </InputGroup>
@@ -92,7 +152,9 @@ export default function AddAthleteModal({ show, handleClose }) {
             <Button variant="secondary" onClick={closeAddModal}>
               Close
             </Button>
-            <Button variant="primary">Save changes</Button>
+            <Button variant="primary" onClick={handleSubmit}>
+              Save changes
+            </Button>
           </Modal.Footer>
         </Modal.Dialog>
       </Modal>
