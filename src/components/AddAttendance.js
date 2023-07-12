@@ -20,6 +20,7 @@ import { UserContext } from '../contexts/UserContext';
 
 import Athlete from './Athlete';
 import SubmitAttendanceModal from '../modals/SubmitAttendanceModal';
+import { AttendanceContext } from '../contexts/AttendanceContext';
 
 const S = {};
 S.Container = styled.div`
@@ -33,18 +34,74 @@ S.ButtonContainer = styled.div`
   justify-content: space-around;
 `;
 
-export default function AddAttendance() {
-  useEffect(() => {
-    getAthletes();
-  }, []);
+S.Grid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px dashed hotpink;
+  padding: 0.5rem;
+  margin: 1rem 0;
+`;
 
+export default function AddAttendance() {
+  const { record, getAttendance } = useContext(AttendanceContext);
   const { athletes, getAthletes } = useContext(UserContext);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  // ^ Very import that selectedDate is initialize by calling a function
+  // Not just `new Date()`
+  // This way it is initialized only once upon rendering
+  // Not getting a new value on each rerender
+  const [selectedDate, setSelectedDate] = useState(() => new Date());
   const [stadium, setStadium] = useState('');
-  const [isStadiumEmpty, setIsStadiumEmpty] = useState(false)
+  const [isStadiumEmpty, setIsStadiumEmpty] = useState(false);
   const [attendeeList, setAttendeeList] = useState([]);
   const [existingDoc, setExistingDoc] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  // On initial rendering
+  useEffect(() => {
+    // Get data for today
+    getAttendance(selectedDate);
+    // Get athletes list
+    getAthletes();
+  }, []);
+
+  // On user selecting a new date, get data
+  useEffect(() => {
+    getAttendance(selectedDate);
+  }, [selectedDate]);
+
+  // On there is a new record, update date
+  useEffect(() => {
+    setStadium(record ? record.stadium : '');
+  }, [record]);
+
+  // Convert a Date to yyyy-mm-dd
+  const convertDateForInput = (date) => {
+    const options = {
+      timeZone: 'Asia/Singapore',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    };
+    return date
+      .toLocaleDateString('en-GB', options)
+      .split('/')
+      .reverse()
+      .join('-');
+  };
+
+  // if (record) {
+  //   setStadium(record.stadium);
+  // }
+
+  // convert FireStore timestamp to javascript Date
+  // let formattedDate = convertDateForInput(selectedDate);
+  // if (record) {
+  //   const timestamp = record.date;
+  //   // Firestore stores in seconds, Javascript uses miliseconds
+  //   const newDate = new Date(timestamp.seconds * 1000);
+  //   formattedDate = convertDateForInput(newDate);
+  // }
 
   const addAttendee = (id) => {
     setAttendeeList([...attendeeList, id]);
@@ -58,7 +115,7 @@ export default function AddAttendance() {
 
   const attendenceCollection = collection(db, 'attendance');
   const navigate = useNavigate();
-  const startOfSelectedDate = startOfDay(new Date(selectedDate))
+  const startOfSelectedDate = startOfDay(selectedDate);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -91,8 +148,8 @@ export default function AddAttendance() {
           console.log('Error adding or updating attendance', err.message);
         }
       } else {
-        // alert('Please select a stadium.');
-        setIsStadiumEmpty(true)
+        alert('Please select a stadium.');
+        setIsStadiumEmpty(true);
       }
     } else {
       alert('Please select attendees.');
@@ -139,46 +196,61 @@ export default function AddAttendance() {
     setIsOpen(false);
   };
 
+  const handelChangeDate = (e) => {
+    // selectDate is in javascript Date format
+    setSelectedDate(new Date(e.target.value));
+  };
+
   return (
     <main>
       <p>
         <a href="/admin">Admin Tools</a>
       </p>
       <h2>Track Attendance</h2>
-      <form >
+      <form>
         <InputGroup className="mb-3">
-          <InputGroup.Text required id="basic-addon1">Date</InputGroup.Text>
+          <InputGroup.Text required id="basic-addon1">
+            Date
+          </InputGroup.Text>
           <Form.Control
             type="date"
-            // value={selectedDate.toISOString().split('T')[0]}
-            value={selectedDate.toISOString().split('T')[0]}
-            onChange={(e) => setSelectedDate(e.target.value)}
+            // value needs to be in yyyy-mm-dd format
+            value={convertDateForInput(selectedDate)}
+            onChange={handelChangeDate}
           />
         </InputGroup>
         <InputGroup className="mb-3">
           <InputGroup.Text id="basic-addon1">Stadium </InputGroup.Text>
-          <Form.Select required isInvalid={isStadiumEmpty} onChange={(e) => setStadium(e.target.value)}>
+          <Form.Select
+            required
+            isInvalid={isStadiumEmpty}
+            value={stadium}
+            onChange={(e) => setStadium(e.target.value)}
+          >
             <option>-</option>
-            <option>Bukit Gombak</option>
-            <option>Choa Chu Kang</option>
-            <option>Clementi</option>
+            <option value="Bukit Gombak">Bukit Gombak</option>
+            <option value="Choa Chu Kang">Choa Chu Kang</option>
+            <option value="Clmenti">Clementi</option>
           </Form.Select>
         </InputGroup>
 
-        <ul>
+        <S.Grid>
           {athletes.map((athlete) => {
             return (
               <Athlete
                 key={athlete.id}
+                attendeeList={record ? record.attendeeList : null}
                 athlete={athlete}
                 addAttendee={addAttendee}
                 removeAttendee={removeAttendee}
               />
             );
           })}
-        </ul>
+        </S.Grid>
         <S.ButtonContainer>
-          <Button variant="primary" onClick={handleSubmit}>Save</Button>
+          <Button variant="primary" onClick={handleSubmit}>
+            Save
+          </Button>
           <Button variant="secondary" onClick={handleCancel}>
             Cancel
           </Button>
