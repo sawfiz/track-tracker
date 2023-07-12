@@ -1,24 +1,27 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { AthleteContext } from '../contexts/AthleteContext';
-import AthleteName from './AthleteName';
+import Athlete from './Athlete';
 import AddAthleteModal from '../modals/AddAthleteModal';
+import styled from 'styled-components';
+import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
+
+const S = {};
+S.AthletesGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 1rem 0;
+`;
 
 export default function ManageAthletes() {
   const { athletes, getAthletes } = useContext(AthleteContext);
-  console.log(
-    '🚀 ~ file: ManageAthletes.js:8 ~ ManageAthletes ~ athletes:',
-    athletes
+  const { showAddModal, openAddModal, closeAddModal } = useContext(
+    AthleteDetailsContext
   );
 
   useEffect(() => {
     getAthletes();
   }, []);
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  const closeModal = () => {
-    setIsOpen(false);
-  };
 
   return (
     <main>
@@ -26,15 +29,17 @@ export default function ManageAthletes() {
         <a href="/admin">Admin Tools</a>
       </p>
       <h2>Manage Athletes</h2>
-      <ul>
+      <S.AthletesGrid>
         {/* athletes is an array of document snapshots
         Need to pass in athlete.id to retrieve names */}
         {athletes.map((athlete) => {
-          return <AthleteName key={athlete.id} athlete={athlete.id} />;
+          return <Athlete key={athlete.id} athleteID={athlete.id} />;
         })}
-      </ul>
-      <button onClick={() => setIsOpen(true)}>Add an athlete</button>
-      {isOpen && <AddAthleteModal show={isOpen} handleClose={closeModal} />}
+      </S.AthletesGrid>
+      <button onClick={openAddModal}>Add an athlete</button>
+      {showAddModal && (
+        <AddAthleteModal show={showAddModal} />
+      )}
     </main>
   );
 }

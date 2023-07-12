@@ -5,6 +5,7 @@ import App from './App';
 import UserContextProvider from './contexts/UserContext';
 import AttendenceContextProvider from './contexts/AttendanceContext';
 import AthleteContextProvider from './contexts/AthleteContext';
+import AthleteDetailsContextProvider from './contexts/AthleteDetailsContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -12,9 +13,11 @@ root.render(
     <BrowserRouter>
       <UserContextProvider>
         <AthleteContextProvider>
-          <AttendenceContextProvider>
-            <App />
-          </AttendenceContextProvider>
+          <AthleteDetailsContextProvider>
+            <AttendenceContextProvider>
+              <App />
+            </AttendenceContextProvider>
+          </AthleteDetailsContextProvider>
         </AthleteContextProvider>
       </UserContextProvider>
     </BrowserRouter>

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
+import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
 
 const S = {};
 S.Section = styled.div`
@@ -27,12 +28,15 @@ S.Button = styled.button`
 `;
 
 export default function AddAthleteModal({ show, handleClose }) {
+  const {  closeAddModal } = useContext(
+    AthleteDetailsContext
+  );
   return (
     <div
       className="modal show"
       style={{ display: 'block', position: 'initial' }}
     >
-      <Modal show={show} onHide={handleClose} backdrop="static" centered>
+      <Modal show={show} onHide={closeAddModal} backdrop="static" centered>
         <Modal.Dialog>
           <Modal.Header closeButton>
             <Modal.Title>New Athlete</Modal.Title>
@@ -85,7 +89,7 @@ export default function AddAthleteModal({ show, handleClose }) {
           </Modal.Body>
 
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
+            <Button variant="secondary" onClick={closeAddModal}>
               Close
             </Button>
             <Button variant="primary">Save changes</Button>
