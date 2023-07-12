@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
+import { AthleteContext } from '../contexts/AthleteContext';
 import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
 
 const S = {};
@@ -28,9 +29,10 @@ S.Button = styled.button`
 `;
 
 export default function EditAthleteModal({ show }) {
-  const { athleteToEdit, getAthleteInfo, closeEditModal } = useContext(
+  const { athleteToEdit, getAthleteInfo, updateAthlete, closeEditModal } = useContext(
     AthleteDetailsContext
   );
+  const {getAthletes} = useContext(AthleteContext)
 
   const [athleteInfo, setAthleteInfo] = useState({});
 
@@ -54,27 +56,23 @@ export default function EditAthleteModal({ show }) {
       setHasNoGendar(false);
     }
 
-    // setFormData({ ...formData, [e.target.name]: e.target.value });
-    // console.log(
-    //   '🚀 ~ file: EditAthleteModal.js:80 ~ handleChange ~ formData:',
-    //   formData
-    // );
+    setAthleteInfo({ ...athleteInfo, [e.target.name]: e.target.value });
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (formData.name) {
-  //     setHasNoName(false);
-  //     if (formData.gender) {
-  //       setHasNoGendar(false);
-  //       addAthlete(formData);
-  //       closeAddModal();
-  //     } else {
-  //       setHasNoGendar(true);
-  //     }
-  //     setHasNoName(true);
-  //   }
-  // };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (athleteInfo.name) {
+      setHasNoName(false);
+      if (athleteInfo.gender) {
+        setHasNoGendar(false);
+        updateAthlete(athleteInfo);
+        closeEditModal();
+      } else {
+        setHasNoGendar(true);
+      }
+      setHasNoName(true);
+    }
+  };
 
   return (
     <Modal show={show} onHide={closeEditModal} backdrop="static" centered>
@@ -167,7 +165,7 @@ export default function EditAthleteModal({ show }) {
             Close
           </Button>
           {/* <Button variant="primary" onClick={handleSubmit}> */}
-          <Button variant="primary">Save changes</Button>
+          <Button variant="primary" onClick={handleSubmit}>Save changes</Button>
         </Modal.Footer>
       </Modal.Dialog>
     </Modal>

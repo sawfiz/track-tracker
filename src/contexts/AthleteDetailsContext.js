@@ -61,20 +61,15 @@ export default function AthleteDetailsContextProvider(props) {
     openEditModal();
   };
 
-  // Function to handle changes in the EditBookModal
-  const handleChange = (e) => {
-    setAthleteToEdit({ ...athleteToEdit, [e.target.name]: e.target.value });
+  const updateAthlete = async (athleteInfo) => {
+    try {
+      const athleteDoc = doc(userCollection, athleteToEdit);
+      const athleteData = { ...athleteInfo };
+      await updateDoc(athleteDoc, athleteData);
+    } catch (error) {
+      console.error('Error editing book:', error);
+    }
   };
-
-  // const updateAthlete = async () => {
-  //   try {
-  //     const athleteDoc = doc(userCollection, athlete.id);
-  //     const athleteData = { ...athlethToEdit };
-  //     await updateDoc(athleteDoc, athleteData);
-  //   } catch (error) {
-  //     console.error('Error editing book:', error);
-  //   }
-  // };
 
   return (
     <AthleteDetailsContext.Provider
@@ -88,6 +83,7 @@ export default function AthleteDetailsContextProvider(props) {
         closeEditModal,
         athleteToEdit,
         getAthleteInfo,
+        updateAthlete,
       }}
     >
       {props.children}
