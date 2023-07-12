@@ -41,6 +41,7 @@ export default function AddAttendance() {
   const { athletes, getAthletes } = useContext(UserContext);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [stadium, setStadium] = useState('');
+  const [isStadiumEmpty, setIsStadiumEmpty] = useState(false)
   const [attendeeList, setAttendeeList] = useState([]);
   const [existingDoc, setExistingDoc] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -91,6 +92,7 @@ export default function AddAttendance() {
         }
       } else {
         // alert('Please select a stadium.');
+        setIsStadiumEmpty(true)
       }
     } else {
       alert('Please select attendees.');
@@ -148,12 +150,14 @@ export default function AddAttendance() {
           <InputGroup.Text required id="basic-addon1">Date</InputGroup.Text>
           <Form.Control
             type="date"
+            // value={selectedDate.toISOString().split('T')[0]}
+            value={selectedDate.toISOString().split('T')[0]}
             onChange={(e) => setSelectedDate(e.target.value)}
           />
         </InputGroup>
         <InputGroup className="mb-3">
           <InputGroup.Text id="basic-addon1">Stadium </InputGroup.Text>
-          <Form.Select required onChange={(e) => setStadium(e.target.value)}>
+          <Form.Select required isInvalid={isStadiumEmpty} onChange={(e) => setStadium(e.target.value)}>
             <option>-</option>
             <option>Bukit Gombak</option>
             <option>Choa Chu Kang</option>
