@@ -72,7 +72,19 @@ export default function AddAttendance() {
 
   // On there is a new record, update date
   useEffect(() => {
-    setStadium(record ? record.stadium : '');
+    console.log('🚀 ~ file: AddAttendance.js:76 ~ useEffect ~ record:', record);
+    if (record) {
+      setStadium(record.stadium);
+      setAttendeeList([...record.attendeeList]);
+      console.log(
+        '🚀 ~ file: AddAttendance.js:77 ~ useEffect ~ record.attendeeList:',
+        record.attendeeList
+      );
+    } else {
+      setStadium('');
+      setAttendeeList([]);
+    }
+    console.log(attendeeList);
   }, [record]);
 
   // Convert a Date to yyyy-mm-dd
@@ -148,7 +160,7 @@ export default function AddAttendance() {
           console.log('Error adding or updating attendance', err.message);
         }
       } else {
-        alert('Please select a stadium.');
+        // alert('Please select a stadium.');
         setIsStadiumEmpty(true);
       }
     } else {
@@ -160,14 +172,14 @@ export default function AddAttendance() {
     navigate('/admin');
   };
 
-  const handleOverwrite = async () => {
-    const data = { date: startOfSelectedDate, stadium, attendeeList };
-    await setDoc(existingDoc.ref, data);
-    console.log('Attendance record overwritten.');
-    navigate('/admin');
-  };
+  // const handleOverwrite = async () => {
+  //   const data = { date: startOfSelectedDate, stadium, attendeeList };
+  //   await setDoc(existingDoc.ref, data);
+  //   console.log('Attendance record overwritten.');
+  //   navigate('/admin');
+  // };
 
-  const handleMerge = async () => {
+  const handleOverwrite = async () => {
     const existingAttendeeList = existingDoc.data().attendeeList;
 
     // Create a set with existing attendees
@@ -239,7 +251,7 @@ export default function AddAttendance() {
             return (
               <Athlete
                 key={athlete.id}
-                attendeeList={record ? record.attendeeList : null}
+                attendeeList={attendeeList}
                 athlete={athlete}
                 addAttendee={addAttendee}
                 removeAttendee={removeAttendee}
@@ -261,7 +273,7 @@ export default function AddAttendance() {
           show={isOpen}
           handleClose={handleClose}
           handleOverwrite={handleOverwrite}
-          handleMerge={handleMerge}
+          // handleMerge={handleMerge}
         />
       )}
     </main>

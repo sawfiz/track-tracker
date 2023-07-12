@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 import { db } from '../config/firebase';
-import { collection, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import startOfDay from 'date-fns/startOfDay';
 
 export const AttendanceContext = createContext();
@@ -16,11 +16,11 @@ export default function AttendenceContextProvider(props) {
       const existingDocRef = await getDocs(
         query(attendanceCollection, where('date', '==', startOfDay(date)))
       );
-      setRecord(existingDocRef.docs[0].data())
+      setRecord(existingDocRef.docs[0].data());
     } catch (error) {
-      setRecord(null)
+      setRecord(null);
       console.log('Error getting documents: ', error);
-      console.log("No record for ", startOfDay(date));
+      console.log('No record for ', startOfDay(date));
     }
   };
 

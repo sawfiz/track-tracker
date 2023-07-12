@@ -13,7 +13,7 @@ export default function SubmitAttendanceModal ({
   show,
   handleClose,
   handleOverwrite,
-  handleMerge,
+  // handleMerge,
 }) {
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -29,8 +29,8 @@ export default function SubmitAttendanceModal ({
   const handleConfirm = () => {
     if (selectedOption === 'overwrite') {
       handleOverwrite();
-    } else if (selectedOption === 'merge') {
-      handleMerge();
+    // } else if (selectedOption === 'merge') {
+    //   handleMerge();
     }
     handleModalClose();
   };
@@ -46,9 +46,9 @@ export default function SubmitAttendanceModal ({
           <Button variant="primary" onClick={() => handleOptionSelect('overwrite')}>
             Overwrite
           </Button>
-          <Button variant="primary" onClick={() => handleOptionSelect('merge')}>
+          {/* <Button variant="primary" onClick={() => handleOptionSelect('merge')}>
             Merge
-          </Button>
+          </Button> */}
           <Button variant="secondary" onClick={handleModalClose}>
             Cancel
           </Button>
