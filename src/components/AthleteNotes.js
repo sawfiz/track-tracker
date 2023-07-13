@@ -24,7 +24,6 @@ export default function AthleteNotes({ athleteID }) {
   const [showNotesModal, setShowNotesModal] = useState(false);
   const notesCollection = collection(db, 'users', athleteID, 'notes');
   const [notes, setNotes] = useState([]);
-  console.log('🚀 ~ file: AddNotesModal.js:14 ~ AddNotesModal ~ notes:', notes);
 
   const fetchData = async () => {
     const docRefs = await getDocs(notesCollection);
@@ -54,7 +53,7 @@ export default function AthleteNotes({ athleteID }) {
     <>
       <S.Container>
         {notes.map((note) => (
-          <Note key={note} note={note} />
+          <Note key={note.id} note={note} />
         ))}
       </S.Container>
       <S.ButtonContainer>
