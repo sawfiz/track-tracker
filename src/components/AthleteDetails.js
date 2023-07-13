@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
 import AthletePersonalDetails from './AthletePersonalDetails';
-
+import AthleteAttendance from './AthleteAttendance';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronDown,
@@ -29,12 +29,23 @@ export default function AthleteDetails() {
   const { getAthleteInfo, showEditModal } = useContext(AthleteDetailsContext);
 
   const [athleteInfo, setAthleteInfo] = useState({});
-  console.log("🚀 ~ file: AthleteDetails.js:32 ~ AthleteDetails ~ athleteInfo:", athleteInfo)
 
-  const [sectionExpanded, setSectionExpanded] = useState(false);
+  const [expandPersonalDetails, setExpandPersonalDetails] = useState(false);
+  const [expandAttendances, setExpandAttendances] = useState(false);
+  const [expandNotes, setExpandNotes] = useState(false);
+  const [expandPayments, setExpandPayments] = useState(false);
 
-  const handleSectionToggle = () => {
-    setSectionExpanded(!sectionExpanded);
+  const handlePersonalToggle = () => {
+    setExpandPersonalDetails(!expandPersonalDetails);
+  };
+  const handleAttendanceToggle = () => {
+    setExpandAttendances(!expandAttendances);
+  };
+  const handleNotesToggle = () => {
+    setExpandNotes(!expandNotes);
+  };
+  const handlePaymentsToggle = () => {
+    setExpandPayments(!expandPayments)
   };
 
   const fetchData = async () => {
@@ -60,25 +71,48 @@ export default function AthleteDetails() {
       <h2>{athleteInfo.name}</h2>
       <S.ImgContainer>
         <img
-          style={{ width: '150px' }}
+          style={{ maxwidth: '150px', maxHeight: '150px' }}
           src={athleteInfo.photoURL}
           alt="photo"
         />
       </S.ImgContainer>
-      <S.H3 onClick={handleSectionToggle}>
-        {sectionExpanded ? (
+      <S.H3 onClick={handlePersonalToggle}>
+        {expandPersonalDetails ? (
           <FontAwesomeIcon icon={faChevronDown} className="fa-thin" />
         ) : (
           <FontAwesomeIcon icon={faChevronRight} className="fa-thin" />
         )}{' '}
         Personal Details
       </S.H3>
+      {expandPersonalDetails && <AthletePersonalDetails id={id} />}
 
-      {sectionExpanded && <AthletePersonalDetails id={id} />}
+      <S.H3 onClick={handleAttendanceToggle}>
+        {expandAttendances ? (
+          <FontAwesomeIcon icon={faChevronDown} className="fa-thin" />
+        ) : (
+          <FontAwesomeIcon icon={faChevronRight} className="fa-thin" />
+        )}{' '}
+        Attendance
+      </S.H3>
+      {expandAttendances && <AthleteAttendance athleteID={id} />}
 
-      <h3>Notes</h3>
-      <h3>Attandance</h3>
-      <h3>Payments</h3>
+      <S.H3 onClick={handleNotesToggle}>
+        {expandNotes ? (
+          <FontAwesomeIcon icon={faChevronDown} className="fa-thin" />
+        ) : (
+          <FontAwesomeIcon icon={faChevronRight} className="fa-thin" />
+        )}{' '}
+        Notes
+      </S.H3>
+
+      <S.H3 onClick={handlePaymentsToggle}>
+        {expandPayments ? (
+          <FontAwesomeIcon icon={faChevronDown} className="fa-thin" />
+        ) : (
+          <FontAwesomeIcon icon={faChevronRight} className="fa-thin" />
+        )}{' '}
+        Payments
+      </S.H3>
     </main>
   );
 }

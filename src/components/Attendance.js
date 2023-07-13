@@ -7,20 +7,17 @@ S.Li = styled.li`
   list-style: none;
   margin: 1rem 0;
 `;
-export default function Attendance({ attendance }) {
-  // const date = attendance.data().date.toDate().toDateString();
+export default function Attendance({ attendance, getNames }) {
+
   const date = attendance.data().date.toDate().toDateString();
   const stadium = attendance.data().stadium;
   const attendees = attendance.data().attendeeList;
-  console.log(
-    '🚀 ~ file: Attendance.js:15 ~ Attendance ~ attendees:',
-    attendees
-  );
 
   return (
     <S.Li>
       {date} {stadium}
-      {attendees.map((athlete) => (
+      {/* Render the follow if need names of the attendees */}
+      {getNames && attendees.map((athlete) => (
         <AthleteName key={athlete} athlete={athlete} />
       ))}
     </S.Li>

@@ -9,7 +9,9 @@ S.InfoGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 10px;
-  margin: 1rem 0;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px dashed hotpink;
 `;
 
 S.Attr = styled.div`
@@ -18,16 +20,16 @@ S.Attr = styled.div`
 
 S.Data = styled.div``;
 
-export default function AthletePersonalDetails({id}) {
+S.ButtonContainer = styled.div`
+  display: flex;
+  justify-content: right;
+  margin-right: 1rem;
+`;
 
-  const {
-    athleteToEdit,
-    editAthlete,
-    getAthleteInfo,
-    updateAthlete,
-    showEditModal,
-    closeEditModal,
-  } = useContext(AthleteDetailsContext);
+export default function AthletePersonalDetails({ id }) {
+  const { editAthlete, getAthleteInfo, showEditModal } = useContext(
+    AthleteDetailsContext
+  );
 
   const [athleteInfo, setAthleteInfo] = useState({});
 
@@ -42,30 +44,32 @@ export default function AthletePersonalDetails({id}) {
   useEffect(() => {
     fetchData();
   }, [showEditModal]);
-  
 
   const handleClick = () => {
     editAthlete(id);
   };
   return (
-    <>      <S.InfoGrid>
-    <S.Attr>Active</S.Attr>
-    <S.Data>{athleteInfo.active?'✅':'❌'}</S.Data>
-    <S.Attr>Gender</S.Attr>
-    <S.Data>{athleteInfo.gender}</S.Data>
-    <S.Attr>Birthdate</S.Attr>
-    <S.Data>{athleteInfo.birthdate}</S.Data>
-    <S.Attr>School</S.Attr>
-    <S.Data>{athleteInfo.school}</S.Data>
-    <S.Attr>Phone</S.Attr>
-    <S.Data>{athleteInfo.phone}</S.Data>
-    <S.Attr>Father</S.Attr>
-    <S.Data>{athleteInfo.father}</S.Data>
-    <S.Attr>Mother</S.Attr>
-    <S.Data>{athleteInfo.mother}</S.Data>
-  </S.InfoGrid>
-  <Button onClick={handleClick}>Edit</Button>
-  {showEditModal && <EditAthleteModal show={showEditModal} />}
-  </>
-  )
+    <>
+      <S.InfoGrid>
+        <S.Attr>Active</S.Attr>
+        <S.Data>{athleteInfo.active ? '✅' : '❌'}</S.Data>
+        <S.Attr>Gender</S.Attr>
+        <S.Data>{athleteInfo.gender}</S.Data>
+        <S.Attr>Birthdate</S.Attr>
+        <S.Data>{athleteInfo.birthdate}</S.Data>
+        <S.Attr>School</S.Attr>
+        <S.Data>{athleteInfo.school}</S.Data>
+        <S.Attr>Phone</S.Attr>
+        <S.Data>{athleteInfo.phone}</S.Data>
+        <S.Attr>Father</S.Attr>
+        <S.Data>{athleteInfo.father}</S.Data>
+        <S.Attr>Mother</S.Attr>
+        <S.Data>{athleteInfo.mother}</S.Data>
+      </S.InfoGrid>
+      <S.ButtonContainer>
+        <Button onClick={handleClick}>Edit</Button>
+      </S.ButtonContainer>
+      {showEditModal && <EditAthleteModal show={showEditModal} />}
+    </>
+  );
 }

@@ -32,7 +32,7 @@ export default function AttendenceContextProvider(props) {
       const dateB = b.data().date.toDate();
       return dateB - dateA;
     });
-    setAttendanceList(sortedAttendances);
+    return sortedAttendances;
   };
 
   return (
