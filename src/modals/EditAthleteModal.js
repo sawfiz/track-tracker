@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -60,9 +61,21 @@ export default function EditAthleteModal({ show }) {
 
     setAthleteInfo({ ...athleteInfo, [e.target.name]: e.target.value });
   };
-  // Function to handle changes in the form
+
+  // Function to handle a checkbox change in the form
   const handleChangeCheckbox = (e) => {
     setAthleteInfo({ ...athleteInfo, [e.target.name]: e.target.checked });
+  };
+  
+  // Function to handle adding a photo in the form
+  const handleChangePhoto = async (e) => {
+    const file = e.target.files[0];
+    const storage = getStorage();
+    const storageRef = ref(storage, `athlete_photos/${file.name}`);
+    await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(storageRef);
+    // Update the photoURL field in the form data
+    setAthleteInfo({ ...athleteInfo, photoURL: downloadURL });
   };
 
   const handleSubmit = async (e) => {
@@ -100,14 +113,14 @@ export default function EditAthleteModal({ show }) {
               />
             </S.Entry>
             <S.Entry>
-              <Form.Control
-                isInvalid={hasNoName}
-                autoFocus
-                placeholder="photoURL"
-                name="name"
-                value={athleteInfo.photoURL}
-                onChange={handleChange}
-              />
+              <InputGroup className="mb-3">
+                <InputGroup.Text>Photo </InputGroup.Text>
+                <Form.Control
+                  type="file"
+                  accept="image/*"
+                  onChange={handleChangePhoto}
+                />
+              </InputGroup>
             </S.Entry>
             <InputGroup className="mb-3">
               <InputGroup.Text>Active </InputGroup.Text>

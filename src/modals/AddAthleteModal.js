@@ -22,8 +22,6 @@ S.Center = styled.div`
 export default function AddAthleteModal({ show }) {
   const { closeAddModal, addAthlete } = useContext(AthleteDetailsContext);
 
-  const [photo, setPhoto] = useState(null);
-
   // Input fields in the form
   const [formData, setFormData] = useState({
     name: '',
@@ -37,7 +35,6 @@ export default function AddAthleteModal({ show }) {
     role: 'athlete',
     photoURL: '',
   });
-  // const { name, active, gender, birthdate, school, father, mother } = formData;
 
   const [hasNoName, setHasNoName] = useState(false);
   const [hasNoGender, setHasNoGendar] = useState(false);
@@ -50,7 +47,6 @@ export default function AddAthleteModal({ show }) {
     if (e.target.name === 'gender' && e.target.value) {
       setHasNoGendar(false);
     }
-
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -58,29 +54,25 @@ export default function AddAthleteModal({ show }) {
     setFormData({ ...formData, [e.target.name]: e.target.checked });
   };
 
-  const handlePhotoChange = (e) => {
+  const handleChangePhoto = async (e) => {
     const file = e.target.files[0];
-    setPhoto(file);
+    // Upload the photo to Firebase Storage
+    const storage = getStorage();
+    const storageRef = ref(storage, `athlete_photos/${file.name}`);
+    await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(storageRef);
+    // Update the photoURL field in the form data
+    setFormData({ ...formData, photoURL: downloadURL });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Upload the photo to Firebase Storage
-    if (photo) {
-      const storage = getStorage();
-      const storageRef = ref(storage, `athlete_photos/${photo.name}`);
-      await uploadBytes(storageRef, photo);
-      const downloadURL = await getDownloadURL(storageRef);
-
-      // Update the photoURL field in the form data
-      setFormData({ ...formData, photoURL: downloadURL });
-    }
-
     if (formData.name) {
       setHasNoName(false);
       if (formData.gender) {
         setHasNoGendar(false);
+
         addAthlete(formData);
         closeAddModal();
       } else {
@@ -118,7 +110,7 @@ export default function AddAthleteModal({ show }) {
                   <Form.Control
                     type="file"
                     accept="image/*"
-                    onChange={handlePhotoChange}
+                    onChange={handleChangePhoto}
                   />
                 </InputGroup>
               </S.Entry>

@@ -18,20 +18,18 @@ S.H3 = styled.h3`
 `;
 
 S.ImgContainer = styled.div`
-position: absolute;
-top: 105px;
-right: 5px;
-box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-`
+  position: absolute;
+  top: 105px;
+  right: 5px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+`;
 
 export default function AthleteDetails() {
   const { id } = useParams();
-  const {
-    getAthleteInfo,
-    showEditModal,
-  } = useContext(AthleteDetailsContext);
+  const { getAthleteInfo, showEditModal } = useContext(AthleteDetailsContext);
 
   const [athleteInfo, setAthleteInfo] = useState({});
+  console.log("🚀 ~ file: AthleteDetails.js:32 ~ AthleteDetails ~ athleteInfo:", athleteInfo)
 
   const [sectionExpanded, setSectionExpanded] = useState(false);
 
@@ -61,14 +59,17 @@ export default function AthleteDetails() {
       </p>
       <h2>{athleteInfo.name}</h2>
       <S.ImgContainer>
-
-      <img style={{width:"150px"}} src={"https://firebasestorage.googleapis.com/v0/b/track-tracker-888.appspot.com/o/athlete_photos%2Fkitten-patient-600px.jpg?alt=media&token=757f412e-2fd6-41a6-b0ad-27bf68b37c05"} alt="Athlete" />
+        <img
+          style={{ width: '150px' }}
+          src={athleteInfo.photoURL}
+          alt="photo"
+        />
       </S.ImgContainer>
       <S.H3 onClick={handleSectionToggle}>
         {sectionExpanded ? (
           <FontAwesomeIcon icon={faChevronDown} className="fa-thin" />
         ) : (
-          <FontAwesomeIcon icon={faChevronRight} className="fa-thin"/>
+          <FontAwesomeIcon icon={faChevronRight} className="fa-thin" />
         )}{' '}
         Personal Details
       </S.H3>
