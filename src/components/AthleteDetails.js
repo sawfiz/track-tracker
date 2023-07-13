@@ -28,6 +28,7 @@ S.ImgContainer = styled.div`
 
 export default function AthleteDetails() {
   const { id } = useParams();
+  console.log("🚀 ~ file: AthleteDetails.js:31 ~ AthleteDetails ~ id:", id)
   const { getAthleteInfo, showEditModal } = useContext(AthleteDetailsContext);
 
   const [athleteInfo, setAthleteInfo] = useState({});
