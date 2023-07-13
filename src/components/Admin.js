@@ -20,9 +20,10 @@ export default function Admin() {
       <p>
         <a href="/athletes">Manage athletes</a>
       </p>
-        <hr></hr>
+      <hr></hr>
+      <p style={{ color: 'red', fontWeight: 'bold' }}>Functions below are under construction</p>
       <p>
-        <a href="/users">Manage users</a>
+        <a href="/manage-users">Manage users</a>
       </p>
       <p>
         <a href="/parents">Manage parents</a>

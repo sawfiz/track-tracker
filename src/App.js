@@ -18,6 +18,8 @@ import AddAttendance from './components/AddAttendance';
 import ShowAttendance from './components/ShowAttendance';
 import ManageAthletes from './components/ManageAthletes';
 import AthleteDetails from './components/AthleteDetails';
+import ManageUsers from './components/ManageUsers';
+import ManageParents from './components/ManageParents';
 
 const S = {};
 S.App = styled.div`
@@ -61,6 +63,8 @@ function App() {
           <Route path="/add-attendance" element={<AddAttendance />} />
           <Route path="/attendance" element={<ShowAttendance />} />
           <Route path="/athletes" element={<ManageAthletes/>} />
+          <Route path="/manage-users" element={<ManageUsers/>} />
+          <Route path="/parents" element={<ManageParents/>} />
           <Route
           path="/athletes/:id"
           element={<AthleteDetails  />}
