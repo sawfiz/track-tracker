@@ -39,14 +39,26 @@ export default function AthleteDetails() {
 
   const handlePersonalToggle = () => {
     setExpandPersonalDetails(!expandPersonalDetails);
+    setExpandAttendances(false);
+    setExpandNotes(false);
+    setExpandPayments(false)
   };
   const handleAttendanceToggle = () => {
+    setExpandPersonalDetails(false);
     setExpandAttendances(!expandAttendances);
+    setExpandNotes(false);
+    setExpandPayments(false)
   };
   const handleNotesToggle = () => {
+    setExpandPersonalDetails(false);
+    setExpandAttendances(false);
     setExpandNotes(!expandNotes);
+    setExpandPayments(false)
   };
   const handlePaymentsToggle = () => {
+    setExpandPersonalDetails(false);
+    setExpandAttendances(false);
+    setExpandNotes(false);
     setExpandPayments(!expandPayments)
   };
 

@@ -5,12 +5,15 @@ import styled from 'styled-components';
 
 const S = {};
 
-S.Athlete = styled.div`
+S.Athlete = styled.button`
+  width: 100%;
   display: flex;
   justify-content: space-between;
   border: 1px dashed hotpink;
   padding: 0.2rem 0.5rem;
   height: 1.8rem;
+  background-color: #0000;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 `;
 
 S.EditButton = styled.button`
@@ -32,13 +35,11 @@ export default function Athlete({ athleteID }) {
   }, []);
 
   return (
-    <S.Athlete>
-      <Link
-        to={`/athletes/${athleteID}`}
-        style={{ textDecoration: 'none', color: 'black' }}
-      >
-        {athleteName}
-      </Link>
-    </S.Athlete>
+    <Link
+      to={`/athletes/${athleteID}`}
+      style={{ textDecoration: 'none', color: 'black' }}
+    >
+      <S.Athlete>{athleteName}</S.Athlete>
+    </Link>
   );
 }
