@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { AthleteContext } from '../contexts/AthleteContext';
 import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
 import styled from 'styled-components';
@@ -14,9 +15,9 @@ S.Athlete = styled.div`
   padding: 0.2rem 0.5rem;
   height: 1.8rem;
 
-  &:hover Button {
+  /* &:hover Button {
     display: block;
-  }
+  } */
 `;
 
 S.EditButton = styled.button`
@@ -27,29 +28,25 @@ S.EditButton = styled.button`
 
 export default function Athlete({ athleteID }) {
   const { getAthleteName } = useContext(AthleteContext);
-  const { editAthlete, showEditModal } = useContext(AthleteDetailsContext);
   const [athleteName, setAthleteName] = useState('');
 
   const fetchAthleteName = async () => {
     const name = await getAthleteName(athleteID);
     setAthleteName(name);
   };
-  
-  useEffect(() => {
-    fetchAthleteName();
-  }, [showEditModal]);
 
   useEffect(() => {
     fetchAthleteName();
   }, []);
 
-  const handleClick = () => {
-    editAthlete(athleteID);
-  };
-
   return (
     <S.Athlete>
-      {athleteName} <S.EditButton onClick={handleClick}>✍️</S.EditButton>
+      <Link
+        to={`/athletes/${athleteID}`}
+        style={{ textDecoration: 'none', color: 'black' }}
+      >
+        {athleteName}
+      </Link>
     </S.Athlete>
   );
 }

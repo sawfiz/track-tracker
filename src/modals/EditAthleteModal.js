@@ -4,7 +4,6 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
-import { AthleteContext } from '../contexts/AthleteContext';
 import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
 
 const S = {};
@@ -27,12 +26,15 @@ S.Select = styled.select`
 S.Button = styled.button`
   margin: auto;
 `;
+S.Center = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 export default function EditAthleteModal({ show }) {
-  const { athleteToEdit, getAthleteInfo, updateAthlete, closeEditModal } = useContext(
-    AthleteDetailsContext
-  );
-  const {getAthletes} = useContext(AthleteContext)
+  const { athleteToEdit, getAthleteInfo, updateAthlete, closeEditModal } =
+    useContext(AthleteDetailsContext);
 
   const [athleteInfo, setAthleteInfo] = useState({});
 
@@ -57,6 +59,10 @@ export default function EditAthleteModal({ show }) {
     }
 
     setAthleteInfo({ ...athleteInfo, [e.target.name]: e.target.value });
+  };
+  // Function to handle changes in the form
+  const handleChangeCheckbox = (e) => {
+    setAthleteInfo({ ...athleteInfo, [e.target.name]: e.target.checked });
   };
 
   const handleSubmit = async (e) => {
@@ -93,6 +99,17 @@ export default function EditAthleteModal({ show }) {
                 onChange={handleChange}
               />
             </S.Entry>
+            <InputGroup className="mb-3">
+              <InputGroup.Text>Active </InputGroup.Text>
+              <S.Center>
+                <Form.Check
+                  type="checkbox"
+                  name="active"
+                  checked={athleteInfo.active}
+                  onChange={handleChangeCheckbox}
+                />
+              </S.Center>
+            </InputGroup>
             <InputGroup className="mb-3">
               <InputGroup.Text>Gender </InputGroup.Text>
               <Form.Select
@@ -165,7 +182,9 @@ export default function EditAthleteModal({ show }) {
             Close
           </Button>
           {/* <Button variant="primary" onClick={handleSubmit}> */}
-          <Button variant="primary" onClick={handleSubmit}>Save changes</Button>
+          <Button variant="primary" onClick={handleSubmit}>
+            Save changes
+          </Button>
         </Modal.Footer>
       </Modal.Dialog>
     </Modal>

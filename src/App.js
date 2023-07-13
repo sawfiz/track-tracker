@@ -17,6 +17,7 @@ import Footer from './components/Footer';
 import AddAttendance from './components/AddAttendance';
 import ShowAttendance from './components/ShowAttendance';
 import ManageAthletes from './components/ManageAthletes';
+import AthleteDetails from './components/AthleteDetails';
 
 const S = {};
 S.App = styled.div`
@@ -60,6 +61,10 @@ function App() {
           <Route path="/add-attendance" element={<AddAttendance />} />
           <Route path="/attendance" element={<ShowAttendance />} />
           <Route path="/athletes" element={<ManageAthletes/>} />
+          <Route
+          path="/athletes/:id"
+          element={<AthleteDetails  />}
+        />
         </Routes>
       </S.App>
       <Footer />

@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AthleteContext } from '../contexts/AthleteContext';
 import Athlete from './Athlete';
 import AddAthleteModal from '../modals/AddAthleteModal';
-import EditAthleteModal from '../modals/EditAthleteModal';
 import styled from 'styled-components';
 import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
 import Form from 'react-bootstrap/Form';
@@ -16,17 +15,23 @@ S.AthletesGrid = styled.div`
   gap: 10px;
   margin: 1rem 0;
 `;
-
+S.Section = styled.div`
+  margin: 1rem 0;
+`;
 export default function ManageAthletes() {
   const { athletes, getAthletes } = useContext(AthleteContext);
   const { showAddModal, openAddModal } = useContext(AthleteDetailsContext);
-  const { showEditModal } = useContext(AthleteDetailsContext);
 
+  const [activeOnly, setActiveOnly] = useState(false)
   const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     getAthletes();
   }, []);
+
+  useEffect(() => {
+    getAthletes(activeOnly);
+  }, [activeOnly]);
 
   const handleSearch = (e) => {
     const text = e.target.value.toLowerCase();
@@ -49,26 +54,24 @@ export default function ManageAthletes() {
         <a href="/admin">Admin Tools</a>
       </p>
       <h2>Manage Athletes</h2>
+      <Button onClick={openAddModal} style={{margin: "1rem 0"}}>Add an athlete</Button>
+
       <InputGroup className="mb-3">
         <InputGroup.Text>🔍</InputGroup.Text>
         <Form.Control
+          autoFocus
           placeholder="Name"
           value={searchText}
           onChange={handleSearch}
         />
       </InputGroup>
+      <S.Section>
+        <input type="checkbox" onChange={(e)=>setActiveOnly(e.target.checked)}/> Show active athletes only
+      </S.Section>
 
-      <S.AthletesGrid>
-        {athleteComponents}
-        {/* athletes is an array of document snapshots
-        Need to pass in athlete.id to retrieve names */}
-        {/* {athletes.map((athlete) => {
-          return <Athlete key={athlete.id} athleteID={athlete.id} />;
-        })} */}
-      </S.AthletesGrid>
-      <Button onClick={openAddModal}>Add an athlete</Button>
+      <S.AthletesGrid>{athleteComponents}</S.AthletesGrid>
+
       {showAddModal && <AddAthleteModal show={showAddModal} />}
-      {showEditModal && <EditAthleteModal show={showEditModal} />}
     </main>
   );
 }

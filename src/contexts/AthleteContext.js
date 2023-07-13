@@ -10,10 +10,16 @@ export default function AthleteContextProvider(props) {
 
   const userCollection = collection(db, 'users');
 
-  const getAthletes = async () => {
+  const getAthletes = async (activeOnly = false) => {
     const docRefs = await getDocs(userCollection);
     const athletes = docRefs.docs.filter((doc) => {
-      return doc.data().role === 'athlete';
+      if (activeOnly) {
+        return (
+          doc.data().role === 'athlete' && doc.data().active === activeOnly
+        );
+      } else {
+        return doc.data().role === 'athlete';
+      }
     });
     const sortedAthletes = athletes.sort((a, b) =>
       a.data().name > b.data().name ? 1 : -1

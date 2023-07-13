@@ -26,6 +26,11 @@ S.Select = styled.select`
 S.Button = styled.button`
   margin: auto;
 `;
+S.Center = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 export default function AddAthleteModal({ show, handleClose }) {
   const { closeAddModal, addAthlete } = useContext(AthleteDetailsContext);
@@ -33,6 +38,7 @@ export default function AddAthleteModal({ show, handleClose }) {
   // Input fields in the form
   const [formData, setFormData] = useState({
     name: '',
+    active: false,
     gender: '',
     birthdate: '',
     school: '',
@@ -40,9 +46,8 @@ export default function AddAthleteModal({ show, handleClose }) {
     father: '',
     mother: '',
     role: 'athlete',
-    status: 'active',
   });
-  const { name, gender, birthdate, school, father, mother, status } = formData;
+  const { name, active, gender, birthdate, school, father, mother } = formData;
 
   const [hasNoName, setHasNoName] = useState(false);
   const [hasNoGender, setHasNoGendar] = useState(false);
@@ -57,10 +62,10 @@ export default function AddAthleteModal({ show, handleClose }) {
     }
 
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    console.log(
-      '🚀 ~ file: AddAthleteModal.js:52 ~ handleChange ~ formData:',
-      formData
-    );
+  };
+
+  const handleChangeCheckbox = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.checked });
   };
 
   const handleSubmit = async (e) => {
@@ -100,6 +105,16 @@ export default function AddAthleteModal({ show, handleClose }) {
                   onChange={handleChange}
                 />
               </S.Entry>
+              <InputGroup className="mb-3">
+                <InputGroup.Text>Active </InputGroup.Text>
+                <S.Center>
+                  <Form.Check
+                    type="checkbox"
+                    name="active"
+                    onChange={handleChangeCheckbox}
+                  />
+                </S.Center>
+              </InputGroup>
               <InputGroup className="mb-3">
                 <InputGroup.Text>Gender </InputGroup.Text>
                 <Form.Select
