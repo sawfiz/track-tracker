@@ -16,17 +16,6 @@ S.Section = styled.div`
 S.Entry = styled.div`
   margin: 0.3rem 0;
 `;
-S.Input = styled.input`
-  position: absolute;
-  left: 7rem;
-`;
-S.Select = styled.select`
-  position: absolute;
-  left: 7rem;
-`;
-S.Button = styled.button`
-  margin: auto;
-`;
 S.Center = styled.div`
   display: flex;
   justify-content: center;
@@ -37,12 +26,25 @@ export default function EditAthleteModal({ show }) {
   const { athleteToEdit, getAthleteInfo, updateAthlete, closeEditModal } =
     useContext(AthleteDetailsContext);
 
-  const [athleteInfo, setAthleteInfo] = useState({});
+  const [athleteInfo, setAthleteInfo] = useState({
+    name: '',
+    photoURL: '', 
+    active: false,
+    gender: '',
+    birthdate: '',
+    school: '',
+    phone: '',
+    father: '',
+    mother: '',
+  });
 
   useEffect(() => {
     const fetchData = async () => {
-      const name = await getAthleteInfo(athleteToEdit);
-      setAthleteInfo(name);
+      const data = await getAthleteInfo(athleteToEdit);
+      // As some fields may not have data, simply assigning data will
+      // cause warning.  e.g. father was '', but if data retrieved does not
+      // have value, it will be assigned undefined, causing warning.
+      setAthleteInfo({...athleteInfo, data});
     };
     fetchData();
   }, []);
@@ -66,7 +68,7 @@ export default function EditAthleteModal({ show }) {
   const handleChangeCheckbox = (e) => {
     setAthleteInfo({ ...athleteInfo, [e.target.name]: e.target.checked });
   };
-  
+
   // Function to handle adding a photo in the form
   const handleChangePhoto = async (e) => {
     const file = e.target.files[0];

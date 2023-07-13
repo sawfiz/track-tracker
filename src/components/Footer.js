@@ -9,10 +9,9 @@ const S = {};
     color: white;
     background-color: #333;
     font-size: 0.8rem;
-    height: 2rem;
+    height: 1.3rem;
     display: flex;
     justify-content: center;
-    align-items: center;
   `;
 
   S.GitHub = styled.a`
