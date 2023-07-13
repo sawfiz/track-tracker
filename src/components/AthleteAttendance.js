@@ -14,30 +14,23 @@ S.Container = styled.div`
 export default function AthleteAttendance({ athleteID }) {
   const { getAttendances } = useContext(AttendanceContext);
 
-  const [list, setList] = useState([]);
-  const [filteredList, setFilteredList] = useState([]);
+  const [attendances, setAttendances] = useState([]);
 
   const fetchData = async () => {
-    const data = await getAttendances();
-    setList(data);
+    const list = await getAttendances();
+    const filteredList = list.filter((doc) =>
+      doc.data().attendeeList.includes(athleteID)
+    );
+    setAttendances(filteredList);
   };
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    if (list.length > 0) {
-      const filteredAttendance = list.filter((doc) =>
-        doc.data().attendeeList.includes(athleteID)
-      );
-      setFilteredList(filteredAttendance);
-    }
-  }, [list]);
-
   return (
     <S.Container>
-      {filteredList.map((attendance) => {
+      {attendances.map((attendance) => {
         return (
           <Attendance
             key={attendance.id}
