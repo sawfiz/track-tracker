@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { AthleteContext } from '../contexts/AthleteContext';
 
 export default function AthleteName({ athlete }) {
@@ -13,5 +14,9 @@ export default function AthleteName({ athlete }) {
     fetchAthleteName();
   }, []);
 
-  return <p>{athleteName}</p>;
+  return (
+    <div style={{ marginLeft: '1rem' }}>
+      <Link to={`/athletes/${athlete}`}>{athleteName}</Link>
+    </div>
+  );
 }

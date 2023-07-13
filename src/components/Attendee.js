@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 const S = {};
 S.Li = styled.div`
-  list-style: none;
   margin: 0.2rem;
 `;
 export default function Attendee({

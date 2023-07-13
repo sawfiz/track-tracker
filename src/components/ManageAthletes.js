@@ -22,7 +22,7 @@ export default function ManageAthletes() {
   const { athletes, getAthletes } = useContext(AthleteContext);
   const { showAddModal, openAddModal } = useContext(AthleteDetailsContext);
 
-  const [activeOnly, setActiveOnly] = useState(false)
+  const [activeOnly, setActiveOnly] = useState(false);
   const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
@@ -54,7 +54,9 @@ export default function ManageAthletes() {
         <a href="/admin">Admin Tools</a>
       </p>
       <h2>Manage Athletes</h2>
-      <Button onClick={openAddModal} style={{margin: "1rem 0"}}>Add an athlete</Button>
+      <Button onClick={openAddModal} style={{ margin: '1rem 0' }}>
+        Add an athlete
+      </Button>
 
       <InputGroup className="mb-3">
         <InputGroup.Text>🔍</InputGroup.Text>
@@ -66,12 +68,18 @@ export default function ManageAthletes() {
         />
       </InputGroup>
       <S.Section>
-        <input type="checkbox" onChange={(e)=>setActiveOnly(e.target.checked)}/> Show active athletes only
+        <input
+          type="checkbox"
+          onChange={(e) => setActiveOnly(e.target.checked)}
+        />{' '}
+        Show active athletes only
       </S.Section>
 
       <S.AthletesGrid>{athleteComponents}</S.AthletesGrid>
 
       {showAddModal && <AddAthleteModal show={showAddModal} />}
+      {/* A div at the end of page to make sure Foot shows properly */}
+      <div style={{ height: '2rem' }}></div>
     </main>
   );
 }

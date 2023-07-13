@@ -75,7 +75,7 @@ export default function AthleteDetails() {
         <img
           style={{ maxWidth: '150px', maxHeight: '150px' }}
           src={athleteInfo.photoURL}
-          alt="photo"
+          alt="profile"
         />
       </S.ImgContainer>
       <S.H3 onClick={handlePersonalToggle}>
@@ -117,6 +117,8 @@ export default function AthleteDetails() {
         Payments
       </S.H3>
       {expandPayments && <AthletePayments athleteID={id} />}
+      {/* A div at the end of page to make sure Foot shows properly */}
+      <div style={{height: "2rem"}}></div>
     </main>
   );
 }

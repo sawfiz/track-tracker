@@ -6,8 +6,7 @@ import styled from 'styled-components';
 const S = {};
 
 S.Container = styled.div`
-  padding: 0 0.5rem;
-  margin-bottom: 0.5rem;
+  margin: 0 0 1rem 1rem;
   border: 1px dashed hotpink;
 `;
 
@@ -16,21 +15,21 @@ export default function AthleteAttendance({ athleteID }) {
 
   const [attendances, setAttendances] = useState([]);
 
-  const fetchData = async () => {
-    const list = await getAttendances();
-    const filteredList = list.filter((doc) =>
-      doc.data().attendeeList.includes(athleteID)
-    );
-    setAttendances(filteredList);
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      const list = await getAttendances();
+      setAttendances(list);
+    };
     fetchData();
   }, []);
 
+  const filteredList = attendances.filter((doc) =>
+    doc.data().attendeeList.includes(athleteID)
+  );
+
   return (
     <S.Container>
-      {attendances.map((attendance) => {
+      {filteredList.map((attendance) => {
         return (
           <Attendance
             key={attendance.id}

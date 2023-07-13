@@ -275,6 +275,8 @@ export default function AddAttendance() {
           // handleMerge={handleMerge}
         />
       )}
+      {/* A div at the end of page to make sure Foot shows properly */}
+      <div style={{ height: '2rem' }}></div>
     </main>
   );
 }

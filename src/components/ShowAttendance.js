@@ -21,7 +21,6 @@ export default function ShowAttendance() {
         <a href="/admin">Admin Tools</a>
       </p>
       <h2>Show Attendance</h2>
-      <ul>
         {list.map((attendance) => {
           return (
             <Attendance
@@ -31,7 +30,8 @@ export default function ShowAttendance() {
             />
           );
         })}
-      </ul>
+      {/* A div at the end of page to make sure Foot shows properly */}
+      <div style={{ height: '2rem' }}></div>
     </main>
   );
 }
