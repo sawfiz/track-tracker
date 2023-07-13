@@ -5,7 +5,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/esm/Button';
 import { UserContext } from '../contexts/UserContext';
 import { db } from '../config/firebase';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
 
 export default function AddNotesModal({ show, closeNotesModal, athleteID }) {
   const { userInfo } = useContext(UserContext);
@@ -13,11 +13,10 @@ export default function AddNotesModal({ show, closeNotesModal, athleteID }) {
 
   // Input fields in the form
   const [formData, setFormData] = useState({
-    date: '',
+    date: new Date().toISOString().split('T')[0], // Set initial value to today's date
     note: '',
     by: userInfo.name,
   });
-
 
   const addNote = async () => {
     try {
@@ -33,8 +32,16 @@ export default function AddNotesModal({ show, closeNotesModal, athleteID }) {
   };
 
   const handleSubmit = () => {
-    addNote();
-    closeNotesModal();
+    if (formData.date && formData.note) {
+      // Both date and note fields are filled
+      // Perform the submission logic here
+      addNote();
+      alert('Form submitted successfully!');
+      closeNotesModal();
+    } else {
+      // Date or note field is missing
+      alert('Both data and note are required!');
+    }
   };
 
   return (
@@ -47,7 +54,7 @@ export default function AddNotesModal({ show, closeNotesModal, athleteID }) {
           <Form>
             <InputGroup className="mb-3">
               <InputGroup.Text>Date</InputGroup.Text>
-              <Form.Control type="date" name="date" onChange={handleChange} />
+              <Form.Control type="date" name="date" value={formData.date} onChange={handleChange} />
             </InputGroup>
 
             <Form.Control as="textarea" rows={3} name="note" onChange={handleChange} />

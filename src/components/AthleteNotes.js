@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/esm/Button';
 import styled from 'styled-components';
 import AddNotesModal from '../modals/AddNotesModal';
 import { db } from '../config/firebase';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import Note from './Note';
 
 const S = {};
@@ -46,7 +46,6 @@ export default function AthleteNotes({ athleteID }) {
   return (
     <>
       <S.Container>
-        Athlete Notes
         {notes.map((note) => (
           <Note key={note} note={note} />
         ))}
