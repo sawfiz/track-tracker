@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -7,33 +8,21 @@ import styled from 'styled-components';
 import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
 
 const S = {};
-S.Section = styled.div`
-  margin: 1rem 0;
-  border: 1px dashed hotpink;
-  padding: 1rem;
-`;
+
 S.Entry = styled.div`
   margin: 0.3rem 0;
 `;
-S.Input = styled.input`
-  position: absolute;
-  left: 7rem;
-`;
-S.Select = styled.select`
-  position: absolute;
-  left: 7rem;
-`;
-S.Button = styled.button`
-  margin: auto;
-`;
+
 S.Center = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-export default function AddAthleteModal({ show, handleClose }) {
+export default function AddAthleteModal({ show }) {
   const { closeAddModal, addAthlete } = useContext(AthleteDetailsContext);
+
+  const [photo, setPhoto] = useState(null);
 
   // Input fields in the form
   const [formData, setFormData] = useState({
@@ -46,8 +35,9 @@ export default function AddAthleteModal({ show, handleClose }) {
     father: '',
     mother: '',
     role: 'athlete',
+    photoURL: '',
   });
-  const { name, active, gender, birthdate, school, father, mother } = formData;
+  // const { name, active, gender, birthdate, school, father, mother } = formData;
 
   const [hasNoName, setHasNoName] = useState(false);
   const [hasNoGender, setHasNoGendar] = useState(false);
@@ -68,8 +58,25 @@ export default function AddAthleteModal({ show, handleClose }) {
     setFormData({ ...formData, [e.target.name]: e.target.checked });
   };
 
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    setPhoto(file);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Upload the photo to Firebase Storage
+    if (photo) {
+      const storage = getStorage();
+      const storageRef = ref(storage, `athlete_photos/${photo.name}`);
+      await uploadBytes(storageRef, photo);
+      const downloadURL = await getDownloadURL(storageRef);
+
+      // Update the photoURL field in the form data
+      setFormData({ ...formData, photoURL: downloadURL });
+    }
+
     if (formData.name) {
       setHasNoName(false);
       if (formData.gender) {
@@ -104,6 +111,16 @@ export default function AddAthleteModal({ show, handleClose }) {
                   name="name"
                   onChange={handleChange}
                 />
+              </S.Entry>
+              <S.Entry>
+                <InputGroup className="mb-3">
+                  <InputGroup.Text>Photo </InputGroup.Text>
+                  <Form.Control
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                  />
+                </InputGroup>
               </S.Entry>
               <InputGroup className="mb-3">
                 <InputGroup.Text>Active </InputGroup.Text>

@@ -99,6 +99,16 @@ export default function EditAthleteModal({ show }) {
                 onChange={handleChange}
               />
             </S.Entry>
+            <S.Entry>
+              <Form.Control
+                isInvalid={hasNoName}
+                autoFocus
+                placeholder="photoURL"
+                name="name"
+                value={athleteInfo.photoURL}
+                onChange={handleChange}
+              />
+            </S.Entry>
             <InputGroup className="mb-3">
               <InputGroup.Text>Active </InputGroup.Text>
               <S.Center>

@@ -2,22 +2,33 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
-import Button from 'react-bootstrap/esm/Button';
-import EditAthleteModal from '../modals/EditAthleteModal';
 import AthletePersonalDetails from './AthletePersonalDetails';
 
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faChevronDown,
+  faChevronRight,
+} from '@fortawesome/free-solid-svg-icons';
+
+const S = {};
+
+S.H3 = styled.h3`
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: var(--color-dark);
+`;
+
+S.ImgContainer = styled.div`
+position: absolute;
+top: 105px;
+right: 5px;
+box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+`
 
 export default function AthleteDetails() {
   const { id } = useParams();
   const {
-    athleteToEdit,
-    editAthlete,
     getAthleteInfo,
-    updateAthlete,
     showEditModal,
-    closeEditModal,
   } = useContext(AthleteDetailsContext);
 
   const [athleteInfo, setAthleteInfo] = useState({});
@@ -32,14 +43,16 @@ export default function AthleteDetails() {
     const data = await getAthleteInfo(id);
     setAthleteInfo(data);
   };
-  
+
   useEffect(() => {
     fetchData();
   }, []);
 
-  const handleClick = () => {
-    editAthlete(id);
-  };
+  // This is needed so that when athlete name is changed
+  // A rerender is forced
+  useEffect(() => {
+    fetchData();
+  }, [showEditModal]);
 
   return (
     <main>
@@ -47,10 +60,19 @@ export default function AthleteDetails() {
         <a href="/athletes">Manage Athletes</a>
       </p>
       <h2>{athleteInfo.name}</h2>
+      <S.ImgContainer>
 
-      <h3 onClick={handleSectionToggle}>
-        {sectionExpanded ? '⊖' : '⊕'} Personal Details
-      </h3>
+      <img style={{width:"150px"}} src={"https://firebasestorage.googleapis.com/v0/b/track-tracker-888.appspot.com/o/athlete_photos%2Fkitten-patient-600px.jpg?alt=media&token=757f412e-2fd6-41a6-b0ad-27bf68b37c05"} alt="Athlete" />
+      </S.ImgContainer>
+      <S.H3 onClick={handleSectionToggle}>
+        {sectionExpanded ? (
+          <FontAwesomeIcon icon={faChevronDown} className="fa-thin" />
+        ) : (
+          <FontAwesomeIcon icon={faChevronRight} className="fa-thin"/>
+        )}{' '}
+        Personal Details
+      </S.H3>
+
       {sectionExpanded && <AthletePersonalDetails id={id} />}
 
       <h3>Notes</h3>
