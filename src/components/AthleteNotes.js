@@ -28,12 +28,19 @@ export default function AthleteNotes({ athleteID }) {
 
   const fetchData = async () => {
     const docRefs = await getDocs(notesCollection);
-    setNotes(docRefs.docs);
+    const sortedDocs = docRefs.docs.sort((a, b) =>
+    b.data().date > a.data().date ? 1 : -1
+  );
+    setNotes(sortedDocs);
   };
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [showNotesModal]);
 
   const handleClick = () => {
     setShowNotesModal(true);

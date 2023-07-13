@@ -40,7 +40,7 @@ export default function AddNotesModal({ show, closeNotesModal, athleteID }) {
       closeNotesModal();
     } else {
       // Date or note field is missing
-      alert('Both data and note are required!');
+      alert('Note can not be empty!');
     }
   };
 
