@@ -30,7 +30,7 @@ export default function AthleteAttendance({ athleteID }) {
   return (
     <ul>
         {filteredList.map((attendance) => {
-          return <Attendance key={attendance.id} attendance={attendance} getNames={false}/>;
+          return <Attendance key={attendance.id} attendance={attendance} showNames={false}/>;
         })}
     </ul>
   );

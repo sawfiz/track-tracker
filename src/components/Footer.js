@@ -10,7 +10,7 @@ const S = {};
     color: white;
     background-color: #333;
     font-size: 0.8rem;
-    height: 1rem;
+    height: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;

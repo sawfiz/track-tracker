@@ -25,7 +25,7 @@ S.App = styled.div`
   width: clamp(var(--min-content-width), 100%, var(--max-content-width));
   margin: auto;
   position: relative;
-  height: calc(100vh - 1rem);
+  min-height: calc(100vh - 1rem);
   border-radius: 5px;
 `;
 

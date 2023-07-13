@@ -71,7 +71,7 @@ export default function AthleteDetails() {
       <h2>{athleteInfo.name}</h2>
       <S.ImgContainer>
         <img
-          style={{ maxwidth: '150px', maxHeight: '150px' }}
+          style={{ maxWidth: '150px', maxHeight: '150px' }}
           src={athleteInfo.photoURL}
           alt="photo"
         />

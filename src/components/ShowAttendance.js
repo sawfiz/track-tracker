@@ -1,14 +1,20 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AttendanceContext } from '../contexts/AttendanceContext';
 import Attendance from './Attendance';
 
 export default function ShowAttendance() {
-  const { attendanceList, getAttendances } = useContext(AttendanceContext);
+  const { getAttendances } = useContext(AttendanceContext);
+
+  const [list, setList] = useState([]);
+
+  const fetchData = async () => {
+    const data = await getAttendances();
+    setList(data);
+  };
 
   useEffect(() => {
-    getAttendances();
+    fetchData();
   }, []);
-
   return (
     <main>
       <p>
@@ -16,8 +22,14 @@ export default function ShowAttendance() {
       </p>
       <h2>Show Attendance</h2>
       <ul>
-        {attendanceList.map((attendance) => {
-          return <Attendance key={attendance.id} attendance={attendance} />;
+        {list.map((attendance) => {
+          return (
+            <Attendance
+              key={attendance.id}
+              attendance={attendance}
+              showNames={true}
+            />
+          );
         })}
       </ul>
     </main>
