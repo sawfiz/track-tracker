@@ -78,7 +78,7 @@ export default function EditAthleteModal({ show }) {
     <Modal show={show} onHide={closeEditModal} backdrop="static" centered>
       <Modal.Dialog>
         <Modal.Header closeButton>
-          <Modal.Title>New Athlete</Modal.Title>
+          <Modal.Title>Edit Athlete</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
