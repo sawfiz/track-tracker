@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
 import AthletePersonalDetails from './AthletePersonalDetails';
 import AthleteAttendance from './AthleteAttendance';
+import AthleteNotes from './AthleteNotes';
+import AthletePayments from './AthletePayments';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronDown,
@@ -104,6 +106,7 @@ export default function AthleteDetails() {
         )}{' '}
         Notes
       </S.H3>
+      {expandNotes && <AthleteNotes athleteID={id}/>}
 
       <S.H3 onClick={handlePaymentsToggle}>
         {expandPayments ? (
@@ -113,6 +116,7 @@ export default function AthleteDetails() {
         )}{' '}
         Payments
       </S.H3>
+      {expandPayments && <AthletePayments athleteID={id} />}
     </main>
   );
 }

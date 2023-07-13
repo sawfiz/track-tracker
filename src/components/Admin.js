@@ -1,11 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { UserContext } from '../contexts/UserContext';
-import styled from 'styled-components';
-
-import ManageUsers from './ManageUsers';
-import AddAttendence from './AddAttendance';
-
-const S = {};
+import React from 'react';
 
 export default function Admin() {
   return (
@@ -21,7 +14,9 @@ export default function Admin() {
         <a href="/athletes">Manage athletes</a>
       </p>
       <hr></hr>
-      <p style={{ color: 'red', fontWeight: 'bold' }}>Functions below are under construction</p>
+      <p style={{ color: 'red', fontWeight: 'bold' }}>
+        Functions below are under construction
+      </p>
       <p>
         <a href="/manage-users">Manage users</a>
       </p>

@@ -6,7 +6,6 @@ import startOfDay from 'date-fns/startOfDay';
 export const AttendanceContext = createContext();
 
 export default function AttendenceContextProvider(props) {
-  const [attendanceList, setAttendanceList] = useState([]);
   const [record, setRecord] = useState(null);
 
   const attendanceCollection = collection(db, 'attendance');
@@ -37,7 +36,7 @@ export default function AttendenceContextProvider(props) {
 
   return (
     <AttendanceContext.Provider
-      value={{ record, attendanceList, getAttendance, getAttendances }}
+      value={{ record, getAttendance, getAttendances }}
     >
       {props.children}
     </AttendanceContext.Provider>

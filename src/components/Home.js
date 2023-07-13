@@ -1,9 +1,6 @@
 import React, { useContext } from 'react';
-import styled from 'styled-components';
 
 import { UserContext } from '../contexts/UserContext';
-
-const S = {};
 
 export const Home = () => {
   const { loggedIn, userInfo } = useContext(UserContext);
