@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import EditParentModal from '../modals/EditParentModal';
 
@@ -16,7 +16,7 @@ const S = {
 };
 
 export default function Parent({user}) {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false)
 
   const handleClick = () => {
     setShow(true);

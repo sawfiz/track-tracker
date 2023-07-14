@@ -35,6 +35,7 @@ export default function ParentsContextProvider(props) {
         parents,
         getParents,
         getParentName,
+
       }}
     >
       {props.children}

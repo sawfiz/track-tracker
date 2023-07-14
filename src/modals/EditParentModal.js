@@ -10,23 +10,21 @@ export default function EditParentModal({ show, hideModal, user }) {
   const { updateUser } = useContext(UserContext);
   const { athletes, getAthletes } = useContext(AthleteContext);
 
-  const [data, setData] = useState(null);
+  const [data, setData] = useState({name:'', email:'', mobile:'', children:[]});
 
   useEffect(() => {
     getAthletes();
+    setData(user.data())
   }, []);
 
   const handleChange = (e) => {
-    setData({ ...user.data(), [e.target.name]: e.target.value });
+    setData({ ...data, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("🚀 ~ file: EditParentModal.js:26 ~ handleSubmit ~ data:", data)
     if (data.mobile) {
-      console.log(
-        '🚀 ~ file: UnmanagedUserModal.js:12 ~ handleChange ~ data:',
-        data
-      );
       updateUser(user, data);
       hideModal();
     } else {
@@ -46,19 +44,20 @@ export default function EditParentModal({ show, hideModal, user }) {
               className="mb-3"
               disabled
               name="name"
-              value={user.data().name}
+              value={data.name}
             />
             <Form.Control
               className="mb-3"
               disabled
               name="email"
-              value={user.data().email}
+              value={data.email}
             />
             <InputGroup className="mb-3">
               <InputGroup.Text>Mobile </InputGroup.Text>
               <Form.Control
                 name="mobile"
                 type="number"
+                value={data.mobile}
                 onChange={handleChange}
               ></Form.Control>
             </InputGroup>

@@ -13,7 +13,7 @@ const S = {
 };
 
 export default function ManageParents() {
-  const { getParents } = useContext(ParentsContext);
+  const {  getParents } = useContext(ParentsContext);
   const [list, setList] = useState([]);
 
   const fetchData = async () => {
@@ -25,6 +25,7 @@ export default function ManageParents() {
   useEffect(() => {
     fetchData();
   }, []);
+
 
 
   return (
