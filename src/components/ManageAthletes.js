@@ -8,16 +8,17 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/esm/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 
-const S = {};
-S.AthletesGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin: 1rem 0;
-`;
-S.Section = styled.div`
-  margin: 1rem 0;
-`;
+const S = {
+  Grid: styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 1rem 0;
+  `,
+  Section: styled.div`
+    margin: 1rem 0;
+  `,
+};
 
 export default function ManageAthletes() {
   const { athletes, getAthletes } = useContext(AthleteContext);
@@ -76,7 +77,7 @@ export default function ManageAthletes() {
         Show active athletes only
       </S.Section>
 
-      <S.AthletesGrid>{athleteComponents}</S.AthletesGrid>
+      <S.Grid>{athleteComponents}</S.Grid>
 
       {showAddModal && <AddAthleteModal show={showAddModal} />}
       {/* A div at the end of page to make sure Foot shows properly */}

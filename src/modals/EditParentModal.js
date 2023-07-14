@@ -10,21 +10,43 @@ export default function EditParentModal({ show, hideModal, user }) {
   const { updateUser } = useContext(UserContext);
   const { athletes, getAthletes } = useContext(AthleteContext);
 
-  const [data, setData] = useState({name:'', email:'', mobile:'', children:[]});
+  const [data, setData] = useState({
+    name: '',
+    email: '',
+    mobile: '',
+    // children: new Set(),
+    children: ['-', '', '', ''],
+    childrenID: ['', '', '', '']
+  });
 
   useEffect(() => {
     getAthletes();
-    setData(user.data())
+    setData((prevData) => ({
+      ...prevData,
+      name: user.data().name,
+      email: user.data().email,
+      mobile: user.data().mobile,
+    }));
   }, []);
 
   const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name.startsWith('child')) {
+      const childNumber = name.slice(-1);
+      const childIndex = parseInt(childNumber, 10) - 1;
+      console.log("🚀 ~ file: EditParentModal.js:36 ~ handleChange ~ childIndex:", childIndex)
+      const updatedChildren = [...data.children];
+      updatedChildren[childIndex] = value;
+      setData({ ...data, children: updatedChildren });
+    } else {
+      setData({ ...data, [name]: value });
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("🚀 ~ file: EditParentModal.js:26 ~ handleSubmit ~ data:", data)
     if (data.mobile) {
+      // const updatedData = { ...data, children: Array.from(data.children) };
       updateUser(user, data);
       hideModal();
     } else {
@@ -63,30 +85,42 @@ export default function EditParentModal({ show, hideModal, user }) {
             </InputGroup>
             <InputGroup className="mb-3">
               <InputGroup.Text>Child 1 </InputGroup.Text>
-              <Form.Select name="child1" onChange={handleChange}>
+              <Form.Select
+                name="child1"
+                value={data.children[0]}
+                onChange={handleChange}
+              >
                 <option>-</option>
-                {athletes.map((athlete)=>(<option key={athlete.id+'1'}>{athlete.data().name}</option>))}
+                {athletes.map((athlete) => (
+                  <option key={athlete.id + '0'}>{athlete.data().name}</option>
+                ))}
               </Form.Select>
             </InputGroup>
             <InputGroup className="mb-3">
               <InputGroup.Text>Child 2 </InputGroup.Text>
-              <Form.Select name="child2" onChange={handleChange}>
+              <Form.Select name="child2" value={data.children[1]} onChange={handleChange}>
                 <option>-</option>
-                {athletes.map((athlete)=>(<option key={athlete.id+'2'}>{athlete.data().name}</option>))}
+                {athletes.map((athlete) => (
+                  <option key={athlete.id + '1'}>{athlete.data().name}</option>
+                ))}
               </Form.Select>
             </InputGroup>
             <InputGroup className="mb-3">
               <InputGroup.Text>Child 3 </InputGroup.Text>
-              <Form.Select name="child3" onChange={handleChange}>
+              <Form.Select name="child3" value={data.children[2]} onChange={handleChange}>
                 <option>-</option>
-                {athletes.map((athlete)=>(<option key={athlete.id+'3'}>{athlete.data().name}</option>))}
+                {athletes.map((athlete) => (
+                  <option key={athlete.id + '2'}>{athlete.data().name}</option>
+                ))}
               </Form.Select>
             </InputGroup>
             <InputGroup className="mb-3">
               <InputGroup.Text>Child 4 </InputGroup.Text>
-              <Form.Select name="child4" onChange={handleChange}>
+              <Form.Select name="child4" value={data.children[3]} onChange={handleChange}>
                 <option>-</option>
-                {athletes.map((athlete)=>(<option key={athlete.id+'4'}>{athlete.data().name}</option>))}
+                {athletes.map((athlete) => (
+                  <option key={athlete.id + '3'}>{athlete.data().name}</option>
+                ))}
               </Form.Select>
             </InputGroup>
           </Form>

@@ -20,6 +20,7 @@ import ManageAthletes from './components/ManageAthletes';
 import AthleteDetails from './components/AthleteDetails';
 import ManageUsers from './components/ManageUsers';
 import ManageParents from './components/ManageParents';
+import Children from './components/Children';
 
 const S = {};
 S.App = styled.div`
@@ -32,7 +33,7 @@ S.App = styled.div`
 `;
 
 function App() {
-  const { setLoggedIn, setUserId, getUserInfo } = useContext(UserContext);
+  const { setLoggedIn, userId, setUserId, getUserInfo } = useContext(UserContext);
 
   // Keep user logged in after a page refresh
   useEffect(() => {
@@ -65,6 +66,7 @@ function App() {
           <Route path="/athletes" element={<ManageAthletes/>} />
           <Route path="/manage-users" element={<ManageUsers/>} />
           <Route path="/parents" element={<ManageParents/>} />
+          <Route path="/children" element={<Children/>} />
           <Route
           path="/athletes/:id"
           element={<AthleteDetails  />}

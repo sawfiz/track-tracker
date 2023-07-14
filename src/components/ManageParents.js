@@ -13,20 +13,18 @@ const S = {
 };
 
 export default function ManageParents() {
-  const {  getParents } = useContext(ParentsContext);
+  const { getParents } = useContext(ParentsContext);
   const [list, setList] = useState([]);
 
   const fetchData = async () => {
     const data = await getParents();
-    console.log("🚀 ~ file: ManageParents.js:21 ~ fetchData ~ data:", data)
+    console.log('🚀 ~ file: ManageParents.js:21 ~ fetchData ~ data:', data);
     setList(data);
   };
 
   useEffect(() => {
     fetchData();
   }, []);
-
-
 
   return (
     <main>

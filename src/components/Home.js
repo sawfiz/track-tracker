@@ -13,6 +13,11 @@ export const Home = () => {
           <a href="/admin">Admin Tools</a>
         </p>
       )}
+      {loggedIn && userInfo.role === 'parent' && (
+        <p>
+          <a href="/children">My children</a>
+        </p>
+      )}
       <div>
         <h2>News</h2>
         <p>
