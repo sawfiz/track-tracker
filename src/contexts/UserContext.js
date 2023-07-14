@@ -28,10 +28,18 @@ export default function UserContextProvider(props) {
     }
   };
 
+  // This should be info of the logged in user
   const getUserInfo = async (id) => {
     const docSnapshot = await getDoc(doc(userCollection, id));
     const data = docSnapshot.data();
     setUserInfo(data);
+  };
+
+  // Used to get athlete and parent names
+  const getUserName = async (id) => {
+    const docSnapshot = await getDoc(doc(userCollection, id));
+    const name = docSnapshot.data().name;
+    return name;
   };
 
   const updateUser = async (user, data) => {
@@ -66,6 +74,7 @@ export default function UserContextProvider(props) {
         checkUser,
         getUserInfo,
         userInfo,
+        getUserName,
         getUsersWithNoRoles,
         updateUser,
       }}

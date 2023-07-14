@@ -6,19 +6,22 @@ import UserContextProvider from './contexts/UserContext';
 import AttendenceContextProvider from './contexts/AttendanceContext';
 import AthleteContextProvider from './contexts/AthleteContext';
 import AthleteDetailsContextProvider from './contexts/AthleteDetailsContext';
+import ParentsContextProvider from './contexts/ParentsContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <UserContextProvider>
-        <AthleteContextProvider>
-          <AthleteDetailsContextProvider>
-            <AttendenceContextProvider>
-              <App />
-            </AttendenceContextProvider>
-          </AthleteDetailsContextProvider>
-        </AthleteContextProvider>
+        <ParentsContextProvider>
+          <AthleteContextProvider>
+            <AthleteDetailsContextProvider>
+              <AttendenceContextProvider>
+                <App />
+              </AttendenceContextProvider>
+            </AthleteDetailsContextProvider>
+          </AthleteContextProvider>
+        </ParentsContextProvider>
       </UserContextProvider>
     </BrowserRouter>
   </React.StrictMode>

@@ -10,9 +10,6 @@ const S = {
     gap: 10px;
     margin: 1rem 0;
   `,
-  Section: styled.div`
-    margin: 1rem 0;
-  `,
 };
 
 export default function ManageUsers() {

@@ -39,9 +39,9 @@ export default function UnmanagedUserModal({ show, hideModal, user }) {
               <InputGroup.Text>Role </InputGroup.Text>
               <Form.Select name="role" onChange={handleChange}>
                 <option>-</option>
-                <option>Parent</option>
-                <option>Athlete</option>
-                <option>Coach</option>
+                <option>parent</option>
+                <option>athlete</option>
+                <option>coach</option>
               </Form.Select>
             </InputGroup>
           </Form>

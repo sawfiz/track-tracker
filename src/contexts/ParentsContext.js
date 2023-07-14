@@ -1,36 +1,32 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useContext } from 'react';
 import { db } from '../config/firebase';
+import { UserContext } from './UserContext';
 
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 
 export const ParentsContext = createContext();
 
 export default function ParentsContextProvider(props) {
+  const {getUserInfo} = useContext(UserContext)
+  const userCollection = collection(db, 'users');
+
   const [parents, setParents] = useState([]);
 
-  const parentsCollection = collection(db, 'users');
 
-  const getParents = async (activeOnly = false) => {
-    const docRefs = await getDocs(parentsCollection);
-    const athletes = docRefs.docs.filter((doc) => {
-      if (activeOnly) {
-        return (
-          doc.data().role === 'athlete' && doc.data().active === activeOnly
-        );
-      } else {
-        return doc.data().role === 'athlete';
+  const getParents = async () => {
+    const docRefs = await getDocs(userCollection);
+    const list = docRefs.docs.filter((doc) => {
+        return doc.data().role === 'parent';
       }
-    });
-    const sortedAthletes = athletes.sort((a, b) =>
+    );
+    const sortedList = list.sort((a, b) =>
       a.data().name > b.data().name ? 1 : -1
     );
-    setAthletes(sortedAthletes);
+    return sortedList;
   };
 
-  const getParentName = async (id) => {
-    const docSnapshot = await getDoc(doc(parentsCollection, id));
-    const athleteName = docSnapshot.data().name;
-    return athleteName;
+  const getParentName =  (id) => {
+    return getUserInfo(id).data().name;
   };
 
   return (
