@@ -15,8 +15,7 @@ export default function EditParentModal({ show, hideModal, user }) {
     email: '',
     mobile: '',
     // children: new Set(),
-    children: ['-', '', '', ''],
-    childrenID: ['', '', '', '']
+    children: ['-', '-', '-', '-'],
   });
 
   useEffect(() => {
@@ -26,6 +25,7 @@ export default function EditParentModal({ show, hideModal, user }) {
       name: user.data().name,
       email: user.data().email,
       mobile: user.data().mobile,
+      children: user.data().children,
     }));
   }, []);
 
@@ -34,7 +34,6 @@ export default function EditParentModal({ show, hideModal, user }) {
     if (name.startsWith('child')) {
       const childNumber = name.slice(-1);
       const childIndex = parseInt(childNumber, 10) - 1;
-      console.log("🚀 ~ file: EditParentModal.js:36 ~ handleChange ~ childIndex:", childIndex)
       const updatedChildren = [...data.children];
       updatedChildren[childIndex] = value;
       setData({ ...data, children: updatedChildren });
@@ -92,7 +91,7 @@ export default function EditParentModal({ show, hideModal, user }) {
               >
                 <option>-</option>
                 {athletes.map((athlete) => (
-                  <option key={athlete.id + '0'}>{athlete.data().name}</option>
+                  <option key={athlete.id + '0'} value={athlete.id}>{athlete.data().name}</option>
                 ))}
               </Form.Select>
             </InputGroup>
@@ -101,7 +100,7 @@ export default function EditParentModal({ show, hideModal, user }) {
               <Form.Select name="child2" value={data.children[1]} onChange={handleChange}>
                 <option>-</option>
                 {athletes.map((athlete) => (
-                  <option key={athlete.id + '1'}>{athlete.data().name}</option>
+                  <option key={athlete.id + '1'} value={athlete.id}>{athlete.data().name}</option>
                 ))}
               </Form.Select>
             </InputGroup>
@@ -110,7 +109,7 @@ export default function EditParentModal({ show, hideModal, user }) {
               <Form.Select name="child3" value={data.children[2]} onChange={handleChange}>
                 <option>-</option>
                 {athletes.map((athlete) => (
-                  <option key={athlete.id + '2'}>{athlete.data().name}</option>
+                  <option key={athlete.id + '2'} value={athlete.id}>{athlete.data().name}</option>
                 ))}
               </Form.Select>
             </InputGroup>
@@ -119,7 +118,7 @@ export default function EditParentModal({ show, hideModal, user }) {
               <Form.Select name="child4" value={data.children[3]} onChange={handleChange}>
                 <option>-</option>
                 {athletes.map((athlete) => (
-                  <option key={athlete.id + '3'}>{athlete.data().name}</option>
+                  <option key={athlete.id + '3'} value={athlete.id}>{athlete.data().name}</option>
                 ))}
               </Form.Select>
             </InputGroup>

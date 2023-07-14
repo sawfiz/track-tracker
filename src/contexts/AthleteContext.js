@@ -7,7 +7,7 @@ import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 export const AthleteContext = createContext();
 
 export default function AthleteContextProvider(props) {
-  const {getUserName} = useContext(UserContext)
+  const { getUserName } = useContext(UserContext);
   const [athletes, setAthletes] = useState([]);
 
   const userCollection = collection(db, 'users');
@@ -33,12 +33,21 @@ export default function AthleteContextProvider(props) {
     return getUserName(id);
   };
 
+  const getAthleteID = async (name) => {
+    const docRefs = await getDocs(userCollection);
+    const athletes = docRefs.docs.filter((doc) => {
+      return doc.data().name === name;
+    });
+    return athletes[0].id;
+  };
+
   return (
     <AthleteContext.Provider
       value={{
         athletes,
         getAthletes,
         getAthleteName,
+        getAthleteID,
       }}
     >
       {props.children}

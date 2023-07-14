@@ -18,7 +18,6 @@ export default function ManageParents() {
 
   const fetchData = async () => {
     const data = await getParents();
-    console.log('🚀 ~ file: ManageParents.js:21 ~ fetchData ~ data:', data);
     setList(data);
   };
 

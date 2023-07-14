@@ -24,9 +24,8 @@ export default function Children() {
 
   const fetchData = async () => {
     const data = await getChildren(userId);
-    const set = new Set(data);
-    const sortedData = Array.from(set).sort();
-    setChildren(sortedData);
+    const filteredData = data.filter((d)=> d !== '')
+    setChildren(filteredData);
   };
   useEffect(() => {
     if (userId) {
@@ -35,8 +34,8 @@ export default function Children() {
   }, [userId]);
 
   // Render the Athlete components
-  const childrenComponents = children.map((doc) => (
-    <Athlete key={doc.id} athleteID={doc.id} />
+  const childrenComponents = children.map((id) => (
+    <Athlete key={id} athleteID={id} />
   ));
 
   return (
