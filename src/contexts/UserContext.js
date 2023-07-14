@@ -2,7 +2,7 @@ import React, { createContext, useState } from 'react';
 import { db } from '../config/firebase';
 import { auth } from '../config/firebase';
 
-import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
 
 export const UserContext = createContext();
 
@@ -34,6 +34,15 @@ export default function UserContextProvider(props) {
     setUserInfo(data);
   };
 
+  const updateUser = async (user, data) => {
+    try {
+      const docRef = doc(userCollection, user.id);
+      await updateDoc(docRef, data);
+    } catch (error) {
+      console.error('Error editing book:', error);
+    }
+  };
+
   const getUsersWithNoRoles = async () => {
     const docRefs = await getDocs(userCollection);
     const list = docRefs.docs.filter((doc) => {
@@ -58,6 +67,7 @@ export default function UserContextProvider(props) {
         getUserInfo,
         userInfo,
         getUsersWithNoRoles,
+        updateUser,
       }}
     >
       {props.children}

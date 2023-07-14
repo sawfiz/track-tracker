@@ -7,20 +7,11 @@ import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
 import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
 
-const S = {};
-S.Section = styled.div`
-  margin: 1rem 0;
-  border: 1px dashed hotpink;
-  padding: 1rem;
-`;
-S.Entry = styled.div`
-  margin: 0.3rem 0;
-`;
-S.Center = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+const S = {
+  Entry: styled.div`
+    margin: 0.3rem 0;
+  `,
+};
 
 export default function EditAthleteModal({ show }) {
   const { athleteToEdit, getAthleteInfo, updateAthlete, closeEditModal } =
@@ -28,7 +19,7 @@ export default function EditAthleteModal({ show }) {
 
   const [athleteInfo, setAthleteInfo] = useState({
     name: '',
-    photoURL: '', 
+    photoURL: '',
     active: false,
     gender: '',
     birthdate: '',
@@ -44,7 +35,7 @@ export default function EditAthleteModal({ show }) {
       // As some fields may not have data, simply assigning data will
       // cause warning.  e.g. father was '', but if data retrieved does not
       // have value, it will be assigned undefined, causing warning.
-      setAthleteInfo({...athleteInfo, data});
+      setAthleteInfo({ ...athleteInfo, data });
     };
     fetchData();
   }, []);

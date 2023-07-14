@@ -1,15 +1,28 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
-import { getAdditionalUserInfo } from 'firebase/auth';
+import UnmanagedUser from './UnmanagedUser';
+import styled from 'styled-components';
+
+const S = {
+  Grid: styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 1rem 0;
+  `,
+  Section: styled.div`
+    margin: 1rem 0;
+  `,
+};
 
 export default function ManageUsers() {
-  const {getUsersWithNoRoles} = useContext(UserContext)
+  const { getUsersWithNoRoles } = useContext(UserContext);
   const [list, setList] = useState([]);
 
   const fetchData = async () => {
     const data = await getUsersWithNoRoles();
-    setList(data)
-  }
+    setList(data);
+  };
 
   useEffect(() => {
     fetchData();
@@ -17,12 +30,15 @@ export default function ManageUsers() {
 
   return (
     <main>
-      <h2>Manage Users</h2>
       <p>
         <a href="/admin">Admin Tools</a>
       </p>
       <h3>Unmanaged users</h3>
-      {list.map((user)=><p key={user.id}>{user.data().name}</p>)}
+      <S.Grid>
+        {list.map((user) => (
+          <UnmanagedUser key={user.id} user={user} />
+        ))}
+      </S.Grid>
     </main>
   );
 }

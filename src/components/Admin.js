@@ -18,10 +18,10 @@ export default function Admin() {
         Functions below are under construction
       </p>
       <p>
-        <a href="/manage-users">Manage users</a>
+        <a href="/parents">Manage parents</a>
       </p>
       <p>
-        <a href="/parents">Manage parents</a>
+        <a href="/manage-users">Unmanage users</a>
       </p>
     </main>
   );

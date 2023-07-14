@@ -18,6 +18,7 @@ S.AthletesGrid = styled.div`
 S.Section = styled.div`
   margin: 1rem 0;
 `;
+
 export default function ManageAthletes() {
   const { athletes, getAthletes } = useContext(AthleteContext);
   const { showAddModal, openAddModal } = useContext(AthleteDetailsContext);
