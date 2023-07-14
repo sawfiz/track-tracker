@@ -21,6 +21,7 @@ import AthleteDetails from './components/AthleteDetails';
 import ManageUsers from './components/ManageUsers';
 import ManageParents from './components/ManageParents';
 import Children from './components/Children';
+import Download from './components/Download';
 
 const S = {};
 S.App = styled.div`

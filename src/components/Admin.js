@@ -1,4 +1,5 @@
 import React from 'react';
+import Download from './Download';
 
 export default function Admin() {
   return (
@@ -19,6 +20,10 @@ export default function Admin() {
       <p>
         <a href="/manage-users">Unmanage users</a>
       </p>
+      <p>
+        <a href="/download">Download to Excel</a>
+      </p>
+      <Download />
     </main>
   );
 }
