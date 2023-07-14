@@ -15,6 +15,10 @@ S.Heading = styled.div`
   grid-template-columns: 1fr 1fr;
   border-bottom: 1px hotpink dashed;
 `;
+S.Heading2 = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+`;
 
 export default function Attendance({ attendance, showNames }) {
   const date = attendance.data().date.toDate().toDateString();
@@ -40,10 +44,10 @@ export default function Attendance({ attendance, showNames }) {
         </S.Attdendance>
       ) : (
         // When rendering in AthleteAttendance
-        <S.Heading>
+        <S.Heading2>
           <div style={{ fontWeight: 'bold' }}>{date}</div>{' '}
           <div style={{ fontStyle: 'italic' }}>{stadium}</div>
-        </S.Heading>
+        </S.Heading2>
       )}
     </>
   );

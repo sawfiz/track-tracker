@@ -2,7 +2,7 @@ import React, { createContext, useState } from 'react';
 import { db } from '../config/firebase';
 import { auth } from '../config/firebase';
 
-import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 
 export const UserContext = createContext();
 
@@ -34,6 +34,18 @@ export default function UserContextProvider(props) {
     setUserInfo(data);
   };
 
+  const getUsersWithNoRoles = async () => {
+    const docRefs = await getDocs(userCollection);
+    const list = docRefs.docs.filter((doc) => {
+        return !doc.data().role;
+      }
+    );
+    const sortedList = list.sort((a, b) =>
+      a.data().name > b.data().name ? 1 : -1
+    );
+    return sortedList;
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -45,6 +57,7 @@ export default function UserContextProvider(props) {
         checkUser,
         getUserInfo,
         userInfo,
+        getUsersWithNoRoles,
       }}
     >
       {props.children}
