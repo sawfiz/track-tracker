@@ -1,5 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import React, { useContext } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -13,78 +12,17 @@ const S = {
   `,
 };
 
-export default function EditAthleteModal({ show }) {
-  const { athleteToEdit, getAthleteInfo, updateAthlete, closeEditModal } =
-    useContext(AthleteDetailsContext);
-
-  const [athleteInfo, setAthleteInfo] = useState({
-    name: '',
-    photoURL: '',
-    active: false,
-    gender: '',
-    birthdate: '',
-    school: '',
-    phone: '',
-    father: '',
-    mother: '',
-  });
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getAthleteInfo(athleteToEdit);
-      // As some fields may not have data, simply assigning data will
-      // cause warning.  e.g. father was '', but if data retrieved does not
-      // have value, it will be assigned undefined, causing warning.
-      setAthleteInfo({ ...athleteInfo, data });
-    };
-    fetchData();
-  }, []);
-
-  const [hasNoName, setHasNoName] = useState(false);
-  const [hasNoGender, setHasNoGendar] = useState(false);
-
-  // Function to handle changes in the form
-  const handleChange = (e) => {
-    if (e.target.name === 'name' && e.target.value) {
-      setHasNoName(false);
-    }
-    if (e.target.name === 'gender' && e.target.value) {
-      setHasNoGendar(false);
-    }
-
-    setAthleteInfo({ ...athleteInfo, [e.target.name]: e.target.value });
-  };
-
-  // Function to handle a checkbox change in the form
-  const handleChangeCheckbox = (e) => {
-    setAthleteInfo({ ...athleteInfo, [e.target.name]: e.target.checked });
-  };
-
-  // Function to handle adding a photo in the form
-  const handleChangePhoto = async (e) => {
-    const file = e.target.files[0];
-    const storage = getStorage();
-    const storageRef = ref(storage, `athlete_photos/${file.name}`);
-    await uploadBytes(storageRef, file);
-    const downloadURL = await getDownloadURL(storageRef);
-    // Update the photoURL field in the form data
-    setAthleteInfo({ ...athleteInfo, photoURL: downloadURL });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (athleteInfo.name) {
-      setHasNoName(false);
-      if (athleteInfo.gender) {
-        setHasNoGendar(false);
-        updateAthlete(athleteInfo);
-        closeEditModal();
-      } else {
-        setHasNoGendar(true);
-      }
-      setHasNoName(true);
-    }
-  };
+export default function EditAthleteModal({
+  show,
+  athleteInfo,
+  handleChange,
+  handleChangeCheckbox,
+  handleChangePhoto,
+  handleSubmit,
+  hasNoName,
+  hasNoGender
+}) {
+  const { closeEditModal } = useContext(AthleteDetailsContext);
 
   return (
     <Modal show={show} onHide={closeEditModal} backdrop="static" centered>
@@ -117,14 +55,12 @@ export default function EditAthleteModal({ show }) {
             </S.Entry>
             <InputGroup className="mb-3">
               <InputGroup.Text>Active </InputGroup.Text>
-              <S.Center>
-                <Form.Check
-                  type="checkbox"
-                  name="active"
-                  checked={athleteInfo.active}
-                  onChange={handleChangeCheckbox}
-                />
-              </S.Center>
+              <Form.Check
+                type="checkbox"
+                name="active"
+                checked={athleteInfo.active}
+                onChange={handleChangeCheckbox}
+              />
             </InputGroup>
             <InputGroup className="mb-3">
               <InputGroup.Text>Gender </InputGroup.Text>

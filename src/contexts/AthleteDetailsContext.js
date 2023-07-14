@@ -64,8 +64,7 @@ export default function AthleteDetailsContextProvider(props) {
   const updateAthlete = async (athleteInfo) => {
     try {
       const athleteDoc = doc(userCollection, athleteToEdit);
-      const athleteData = { ...athleteInfo };
-      await updateDoc(athleteDoc, athleteData);
+      await updateDoc(athleteDoc, athleteInfo);
     } catch (error) {
       console.error('Error editing book:', error);
     }
