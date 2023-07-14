@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -20,7 +20,6 @@ export default function AddNotesModal({ show, closeNotesModal, athleteID }) {
 
   const addNote = async () => {
     try {
-      // await addDoc(notesCollection, athleteID);
       await addDoc(notesCollection, formData);
     } catch (error) {
       console.error('Error adding book:', error);
@@ -65,7 +64,7 @@ export default function AddNotesModal({ show, closeNotesModal, athleteID }) {
             Close
           </Button>
           <Button variant="primary" onClick={handleSubmit}>
-            Save changes
+            Save
           </Button>
         </Modal.Footer>
       </Modal.Dialog>

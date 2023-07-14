@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/esm/Button';
 import styled from 'styled-components';
+import { db } from '../config/firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import Payment from './Payment';
+import AddPaymentModal from '../modals/AddPaymentModal';
 
 const S = {};
 
@@ -17,13 +21,50 @@ S.ButtonContainer = styled.div`
 `;
 
 
-export default function AthletePayments() {
+export default function AthletePayments({athleteID}) {
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const paymentsCollection = collection(db, 'users', athleteID, 'payments');
+  const [payments, setPayments] = useState([]);
+
+  const fetchData = async () => {
+    const docRefs = await getDocs(paymentsCollection);
+    const sortedDocs = docRefs.docs.sort((a, b) =>
+    b.data().date > a.data().date ? 1 : -1
+  );
+    setPayments(sortedDocs);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [showPaymentModal]);
+
+  const handleClick = () => {
+    setShowPaymentModal(true);
+  };
+
+  const closePaymentModal = () => {
+    setShowPaymentModal(false);
+  };
+
   return (
     <>
-      <S.Container>Athlete Payments</S.Container>
+      <S.Container>
+      {payments.map((payment) => (
+          <Payment key={payment.id} payment={payment} />
+        ))}
+      </S.Container>
       <S.ButtonContainer>
-        <Button>Add a Payment</Button>
+        <Button onClick={handleClick}>Add a Payment</Button>
       </S.ButtonContainer>
+      <AddPaymentModal
+        show={showPaymentModal}
+        closePaymentModal={closePaymentModal}
+        athleteID={athleteID}
+      />
     </>
   );
 }
