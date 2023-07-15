@@ -10,7 +10,7 @@ import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
 export default function EditParentModal({ show, hideModal, user }) {
   const { updateUser, getUserData } = useContext(UserContext);
   const { athletes, getAthletes } = useContext(AthleteContext);
-  const {updateAthleteParent} = useContext(AthleteDetailsContext)
+  const { updateAthleteParent } = useContext(AthleteDetailsContext);
   const [children, setChildren] = useState(['', '', '', '']);
 
   const [data, setData] = useState({
@@ -19,6 +19,22 @@ export default function EditParentModal({ show, hideModal, user }) {
     gender: '',
     mobile: '',
   });
+
+  const [child2Disabled, setChild2Disabled] = useState(true);
+  const [child3Disabled, setChild3Disabled] = useState(true);
+  const [child4Disabled, setChild4Disabled] = useState(true);
+
+  useEffect(() => {
+    if (children[0] && children[0] !== '-') {
+      setChild2Disabled(false);
+    }
+    if (children[1] && children[1] !== '-') {
+      setChild3Disabled(false);
+    }
+    if (children[2] && children[2] !== '-') {
+      setChild4Disabled(false);
+    }
+  }, [children]);
 
   const fetchData = async () => {
     const data = await getUserData(user.id);
@@ -53,7 +69,9 @@ export default function EditParentModal({ show, hideModal, user }) {
       const childIndex = parseInt(childNumber, 10) - 1;
       const updatedChildren = [...children];
       updatedChildren[childIndex] = value;
-      setChildren(updatedChildren);
+      // In case a parent assigned a child to '-'
+      const filteredChildren = updatedChildren.filter((child) => child !== '-');
+      setChildren(filteredChildren);
     } else {
       setData({ ...data, [name]: value });
     }
@@ -62,16 +80,12 @@ export default function EditParentModal({ show, hideModal, user }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (data.mobile) {
-      console.log(
-        '🚀 ~ file: EditParentModal.js:42 ~ handleChange ~ children:',
-        children
-      );
       const childrenSet = new Set(children);
       const childrenArray = Array.from(childrenSet);
       const updatedData = { ...data, children: childrenArray };
-      childrenArray.forEach((child)=>{
-        updateAthleteParent(child, data.name, data.gender)
-      })
+      childrenArray.forEach((child) => {
+        updateAthleteParent(child, data.name, data.gender);
+      });
       updateUser(user, updatedData);
       hideModal();
     } else {
@@ -139,6 +153,7 @@ export default function EditParentModal({ show, hideModal, user }) {
               <InputGroup.Text>Child 2 </InputGroup.Text>
               <Form.Select
                 name="child2"
+                disabled={child2Disabled}
                 value={children[1]}
                 onChange={handleChange}
               >
@@ -154,6 +169,7 @@ export default function EditParentModal({ show, hideModal, user }) {
               <InputGroup.Text>Child 3 </InputGroup.Text>
               <Form.Select
                 name="child3"
+                disabled={child3Disabled}
                 value={children[2]}
                 onChange={handleChange}
               >
@@ -169,6 +185,7 @@ export default function EditParentModal({ show, hideModal, user }) {
               <InputGroup.Text>Child 4 </InputGroup.Text>
               <Form.Select
                 name="child4"
+                disabled={child4Disabled}
                 value={children[3]}
                 onChange={handleChange}
               >

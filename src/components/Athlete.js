@@ -33,10 +33,12 @@ const S = {
 export default function Athlete({ athleteID }) {
   const { getAthleteInfo } = useContext(AthleteDetailsContext);
   const [data, setData] = useState({});
+  console.log("🚀 ~ file: Athlete.js:36 ~ Athlete ~ data:", data)
 
   const fetchAthleteName = async () => {
-    const name = await getAthleteInfo(athleteID);
-    setData(name);
+    const info = await getAthleteInfo(athleteID);
+    console.log("🚀 ~ file: Athlete.js:40 ~ fetchAthleteName ~ info:", info)
+    setData(info);
   };
 
   useEffect(() => {
