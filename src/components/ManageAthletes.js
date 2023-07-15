@@ -47,7 +47,7 @@ export default function ManageAthletes() {
 
   // Render the Athlete components
   const athleteComponents = filteredAthletes.map((athlete) => (
-    <Athlete key={athlete.id} athleteID={athlete.id} />
+    <Athlete key={athlete.id} athleteID={athlete.id} small={true} />
   ));
 
   return (

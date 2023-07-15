@@ -35,7 +35,7 @@ export default function Children() {
 
   // Render the Athlete components
   const childrenComponents = children.map((id) => (
-    <Athlete key={id} athleteID={id} />
+    <Athlete key={id} athleteID={id} small={false} />
   ));
 
   return (
