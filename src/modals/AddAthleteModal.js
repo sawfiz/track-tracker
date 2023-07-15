@@ -4,20 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
-import styled from 'styled-components';
 import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
-
-const S = {};
-
-S.Entry = styled.div`
-  margin: 0.3rem 0;
-`;
-
-S.Center = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 
 export default function AddAthleteModal({ show }) {
   const { closeAddModal, addAthlete } = useContext(AthleteDetailsContext);
@@ -95,7 +82,8 @@ export default function AddAthleteModal({ show }) {
 
           <Modal.Body>
             <Form>
-              <S.Entry>
+              <InputGroup className="mb-3">
+                <InputGroup.Text>Name </InputGroup.Text>
                 <Form.Control
                   isInvalid={hasNoName}
                   autoFocus
@@ -103,27 +91,26 @@ export default function AddAthleteModal({ show }) {
                   name="name"
                   onChange={handleChange}
                 />
-              </S.Entry>
-              <S.Entry>
-                <InputGroup className="mb-3">
-                  <InputGroup.Text>Photo </InputGroup.Text>
-                  <Form.Control
-                    type="file"
-                    accept="image/*"
-                    onChange={handleChangePhoto}
-                  />
-                </InputGroup>
-              </S.Entry>
+              </InputGroup>
+
+              <InputGroup className="mb-3">
+                <InputGroup.Text>Photo </InputGroup.Text>
+                <Form.Control
+                  type="file"
+                  accept="image/*"
+                  onChange={handleChangePhoto}
+                />
+              </InputGroup>
+
               <InputGroup className="mb-3">
                 <InputGroup.Text>Active </InputGroup.Text>
-                <S.Center>
-                  <Form.Check
-                    type="checkbox"
-                    name="active"
-                    onChange={handleChangeCheckbox}
-                  />
-                </S.Center>
+                <Form.Check
+                  type="checkbox"
+                  name="active"
+                  onChange={handleChangeCheckbox}
+                />
               </InputGroup>
+
               <InputGroup className="mb-3">
                 <InputGroup.Text>Gender </InputGroup.Text>
                 <Form.Select
@@ -147,35 +134,25 @@ export default function AddAthleteModal({ show }) {
                 />
               </InputGroup>
 
-              <S.Entry>
+              <InputGroup className="mb-3">
+                <InputGroup.Text>School </InputGroup.Text>
                 <Form.Control
                   placeholder="School"
                   name="school"
                   onChange={handleChange}
                 />
-              </S.Entry>
-              <S.Entry>
+              </InputGroup>
+
+              <InputGroup className="mb-3">
+                <InputGroup.Text>Phone </InputGroup.Text>
                 <Form.Control
                   type="number"
                   placeholder="Phone"
                   name="phone"
                   onChange={handleChange}
                 />
-              </S.Entry>
-
-              <InputGroup className="mb-3">
-                <InputGroup.Text>Father </InputGroup.Text>
-                <Form.Select name="father" onChange={handleChange}>
-                  <option>-</option>
-                </Form.Select>
               </InputGroup>
-
-              <InputGroup className="mb-3">
-                <InputGroup.Text>Mother </InputGroup.Text>
-                <Form.Select name="mother" onChange={handleChange}>
-                  <option>-</option>
-                </Form.Select>
-              </InputGroup>
+              
             </Form>
           </Modal.Body>
 

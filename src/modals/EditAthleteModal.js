@@ -3,14 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
-import styled from 'styled-components';
 import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
-
-const S = {
-  Entry: styled.div`
-    margin: 0.3rem 0;
-  `,
-};
 
 export default function EditAthleteModal({
   show,
@@ -20,7 +13,7 @@ export default function EditAthleteModal({
   handleChangePhoto,
   handleSubmit,
   hasNoName,
-  hasNoGender
+  hasNoGender,
 }) {
   const { closeEditModal } = useContext(AthleteDetailsContext);
 
@@ -33,7 +26,8 @@ export default function EditAthleteModal({
 
         <Modal.Body>
           <Form>
-            <S.Entry>
+            <InputGroup className="mb-3">
+              <InputGroup.Text>Name </InputGroup.Text>
               <Form.Control
                 isInvalid={hasNoName}
                 autoFocus
@@ -42,17 +36,17 @@ export default function EditAthleteModal({
                 value={athleteInfo.name}
                 onChange={handleChange}
               />
-            </S.Entry>
-            <S.Entry>
-              <InputGroup className="mb-3">
-                <InputGroup.Text>Photo </InputGroup.Text>
-                <Form.Control
-                  type="file"
-                  accept="image/*"
-                  onChange={handleChangePhoto}
-                />
-              </InputGroup>
-            </S.Entry>
+            </InputGroup>
+
+            <InputGroup className="mb-3">
+              <InputGroup.Text>Photo </InputGroup.Text>
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handleChangePhoto}
+              />
+            </InputGroup>
+
             <InputGroup className="mb-3">
               <InputGroup.Text>Active </InputGroup.Text>
               <Form.Check
@@ -87,15 +81,18 @@ export default function EditAthleteModal({
               />
             </InputGroup>
 
-            <S.Entry>
+            <InputGroup className="mb-3">
+              <InputGroup.Text>School </InputGroup.Text>
               <Form.Control
                 placeholder="School"
                 name="school"
                 value={athleteInfo.school}
                 onChange={handleChange}
               />
-            </S.Entry>
-            <S.Entry>
+            </InputGroup>
+
+            <InputGroup className="mb-3">
+              <InputGroup.Text>Phone </InputGroup.Text>
               <Form.Control
                 type="number"
                 placeholder="Phone"
@@ -103,9 +100,9 @@ export default function EditAthleteModal({
                 value={athleteInfo.phone}
                 onChange={handleChange}
               />
-            </S.Entry>
+            </InputGroup>
 
-            <InputGroup className="mb-3">
+            {/* <InputGroup className="mb-3">
               <InputGroup.Text>Father </InputGroup.Text>
               <Form.Select
                 name="father"
@@ -114,9 +111,9 @@ export default function EditAthleteModal({
               >
                 <option>-</option>
               </Form.Select>
-            </InputGroup>
+            </InputGroup> */}
 
-            <InputGroup className="mb-3">
+            {/* <InputGroup className="mb-3">
               <InputGroup.Text>Mother </InputGroup.Text>
               <Form.Select
                 name="mother"
@@ -125,7 +122,7 @@ export default function EditAthleteModal({
               >
                 <option>-</option>
               </Form.Select>
-            </InputGroup>
+            </InputGroup> */}
           </Form>
         </Modal.Body>
 
