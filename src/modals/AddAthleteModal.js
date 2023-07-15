@@ -59,7 +59,6 @@ export default function AddAthleteModal({ show }) {
       setHasNoName(false);
       if (formData.gender) {
         setHasNoGendar(false);
-
         addAthlete(formData);
         closeAddModal();
       } else {
@@ -152,7 +151,7 @@ export default function AddAthleteModal({ show }) {
                   onChange={handleChange}
                 />
               </InputGroup>
-              
+
             </Form>
           </Modal.Body>
 

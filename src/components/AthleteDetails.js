@@ -12,17 +12,30 @@ import {
   faChevronDown,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
+import boyImg from '../images/boy.png';
+import girlImg from '../images/girl.png';
 
 const S = {
   H3: styled.h3`
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: var(--color-dark);
   `,
-  ImgContainer: styled.div`
+  ImgContainer: styled.div``,
+  ImageContainer: styled.div`
     position: absolute;
     top: 105px;
     right: 5px;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 2px 2px 4px rgba(255, 255, 0, 0.5);
+  `,
+  CroppedImage: styled.img`
+    object-fit: cover;
+    object-position: center center;
+    width: 100%;
+    height: 100%;
   `,
 };
 
@@ -92,13 +105,19 @@ export default function AthleteDetails() {
       )}
       <p></p>
       <h2>{athleteInfo.name}</h2>
-      <S.ImgContainer>
-        <img
-          style={{ maxWidth: '150px', maxHeight: '150px' }}
-          src={athleteInfo.photoURL}
-          alt="profile"
-        />
-      </S.ImgContainer>
+      <S.ImageContainer>
+      {athleteInfo.photoURL ? (
+            <S.CroppedImage
+              src={athleteInfo.photoURL}
+              alt="boyImg"
+            />
+          ) : (
+            <S.CroppedImage
+              src={(athleteInfo.gender==='Male') ? boyImg : girlImg}
+              alt="boyImg"
+            />
+          )}
+      </S.ImageContainer>
       <S.H3 onClick={handlePersonalToggle}>
         {expandPersonalDetails ? (
           <FontAwesomeIcon icon={faChevronDown} className="fa-thin" />

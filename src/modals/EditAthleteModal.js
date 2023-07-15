@@ -102,27 +102,6 @@ export default function EditAthleteModal({
               />
             </InputGroup>
 
-            {/* <InputGroup className="mb-3">
-              <InputGroup.Text>Father </InputGroup.Text>
-              <Form.Select
-                name="father"
-                value={athleteInfo.father}
-                onChange={handleChange}
-              >
-                <option>-</option>
-              </Form.Select>
-            </InputGroup> */}
-
-            {/* <InputGroup className="mb-3">
-              <InputGroup.Text>Mother </InputGroup.Text>
-              <Form.Select
-                name="mother"
-                value={athleteInfo.mother}
-                onChange={handleChange}
-              >
-                <option>-</option>
-              </Form.Select>
-            </InputGroup> */}
           </Form>
         </Modal.Body>
 
@@ -130,7 +109,6 @@ export default function EditAthleteModal({
           <Button variant="secondary" onClick={closeEditModal}>
             Close
           </Button>
-          {/* <Button variant="primary" onClick={handleSubmit}> */}
           <Button variant="primary" onClick={handleSubmit}>
             Save changes
           </Button>
