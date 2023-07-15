@@ -29,7 +29,7 @@ export default function Parent({user}) {
   return (
     <>
       <S.Button onClick={handleClick}>{user.data().name}</S.Button>
-      <EditParentModal user={user} show={show} hideModal={hideModal}/>
+      {show && <EditParentModal user={user} show={show} hideModal={hideModal}/>}
     </>
   )
 }

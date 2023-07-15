@@ -1,9 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/esm/Button';
 import { UserContext } from '../contexts/UserContext';
+import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
 import { db } from '../config/firebase';
 import { collection, addDoc } from 'firebase/firestore';
 
@@ -13,6 +14,8 @@ export default function AddPaymentModal({
   athleteID,
 }) {
   const { userInfo } = useContext(UserContext);
+  const { getAthleteInfo } = useContext(AthleteDetailsContext);
+  const [data, setData] = useState({});
   const paymentsCollection = collection(db, 'users', athleteID, 'payments');
 
   // Input fields in the form
@@ -23,6 +26,15 @@ export default function AddPaymentModal({
     for: '',
     recordedBy: userInfo.name,
   });
+
+  const fetchData = async () => {
+    const info = await getAthleteInfo(athleteID);
+    setData(info);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const addPayment = async () => {
     try {
@@ -75,19 +87,19 @@ export default function AddPaymentModal({
                 onChange={handleChange}
               />
             </InputGroup>
-            
+
             <InputGroup className="mb-3">
-                <InputGroup.Text>Paid By</InputGroup.Text>
-                <Form.Select
-                  name="paidBy"
-                  value={formData.paidBy}
-                  onChange={handleChange}
-                >
-                  <option>-</option>
-                  <option>Mom</option>
-                  <option>Dad</option>
-                </Form.Select>
-              </InputGroup>
+              <InputGroup.Text>Paid By</InputGroup.Text>
+              <Form.Select
+                name="paidBy"
+                value={formData.paidBy}
+                onChange={handleChange}
+              >
+                <option>-</option>
+                <option>{data.father}</option>
+                <option>{data.mother}</option>
+              </Form.Select>
+            </InputGroup>
 
             <Form.Control
               as="textarea"

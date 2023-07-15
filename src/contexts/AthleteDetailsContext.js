@@ -70,6 +70,26 @@ export default function AthleteDetailsContextProvider(props) {
     }
   };
 
+ const updateAthleteParent = async(athleteID, parentName, parentGender) => {
+  try {
+    const athleteDoc = doc(userCollection, athleteID);
+    const athleteInfo = getAthleteInfo(athleteID);
+    if (parentGender === 'Male') {
+      const updatedInfo = {...athleteInfo, father: parentName}
+      await updateDoc(athleteDoc, updatedInfo);
+      console.log("updated father");
+    } 
+    if (parentGender === 'Female') {
+      const updatedInfo = {...athleteInfo, mother: parentName}
+      await updateDoc(athleteDoc, updatedInfo);
+      console.log("updated mother");
+    }
+    // console.log("updated mother");
+  } catch (error) {
+    console.error('Error editing book:', error);
+  }
+ };
+
   return (
     <AthleteDetailsContext.Provider
       value={{
@@ -83,6 +103,7 @@ export default function AthleteDetailsContextProvider(props) {
         athleteToEdit,
         getAthleteInfo,
         updateAthlete,
+        updateAthleteParent,
       }}
     >
       {props.children}

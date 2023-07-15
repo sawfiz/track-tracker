@@ -5,16 +5,18 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import { UserContext } from '../contexts/UserContext';
 import { AthleteContext } from '../contexts/AthleteContext';
+import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
 
 export default function EditParentModal({ show, hideModal, user }) {
   const { updateUser, getUserData } = useContext(UserContext);
   const { athletes, getAthletes } = useContext(AthleteContext);
-  const [children, setChildren] = useState(['-', '-', '-', '-']);
+  const {updateAthleteParent} = useContext(AthleteDetailsContext)
+  const [children, setChildren] = useState(['', '', '', '']);
 
   const [data, setData] = useState({
     name: '',
     email: '',
-    gender: '-',
+    gender: '',
     mobile: '',
   });
 
@@ -24,9 +26,12 @@ export default function EditParentModal({ show, hideModal, user }) {
       ...prevData,
       name: data.name,
       email: data.email,
+      gender: data.gender,
       mobile: data.mobile,
     }));
-    setChildren(data.children);
+    if (data.children) {
+      setChildren(data.children);
+    }
   };
 
   useEffect(() => {
@@ -64,6 +69,9 @@ export default function EditParentModal({ show, hideModal, user }) {
       const childrenSet = new Set(children);
       const childrenArray = Array.from(childrenSet);
       const updatedData = { ...data, children: childrenArray };
+      childrenArray.forEach((child)=>{
+        updateAthleteParent(child, data.name, data.gender)
+      })
       updateUser(user, updatedData);
       hideModal();
     } else {
