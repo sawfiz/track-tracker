@@ -7,36 +7,48 @@ import { UserContext } from '../contexts/UserContext';
 import { AthleteContext } from '../contexts/AthleteContext';
 
 export default function EditParentModal({ show, hideModal, user }) {
-  const { updateUser } = useContext(UserContext);
+  const { updateUser, getUserData } = useContext(UserContext);
   const { athletes, getAthletes } = useContext(AthleteContext);
+  const [children, setChildren] = useState(['-', '-', '-', '-']);
 
   const [data, setData] = useState({
     name: '',
     email: '',
+    gender: '-',
     mobile: '',
-    // children: new Set(),
-    children: ['-', '-', '-', '-'],
   });
 
-  useEffect(() => {
-    getAthletes();
+  const fetchData = async () => {
+    const data = await getUserData(user.id);
     setData((prevData) => ({
       ...prevData,
-      name: user.data().name,
-      email: user.data().email,
-      mobile: user.data().mobile,
-      children: user.data().children,
+      name: data.name,
+      email: data.email,
+      mobile: data.mobile,
     }));
+    setChildren(data.children);
+  };
+
+  useEffect(() => {
+    fetchData();
+    getAthletes();
   }, []);
+
+  // Fetch parent data again when modal is open/closed
+  // I should only need to fetch data when the modal closes
+  // But adding an if (show) does not show the uptodate data
+  useEffect(() => {
+    fetchData();
+  }, [show]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name.startsWith('child')) {
       const childNumber = name.slice(-1);
       const childIndex = parseInt(childNumber, 10) - 1;
-      const updatedChildren = [...data.children];
+      const updatedChildren = [...children];
       updatedChildren[childIndex] = value;
-      setData({ ...data, children: updatedChildren });
+      setChildren(updatedChildren);
     } else {
       setData({ ...data, [name]: value });
     }
@@ -45,8 +57,14 @@ export default function EditParentModal({ show, hideModal, user }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (data.mobile) {
-      // const updatedData = { ...data, children: Array.from(data.children) };
-      updateUser(user, data);
+      console.log(
+        '🚀 ~ file: EditParentModal.js:42 ~ handleChange ~ children:',
+        children
+      );
+      const childrenSet = new Set(children);
+      const childrenArray = Array.from(childrenSet);
+      const updatedData = { ...data, children: childrenArray };
+      updateUser(user, updatedData);
       hideModal();
     } else {
       alert('Please enter a mobile number.');
@@ -74,6 +92,18 @@ export default function EditParentModal({ show, hideModal, user }) {
               value={data.email}
             />
             <InputGroup className="mb-3">
+              <InputGroup.Text>Gender</InputGroup.Text>
+              <Form.Select
+                name="gender"
+                value={data.gender}
+                onChange={handleChange}
+              >
+                <option>-</option>
+                <option>Male</option>
+                <option>Female</option>
+              </Form.Select>
+            </InputGroup>
+            <InputGroup className="mb-3">
               <InputGroup.Text>Mobile </InputGroup.Text>
               <Form.Control
                 name="mobile"
@@ -86,39 +116,59 @@ export default function EditParentModal({ show, hideModal, user }) {
               <InputGroup.Text>Child 1 </InputGroup.Text>
               <Form.Select
                 name="child1"
-                value={data.children[0]}
+                value={children[0]}
                 onChange={handleChange}
               >
                 <option>-</option>
                 {athletes.map((athlete) => (
-                  <option key={athlete.id + '0'} value={athlete.id}>{athlete.data().name}</option>
+                  <option key={athlete.id + '0'} value={athlete.id}>
+                    {athlete.data().name}
+                  </option>
                 ))}
               </Form.Select>
             </InputGroup>
             <InputGroup className="mb-3">
               <InputGroup.Text>Child 2 </InputGroup.Text>
-              <Form.Select name="child2" value={data.children[1]} onChange={handleChange}>
+              <Form.Select
+                name="child2"
+                value={children[1]}
+                onChange={handleChange}
+              >
                 <option>-</option>
                 {athletes.map((athlete) => (
-                  <option key={athlete.id + '1'} value={athlete.id}>{athlete.data().name}</option>
+                  <option key={athlete.id + '1'} value={athlete.id}>
+                    {athlete.data().name}
+                  </option>
                 ))}
               </Form.Select>
             </InputGroup>
             <InputGroup className="mb-3">
               <InputGroup.Text>Child 3 </InputGroup.Text>
-              <Form.Select name="child3" value={data.children[2]} onChange={handleChange}>
+              <Form.Select
+                name="child3"
+                value={children[2]}
+                onChange={handleChange}
+              >
                 <option>-</option>
                 {athletes.map((athlete) => (
-                  <option key={athlete.id + '2'} value={athlete.id}>{athlete.data().name}</option>
+                  <option key={athlete.id + '2'} value={athlete.id}>
+                    {athlete.data().name}
+                  </option>
                 ))}
               </Form.Select>
             </InputGroup>
             <InputGroup className="mb-3">
               <InputGroup.Text>Child 4 </InputGroup.Text>
-              <Form.Select name="child4" value={data.children[3]} onChange={handleChange}>
+              <Form.Select
+                name="child4"
+                value={children[3]}
+                onChange={handleChange}
+              >
                 <option>-</option>
                 {athletes.map((athlete) => (
-                  <option key={athlete.id + '3'} value={athlete.id}>{athlete.data().name}</option>
+                  <option key={athlete.id + '3'} value={athlete.id}>
+                    {athlete.data().name}
+                  </option>
                 ))}
               </Form.Select>
             </InputGroup>

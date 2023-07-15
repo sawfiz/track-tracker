@@ -13,6 +13,7 @@ const exportFirestoreDataToExcel = async (table) => {
   querySnapshot.forEach((doc) => {
     data.push(doc.data());
   });
+  console.log("🚀 ~ file: Download.js:13 ~ exportFirestoreDataToExcel ~ data:", data)
 
   return data;
 };
@@ -35,7 +36,7 @@ const handleExportToExcel = async (table) => {
     });
 
     // Download the Excel file
-    saveAs(excelData, 'firestore_data.xlsx');
+    saveAs(excelData, `${table}_data.xlsx`);
   } catch (error) {
     console.error('Error exporting data:', error);
     // Handle any error that occurred during the export
