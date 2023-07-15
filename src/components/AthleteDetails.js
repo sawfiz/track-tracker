@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { UserContext } from '../contexts/UserContext';
 import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
 import AthletePersonalDetails from './AthletePersonalDetails';
 import AthleteAttendance from './AthleteAttendance';
@@ -29,6 +30,7 @@ S.ImgContainer = styled.div`
 export default function AthleteDetails() {
   const { id } = useParams();
   const { getAthleteInfo, showEditModal } = useContext(AthleteDetailsContext);
+  const { userInfo } = useContext(UserContext);
 
   const [athleteInfo, setAthleteInfo] = useState({});
 
@@ -41,25 +43,25 @@ export default function AthleteDetails() {
     setExpandPersonalDetails(!expandPersonalDetails);
     setExpandAttendances(false);
     setExpandNotes(false);
-    setExpandPayments(false)
+    setExpandPayments(false);
   };
   const handleAttendanceToggle = () => {
     setExpandPersonalDetails(false);
     setExpandAttendances(!expandAttendances);
     setExpandNotes(false);
-    setExpandPayments(false)
+    setExpandPayments(false);
   };
   const handleNotesToggle = () => {
     setExpandPersonalDetails(false);
     setExpandAttendances(false);
     setExpandNotes(!expandNotes);
-    setExpandPayments(false)
+    setExpandPayments(false);
   };
   const handlePaymentsToggle = () => {
     setExpandPersonalDetails(false);
     setExpandAttendances(false);
     setExpandNotes(false);
-    setExpandPayments(!expandPayments)
+    setExpandPayments(!expandPayments);
   };
 
   const fetchData = async () => {
@@ -79,8 +81,17 @@ export default function AthleteDetails() {
 
   return (
     <main>
+      {userInfo.role === 'admin' && (
+        <p>
+          <a href="/athletes">Manage Athletes</a>
+        </p>
+      )}
+      {userInfo.role === 'parent' && (
+        <p>
+          <a href="/children">My children</a>
+        </p>
+      )}
       <p>
-        <a href="/athletes">Manage Athletes</a>
       </p>
       <h2>{athleteInfo.name}</h2>
       <S.ImgContainer>
@@ -118,7 +129,7 @@ export default function AthleteDetails() {
         )}{' '}
         Notes
       </S.H3>
-      {expandNotes && <AthleteNotes athleteID={id}/>}
+      {expandNotes && <AthleteNotes athleteID={id} />}
 
       <S.H3 onClick={handlePaymentsToggle}>
         {expandPayments ? (
@@ -130,7 +141,7 @@ export default function AthleteDetails() {
       </S.H3>
       {expandPayments && <AthletePayments athleteID={id} />}
       {/* A div at the end of page to make sure Foot shows properly */}
-      <div style={{height: "2rem"}}></div>
+      <div style={{ height: '2rem' }}></div>
     </main>
   );
 }
