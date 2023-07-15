@@ -84,7 +84,6 @@ export default function EditAthleteModal({
             <InputGroup className="mb-3">
               <InputGroup.Text>School </InputGroup.Text>
               <Form.Control
-                placeholder="School"
                 name="school"
                 value={athleteInfo.school}
                 onChange={handleChange}
@@ -95,7 +94,6 @@ export default function EditAthleteModal({
               <InputGroup.Text>Phone </InputGroup.Text>
               <Form.Control
                 type="number"
-                placeholder="Phone"
                 name="phone"
                 value={athleteInfo.phone}
                 onChange={handleChange}

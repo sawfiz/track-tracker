@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
@@ -21,7 +21,6 @@ import AthleteDetails from './components/AthleteDetails';
 import ManageUsers from './components/ManageUsers';
 import ManageParents from './components/ManageParents';
 import Children from './components/Children';
-import Download from './components/Download';
 
 const S = {};
 S.App = styled.div`
@@ -34,7 +33,7 @@ S.App = styled.div`
 `;
 
 function App() {
-  const { setLoggedIn, userId, setUserId, getUserInfo } = useContext(UserContext);
+  const { setUserId, getUserInfo, setIsLoggedIn } = useContext(UserContext);
 
   // Keep user logged in after a page refresh
   useEffect(() => {
@@ -42,12 +41,12 @@ function App() {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         // User is logged in
-        setLoggedIn(true);
         setUserId(user.uid);
         getUserInfo(user.uid);
+        setIsLoggedIn(true);
       } else {
         // User is logged out
-        setLoggedIn(false);
+        setIsLoggedIn(false);
         setUserId('');
       }
     });
@@ -58,7 +57,7 @@ function App() {
   return (
     <>
       <S.App>
-        <Header />
+        <Header/>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<Admin />} />

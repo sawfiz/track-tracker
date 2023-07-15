@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Download from './Download';
 import Button from 'react-bootstrap/esm/Button';
 import styled from 'styled-components';
@@ -42,20 +43,20 @@ export default function Admin() {
       <S.H3>Manage Attendances</S.H3>
       <S.Grid>
         <Button variant="primary">
-          <S.Link href="/add-attendance">
+          <Link to="/add-attendance">
             <S.Content>
               <S.Icon>📝</S.Icon>
               <S.TextLight>Add</S.TextLight>
             </S.Content>
-          </S.Link>
+          </Link>
         </Button>
         <Button>
-          <S.Link href="/attendance">
+          <Link to="/attendance">
             <S.Content>
               <S.Icon>🗂️</S.Icon>
               <S.TextLight>View</S.TextLight>
             </S.Content>
-          </S.Link>
+          </Link>
         </Button>
         <Download table="attendance" />
       </S.Grid>
@@ -63,28 +64,28 @@ export default function Admin() {
       <S.H3>Manage Users</S.H3>
       <S.Grid>
         <Button variant="info">
-          <S.Link href="/athletes">
+          <Link to="/athletes">
             <S.Content>
               <S.Icon>🏃🏻‍♂️🏃🏻‍♀️</S.Icon>
               <S.TextDark>Athletes</S.TextDark>
             </S.Content>
-          </S.Link>
+          </Link>
         </Button>
         <Button variant="info">
-          <S.Link href="/parents">
+          <Link to="/parents">
             <S.Content>
               <S.Icon>👨🏻👩🏻</S.Icon>
               <S.TextDark>Parents</S.TextDark>
             </S.Content>
-          </S.Link>
+          </Link>
         </Button>
         <Button variant="info">
-          <S.Link href="/manage-users">
+          <Link to="/manage-users">
             <S.Content>
               <S.Icon>🥷❓</S.Icon>
               <S.TextDark>Strangers</S.TextDark>
             </S.Content>
-          </S.Link>
+          </Link>
         </Button>
         <Download table="users" />
       </S.Grid>

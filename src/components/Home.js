@@ -1,21 +1,21 @@
 import React, { useContext } from 'react';
-
+import { Link } from 'react-router-dom';
 import { UserContext } from '../contexts/UserContext';
 
 export const Home = () => {
-  const { loggedIn, userInfo } = useContext(UserContext);
+  const { isLoggedIn, userInfo } = useContext(UserContext);
 
   return (
     <main>
-      {loggedIn && <p>Hello, {userInfo.name}</p>}
-      {loggedIn && userInfo.role === 'admin' && (
+      {isLoggedIn && <p>Hello, {userInfo.name}</p>}
+      {isLoggedIn && userInfo.role === 'admin' && (
         <p>
-          <a href="/admin">Admin Tools</a>
+          <Link to="/admin">Admin Tools</Link>
         </p>
       )}
-      {loggedIn && userInfo.role === 'parent' && (
+      {isLoggedIn && userInfo.role === 'parent' && (
         <p>
-          <a href="/children">My children</a>
+          <Link to="/children">My children</Link>
         </p>
       )}
       <div>

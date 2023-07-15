@@ -44,7 +44,7 @@ const S = {
     width: 150px;
     height: 150px;
     overflow: hidden;
-    border-radius: 5px;
+    border-radius: 15px;
   `,
   CroppedImageLarge: styled.img`
     object-fit: cover;

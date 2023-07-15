@@ -7,7 +7,7 @@ import { collection, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/fi
 export const UserContext = createContext();
 
 export default function UserContextProvider(props) {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState('');
   const [userInfo, setUserInfo] = useState({});
 
@@ -73,8 +73,6 @@ export default function UserContextProvider(props) {
   return (
     <UserContext.Provider
       value={{
-        loggedIn,
-        setLoggedIn,
         userId,
         setUserId,
         setUserInfo,
@@ -85,6 +83,8 @@ export default function UserContextProvider(props) {
         getUserName,
         getUsersWithNoRoles,
         updateUser,
+        isLoggedIn,
+        setIsLoggedIn,
       }}
     >
       {props.children}

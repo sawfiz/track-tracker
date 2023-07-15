@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import startOfDay from 'date-fns/startOfDay';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -215,7 +216,7 @@ export default function AddAttendance() {
   return (
     <main>
       <p>
-        <a href="/admin">Admin Tools</a>
+        <Link to="/admin">Admin Tools</Link>
       </p>
       <h2>Track Attendance</h2>
       <form>

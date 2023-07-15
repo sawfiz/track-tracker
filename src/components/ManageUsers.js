@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { UserContext } from '../contexts/UserContext';
 import UnmanagedUser from './UnmanagedUser';
 import styled from 'styled-components';
@@ -28,7 +29,7 @@ export default function ManageUsers() {
   return (
     <main>
       <p>
-        <a href="/admin">Admin Tools</a>
+        <Link to="/admin">Admin Tools</Link>
       </p>
       <h3>Unmanaged users</h3>
       <S.Grid>

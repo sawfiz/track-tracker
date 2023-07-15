@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
@@ -79,16 +80,17 @@ S.SignOut = styled.button`
 `;
 
 export const Header = () => {
-  const { loggedIn, setLoggedIn, setUserInfo } = useContext(UserContext);
+  const { setUserInfo, isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+  console.log("🚀 ~ file: Header.js:82 ~ Header ~ isLoggedIn:", isLoggedIn)
   const user = auth.currentUser;
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
     try {
       await signOut(auth);
-      setLoggedIn(false);
       setUserInfo({});
       navigate('/');
+      setIsLoggedIn(false)
     } catch (err) {
       console.log('Error signing out', err.message);
     }
@@ -97,13 +99,13 @@ export const Header = () => {
   return (
     <S.Header>
       <S.SplashImgContainer>
-        <a href="/">
+        <Link to={"/"}>
           <S.SplashImg src={athleliteImg} alt="Team Athlelite" />
-        </a>
+        </Link>
       </S.SplashImgContainer>
       <S.H1>Team Athlelite</S.H1>
-      {!loggedIn && <Auth />}
-      {loggedIn && (
+      {!isLoggedIn && <Auth />}
+      {isLoggedIn && (
         <S.Google>
           <S.Avatar src={user.photoURL} alt="Avatar" />
           <S.SignOut onClick={handleSignOut}> Sign Out </S.SignOut>

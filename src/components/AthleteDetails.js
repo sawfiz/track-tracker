@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { UserContext } from '../contexts/UserContext';
@@ -95,12 +96,12 @@ export default function AthleteDetails() {
     <main>
       {userInfo.role === 'admin' && (
         <p>
-          <a href="/athletes">Manage Athletes</a>
+          <Link to="/athletes">Manage Athletes</Link>
         </p>
       )}
       {userInfo.role === 'parent' && (
         <p>
-          <a href="/children">My children</a>
+          <Link to="/children">My children</Link>
         </p>
       )}
       <p></p>

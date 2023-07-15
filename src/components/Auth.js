@@ -18,16 +18,16 @@ const S = {};
   `;
 
 export const Auth = () => {
-  const { setLoggedIn, setUserId, checkUser, getUserInfo } = useContext(UserContext);
+  const {  setUserId, checkUser, getUserInfo, setIsLoggedIn } = useContext(UserContext);
 
   const signinWithGoogle = async (e) => {
     e.preventDefault();
     try {
       await signInWithPopup(auth, googleProvider);
-      setLoggedIn(true);
       setUserId(auth.currentUser.uid);
       checkUser(auth.currentUser.uid);
       getUserInfo(auth.currentUser.uid);
+      setIsLoggedIn(true)
     } catch (err) {
       console.log('Error');
     }
