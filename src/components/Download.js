@@ -2,18 +2,21 @@ import React from 'react';
 import { utils as XLSXUtils, write as XLSXWrite } from 'xlsx';
 import { db } from '../config/firebase';
 import { saveAs } from 'file-saver';
-// import { saveAs as fileDownload } from 'react-file-download';
 import { collection, getDocs } from 'firebase/firestore';
+import Button from 'react-bootstrap/esm/Button';
 
 const exportFirestoreDataToExcel = async (table) => {
-  const collectionRef = collection(db, table); 
+  const collectionRef = collection(db, table);
   const querySnapshot = await getDocs(collectionRef);
-  
+
   const data = [];
   querySnapshot.forEach((doc) => {
     data.push(doc.data());
   });
-  console.log("🚀 ~ file: Download.js:13 ~ exportFirestoreDataToExcel ~ data:", data)
+  console.log(
+    '🚀 ~ file: Download.js:13 ~ exportFirestoreDataToExcel ~ data:',
+    data
+  );
 
   return data;
 };
@@ -25,7 +28,7 @@ const handleExportToExcel = async (table) => {
     const worksheet = XLSXUtils.json_to_sheet(data);
     const workbook = XLSXUtils.book_new();
     XLSXUtils.book_append_sheet(workbook, worksheet, 'Sheet 1');
-    
+
     const excelBuffer = XLSXWrite(workbook, {
       bookType: 'xlsx',
       type: 'array',
@@ -43,16 +46,8 @@ const handleExportToExcel = async (table) => {
   }
 };
 
-
-
-export default function Download() {
+export default function Download({ table }) {
   return (
-    <div>
-      <hr></hr>
-      <h5>Export to Excel</h5>
-         <div><button onClick={()=>handleExportToExcel("users")}>Download Users</button></div>
-         <div>{'-'}</div>
-         <div><button onClick={()=>handleExportToExcel("attendance")}>Download Attendance</button></div>
-    </div>
-  )
+    <Button variant="secondary" onClick={() => handleExportToExcel(table)}>⏬ {table}</Button>
+  );
 }

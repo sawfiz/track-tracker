@@ -13,19 +13,18 @@ import {
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 
-const S = {};
-
-S.H3 = styled.h3`
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  color: var(--color-dark);
-`;
-
-S.ImgContainer = styled.div`
-  position: absolute;
-  top: 105px;
-  right: 5px;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-`;
+const S = {
+  H3: styled.h3`
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: var(--color-dark);
+  `,
+  ImgContainer: styled.div`
+    position: absolute;
+    top: 105px;
+    right: 5px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  `,
+};
 
 export default function AthleteDetails() {
   const { id } = useParams();
@@ -91,8 +90,7 @@ export default function AthleteDetails() {
           <a href="/children">My children</a>
         </p>
       )}
-      <p>
-      </p>
+      <p></p>
       <h2>{athleteInfo.name}</h2>
       <S.ImgContainer>
         <img
