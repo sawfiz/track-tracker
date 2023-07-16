@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { UserContext } from '../contexts/UserContext';
-import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
+import { AthleteContext } from '../contexts/AthleteContext';
 import AthletePersonalDetails from './AthletePersonalDetails';
 import AthleteAttendance from './AthleteAttendance';
 import AthleteNotes from './AthleteNotes';
@@ -42,7 +42,7 @@ const S = {
 
 export default function AthleteDetails() {
   const { id } = useParams();
-  const { getAthleteInfo, showEditModal } = useContext(AthleteDetailsContext);
+  const { getAthleteInfo, showEditModal } = useContext(AthleteContext);
   const { userInfo } = useContext(UserContext);
 
   const [athleteInfo, setAthleteInfo] = useState({});

@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
-import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
+import { AthleteContext } from '../contexts/AthleteContext';
 
 export default function EditAthleteModal({
   show,
@@ -15,7 +15,7 @@ export default function EditAthleteModal({
   hasNoName,
   hasNoGender,
 }) {
-  const { closeEditModal } = useContext(AthleteDetailsContext);
+  const { closeEditModal } = useContext(AthleteContext);
 
   return (
     <Modal show={show} onHide={closeEditModal} backdrop="static" centered>

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
 import styled from 'styled-components';
+import { AthleteContext } from '../contexts/AthleteContext';
 import boyImg from '../images/boy.png';
 import girlImg from '../images/girl.png';
 
@@ -55,7 +55,7 @@ const S = {
 };
 
 export default function Athlete({ athleteID, small }) {
-  const { getAthleteInfo } = useContext(AthleteDetailsContext);
+  const { getAthleteInfo } = useContext(AthleteContext);
   const [data, setData] = useState({});
 
   const fetchAthleteName = async () => {

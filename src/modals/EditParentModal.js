@@ -5,12 +5,10 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import { UserContext } from '../contexts/UserContext';
 import { AthleteContext } from '../contexts/AthleteContext';
-import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
 
 export default function EditParentModal({ show, hideModal, user }) {
   const { updateUser, getUserData } = useContext(UserContext);
-  const { athletes, getAthletes } = useContext(AthleteContext);
-  const { updateAthleteParent } = useContext(AthleteDetailsContext);
+  const { athletes, getAthletes, updateAthleteParent } = useContext(AthleteContext);
   const [children, setChildren] = useState(['', '', '', '']);
 
   const [data, setData] = useState({

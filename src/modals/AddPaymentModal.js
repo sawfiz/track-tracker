@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/esm/Button';
 import { UserContext } from '../contexts/UserContext';
-import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
+import { AthleteContext } from '../contexts/AthleteContext';
 import { db } from '../config/firebase';
 import { collection, addDoc } from 'firebase/firestore';
 
@@ -14,7 +14,7 @@ export default function AddPaymentModal({
   athleteID,
 }) {
   const { userInfo } = useContext(UserContext);
-  const { getAthleteInfo } = useContext(AthleteDetailsContext);
+  const { getAthleteInfo } = useContext(AthleteContext);
   const [data, setData] = useState({});
   const paymentsCollection = collection(db, 'users', athleteID, 'payments');
 

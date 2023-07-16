@@ -4,7 +4,6 @@ import { AthleteContext } from '../contexts/AthleteContext';
 import Athlete from './Athlete';
 import AddAthleteModal from '../modals/AddAthleteModal';
 import styled from 'styled-components';
-import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/esm/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -23,7 +22,7 @@ const S = {
 
 export default function ManageAthletes() {
   const { athletes, getAthletes } = useContext(AthleteContext);
-  const { showAddModal, openAddModal } = useContext(AthleteDetailsContext);
+  const { showAddModal, openAddModal } = useContext(AthleteContext);
 
   const [activeOnly, setActiveOnly] = useState(false);
   const [searchText, setSearchText] = useState('');

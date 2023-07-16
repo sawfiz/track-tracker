@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import styled from 'styled-components';
-import { AthleteDetailsContext } from '../contexts/AthleteDetailsContext';
+import { AthleteContext } from '../contexts/AthleteContext';
 import Button from 'react-bootstrap/esm/Button';
 import EditAthleteModal from '../modals/EditAthleteModal';
 
@@ -32,7 +32,7 @@ export default function AthletePersonalDetails({ id }) {
     showEditModal,
     updateAthlete,
     closeEditModal,
-  } = useContext(AthleteDetailsContext);
+  } = useContext(AthleteContext);
 
   const [athleteInfo, setAthleteInfo] = useState({});
   const [hasNoName, setHasNoName] = useState(false);
