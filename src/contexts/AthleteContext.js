@@ -1,13 +1,11 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState } from 'react';
 import { db } from '../config/firebase';
-import { UserContext } from './UserContext';
 
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 
 export const AthleteContext = createContext();
 
 export default function AthleteContextProvider(props) {
-  const { getUserName } = useContext(UserContext);
   const [athletes, setAthletes] = useState([]);
 
   const userCollection = collection(db, 'users');
@@ -29,8 +27,10 @@ export default function AthleteContextProvider(props) {
     setAthletes(sortedAthletes);
   };
 
-  const getAthleteName = (id) => {
-    return getUserName(id);
+  const getAthleteName = async (id) => {
+    const docSnapshot = await getDoc(doc(userCollection, id));
+    const name = docSnapshot.data().name;
+    return name;
   };
 
   const getAthleteID = async (name) => {

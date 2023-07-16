@@ -37,15 +37,15 @@ export default function Attendance({ attendance, showNames }) {
           {/* Render the following if need names of the attendees */}
           <S.Item>
             {showNames &&
-              attendees.map((athlete) => (
-                <AthleteName key={athlete} athlete={athlete} />
+              attendees.map((id) => (
+                <AthleteName key={id} id={id} />
               ))}
           </S.Item>
         </S.Attdendance>
       ) : (
         // When rendering in AthleteAttendance
         <S.Heading2>
-          <div style={{ fontWeight: 'bold' }}>{date}</div>{' '}
+          <div style={{ fontWeight: 'bold' }}>{date}</div>
           <div style={{ fontStyle: 'italic' }}>{stadium}</div>
         </S.Heading2>
       )}

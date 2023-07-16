@@ -1,9 +1,11 @@
+// Libraries
 import React, { createContext, useState } from 'react';
-import { db } from '../config/firebase';
-import { auth } from '../config/firebase';
-
 import { collection, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
 
+// Config
+import { db, auth } from '../config/firebase';
+
+// Code
 export const UserContext = createContext();
 
 export default function UserContextProvider(props) {
@@ -29,6 +31,7 @@ export default function UserContextProvider(props) {
   };
 
   // This should be info of the logged in user
+  // Sets the data in state
   const getUserInfo = async (id) => {
     const docSnapshot = await getDoc(doc(userCollection, id));
     const data = docSnapshot.data();
@@ -36,17 +39,11 @@ export default function UserContextProvider(props) {
   };
 
   // This should be info of the logged in user
+  // Returns user data
   const getUserData = async (id) => {
     const docSnapshot = await getDoc(doc(userCollection, id));
     const data = docSnapshot.data();
     return data;
-  };
-
-  // Used to get athlete and parent names
-  const getUserName = async (id) => {
-    const docSnapshot = await getDoc(doc(userCollection, id));
-    const name = docSnapshot.data().name;
-    return name;
   };
 
   const updateUser = async (user, data) => {
@@ -80,7 +77,6 @@ export default function UserContextProvider(props) {
         getUserInfo,
         getUserData,
         userInfo,
-        getUserName,
         getUsersWithNoRoles,
         updateUser,
         isLoggedIn,

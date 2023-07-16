@@ -23,6 +23,15 @@ body {
   height: 100vh;
 }
 
+.App {
+  background: var(--color-light);
+  width: clamp(var(--min-content-width), 100%, var(--max-content-width));
+  margin: auto;
+  position: relative;
+  min-height: calc(100vh - 1rem);
+  border-radius: 5px;
+}
+
 main {
   margin: 1rem;
 }

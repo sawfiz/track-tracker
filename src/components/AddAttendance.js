@@ -97,19 +97,6 @@ export default function AddAttendance() {
       .join('-');
   };
 
-  // if (record) {
-  //   setStadium(record.stadium);
-  // }
-
-  // convert FireStore timestamp to javascript Date
-  // let formattedDate = convertDateForInput(selectedDate);
-  // if (record) {
-  //   const timestamp = record.date;
-  //   // Firestore stores in seconds, Javascript uses miliseconds
-  //   const newDate = new Date(timestamp.seconds * 1000);
-  //   formattedDate = convertDateForInput(newDate);
-  // }
-
   const addAttendee = (id) => {
     setAttendeeList([...attendeeList, id]);
     console.log(attendeeList);

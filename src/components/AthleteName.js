@@ -2,13 +2,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AthleteContext } from '../contexts/AthleteContext';
 
-export default function AthleteName({ athlete }) {
+export default function AthleteName({ id }) {
   const { getAthleteName } = useContext(AthleteContext);
   const [athleteName, setAthleteName] = useState('');
 
   useEffect(() => {
     const fetchAthleteName = async () => {
-      const name = await getAthleteName(athlete);
+      const name = await getAthleteName(id);
       setAthleteName(name);
     };
     fetchAthleteName();
@@ -16,7 +16,7 @@ export default function AthleteName({ athlete }) {
 
   return (
     <div style={{ marginLeft: '1rem' }}>
-      <Link to={`/athletes/${athlete}`}>{athleteName}</Link>
+      <Link to={`/athletes/${id}`}>{athleteName}</Link>
     </div>
   );
 }
