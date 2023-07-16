@@ -53,7 +53,6 @@ const S = {
 export default function AddAttendance() {
   // Contexts
   const { getAttendance } = useContext(AttendanceContext);
-  // const { record, getAttendance } = useContext(AttendanceContext);
   const { athletes, getAthletes } = useContext(AthleteContext);
 
   // DB collection to use
@@ -68,16 +67,19 @@ export default function AddAttendance() {
   const [selectedDate, setSelectedDate] = useState(() => new Date());
   const startOfSelectedDate = startOfDay(selectedDate);
   // Data
-  const [record, setRecord] = useState({date:'', stadium:'', attendeeList:[]});
-  const { date, stadium, attendeeList } = record;
+  const [record, setRecord] = useState({
+    date: '',
+    stadium: '',
+    attendeeList: [],
+  });
+  const { stadium, attendeeList } = record;
 
   const [isStadiumEmpty, setIsStadiumEmpty] = useState(false);
   const [existingDoc, setExistingDoc] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [show, setShow] = useState(false);
 
   const fetchData = async () => {
     const data = await getAttendance(selectedDate);
-    console.log('🚀 ~ file: AddAttendance.js:72 ~ fetchData ~ data:', data);
     if (data) {
       setRecord(data);
     } else {
@@ -120,19 +122,16 @@ export default function AddAttendance() {
     const { name, value } = e.target;
     setRecord({ ...record, [name]: value });
   };
-  
+
   const addAttendee = (id) => {
     setRecord({ ...record, attendeeList: [...attendeeList, id] });
-    console.log(attendeeList);
   };
-  
+
   const removeAttendee = (id) => {
     const filteredList = attendeeList.filter((attendeeId) => attendeeId !== id);
     setRecord({ ...record, attendeeList: filteredList });
-    console.log(attendeeList);
   };
-  
-  // ! ------------------
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (attendeeList.length) {
@@ -141,23 +140,21 @@ export default function AddAttendance() {
           // Check if doc with the same date already exists
           const existingDocRef = await getDocs(
             query(
-              collection(db, 'attendance'),
+              attendenceCollection,
               where('date', '==', startOfSelectedDate)
             )
           );
 
           if (existingDocRef.docs.length > 0) {
             setExistingDoc(existingDocRef.docs[0]);
-            setIsOpen(true);
+            setShow(true);
           } else {
             const data = {
               date: startOfSelectedDate,
               stadium,
               attendeeList,
             };
-            console.log("🚀 ~ file: AddAttendance.js:158 ~ handleSubmit ~ data:", data)
             await addDoc(attendenceCollection, data);
-            console.log('New attendance record added.');
             alert('New attendance record added.');
             navigate('/admin');
           }
@@ -210,7 +207,7 @@ export default function AddAttendance() {
   };
 
   const handleClose = () => {
-    setIsOpen(false);
+    setShow(false);
   };
 
   return (
@@ -269,14 +266,11 @@ export default function AddAttendance() {
           </Button>
         </S.ButtonContainer>
       </form>
-      {isOpen && (
-        <SubmitAttendanceModal
-          show={isOpen}
-          handleClose={handleClose}
-          handleOverwrite={handleOverwrite}
-          // handleMerge={handleMerge}
-        />
-      )}
+      <SubmitAttendanceModal
+        show={show}
+        handleClose={handleClose}
+        handleOverwrite={handleOverwrite}
+      />
       {/* A div at the end of page to make sure Foot shows properly */}
       <div style={{ height: '2rem' }}></div>
     </main>
