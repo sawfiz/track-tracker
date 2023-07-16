@@ -72,14 +72,9 @@ export default function AddAttendance() {
 
   // On there is a new record, update date
   useEffect(() => {
-    console.log('🚀 ~ file: AddAttendance.js:76 ~ useEffect ~ record:', record);
     if (record) {
       setStadium(record.stadium);
       setAttendeeList([...record.attendeeList]);
-      console.log(
-        '🚀 ~ file: AddAttendance.js:77 ~ useEffect ~ record.attendeeList:',
-        record.attendeeList
-      );
     } else {
       setStadium('');
       setAttendeeList([]);

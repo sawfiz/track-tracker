@@ -81,7 +81,6 @@ S.SignOut = styled.button`
 
 export const Header = () => {
   const { setUserInfo, isLoggedIn, setIsLoggedIn } = useContext(UserContext);
-  console.log("🚀 ~ file: Header.js:82 ~ Header ~ isLoggedIn:", isLoggedIn)
   const user = auth.currentUser;
   const navigate = useNavigate();
 

@@ -43,7 +43,7 @@ export default function Admin() {
       <S.H3>Manage Attendances</S.H3>
       <S.Grid>
         <Button variant="primary">
-          <Link to="/add-attendance">
+          <Link to="/add-attendance" className='link-no-underline'> 
             <S.Content>
               <S.Icon>📝</S.Icon>
               <S.TextLight>Add</S.TextLight>
@@ -51,7 +51,7 @@ export default function Admin() {
           </Link>
         </Button>
         <Button>
-          <Link to="/attendance">
+          <Link to="/attendance" className='link-no-underline'>
             <S.Content>
               <S.Icon>🗂️</S.Icon>
               <S.TextLight>View</S.TextLight>
@@ -64,7 +64,7 @@ export default function Admin() {
       <S.H3>Manage Users</S.H3>
       <S.Grid>
         <Button variant="info">
-          <Link to="/athletes">
+          <Link to="/athletes" className='link-no-underline'>
             <S.Content>
               <S.Icon>🏃🏻‍♂️🏃🏻‍♀️</S.Icon>
               <S.TextDark>Athletes</S.TextDark>
@@ -72,7 +72,7 @@ export default function Admin() {
           </Link>
         </Button>
         <Button variant="info">
-          <Link to="/parents">
+          <Link to="/parents" className='link-no-underline'>
             <S.Content>
               <S.Icon>👨🏻👩🏻</S.Icon>
               <S.TextDark>Parents</S.TextDark>
@@ -80,7 +80,7 @@ export default function Admin() {
           </Link>
         </Button>
         <Button variant="info">
-          <Link to="/manage-users">
+          <Link to="/manage-users"  className='link-no-underline'>
             <S.Content>
               <S.Icon>🥷❓</S.Icon>
               <S.TextDark>Strangers</S.TextDark>

@@ -21,6 +21,7 @@ import AthleteDetails from './components/AthleteDetails';
 import ManageUsers from './components/ManageUsers';
 import ManageParents from './components/ManageParents';
 import Children from './components/Children';
+import { PrivateRoutes } from './components/PrivateRoutes';
 
 const S = {};
 S.App = styled.div`
@@ -60,7 +61,8 @@ function App() {
         <Header/>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route path="/*" element={<PrivateRoutes />} />
+          {/* <Route path="/admin" element={<Admin />} />
           <Route path="/add-attendance" element={<AddAttendance />} />
           <Route path="/attendance" element={<ShowAttendance />} />
           <Route path="/athletes" element={<ManageAthletes/>} />
@@ -70,7 +72,7 @@ function App() {
           <Route
           path="/athletes/:id"
           element={<AthleteDetails  />}
-        />
+        /> */}
         </Routes>
       </S.App>
       <Footer />
