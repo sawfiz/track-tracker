@@ -1,21 +1,29 @@
+// Libraries
 import React, { createContext, useState } from 'react';
-import { db } from '../config/firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import startOfDay from 'date-fns/startOfDay';
 
+// Config
+import { db } from '../config/firebase';
+
+// Code
 export const AttendanceContext = createContext();
 
 export default function AttendenceContextProvider(props) {
-  const [record, setRecord] = useState(null);
-
+  // DB collection to use
   const attendanceCollection = collection(db, 'attendance');
+
+  // States
+  // 
+  const [record, setRecord] = useState(null);
 
   const getAttendance = async (date) => {
     try {
       const existingDocRef = await getDocs(
         query(attendanceCollection, where('date', '==', startOfDay(date)))
       );
-      setRecord(existingDocRef.docs[0].data());
+      // setRecord(existingDocRef.docs[0].data());
+      return (existingDocRef.docs[0].data());
     } catch (error) {
       setRecord(null);
       console.log('Error getting documents: ', error);

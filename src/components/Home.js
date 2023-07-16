@@ -8,7 +8,7 @@ export const Home = () => {
   return (
     <main>
       {isLoggedIn && <p>Hello, {userInfo.name}</p>}
-      {isLoggedIn && userInfo.role === 'admin' && (
+      {isLoggedIn && (userInfo.role === 'admin' || userInfo.role === 'coach') && (
         <p>
           <Link to="/admin">Admin Tools</Link>
         </p>

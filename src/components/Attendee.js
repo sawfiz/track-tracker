@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-const S = {};
-S.Li = styled.div`
+const S = {
+  Li : styled.div`
   margin: 0.2rem;
-`;
+  `,
+};
+
 export default function Attendee({
   athlete,
   attendeeList,
   addAttendee,
   removeAttendee,
 }) {
+  console.log("🚀 ~ file: Attendee.js:16 ~ attendeeList:", attendeeList)
   const [isChecked, setIsChecked] = useState(false);
 
   // Perhaps attendeeList is updated after the initial rendering

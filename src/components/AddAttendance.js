@@ -1,11 +1,7 @@
+// Libraries
 import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import startOfDay from 'date-fns/startOfDay';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Button from 'react-bootstrap/Button';
-import styled from 'styled-components';
-import { db } from '../config/firebase';
 import {
   collection,
   getDocs,
@@ -16,71 +12,89 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
+// Config
+import { db } from '../config/firebase';
+
+// Styling
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Button from 'react-bootstrap/Button';
+
+// Components
 import Attendee from './Attendee';
-import SubmitAttendanceModal from '../modals/SubmitAttendanceModal';
 import { AttendanceContext } from '../contexts/AttendanceContext';
 import { AthleteContext } from '../contexts/AthleteContext';
 
-const S = {};
-S.Container = styled.div`
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-`;
+// Modal
+import SubmitAttendanceModal from '../modals/SubmitAttendanceModal';
 
-S.ButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-around;
-`;
+const S = {
+  Container: styled.div`
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  `,
+  Grid: styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1px dashed hotpink;
+    padding: 0.5rem;
+    margin: 1rem 0;
+  `,
+  ButtonContainer: styled.div`
+    display: flex;
+    justify-content: space-around;
+  `,
+};
 
-S.Grid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border: 1px dashed hotpink;
-  padding: 0.5rem;
-  margin: 1rem 0;
-`;
-
+// Code
 export default function AddAttendance() {
-  const { record, getAttendance } = useContext(AttendanceContext);
+  // Contexts
+  const { getAttendance } = useContext(AttendanceContext);
+  // const { record, getAttendance } = useContext(AttendanceContext);
   const { athletes, getAthletes } = useContext(AthleteContext);
 
+  // DB collection to use
+  const attendenceCollection = collection(db, 'attendance');
+  const navigate = useNavigate();
+
+  // States
   // ^ Very import that selectedDate is initialize by calling a function
   // Not just `new Date()`
   // This way it is initialized only once upon rendering
   // Not getting a new value on each rerender
   const [selectedDate, setSelectedDate] = useState(() => new Date());
-  const [stadium, setStadium] = useState('');
+  const startOfSelectedDate = startOfDay(selectedDate);
+  // Data
+  const [record, setRecord] = useState({date:'', stadium:'', attendeeList:[]});
+  const { date, stadium, attendeeList } = record;
+
   const [isStadiumEmpty, setIsStadiumEmpty] = useState(false);
-  const [attendeeList, setAttendeeList] = useState([]);
   const [existingDoc, setExistingDoc] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
+  const fetchData = async () => {
+    const data = await getAttendance(selectedDate);
+    console.log('🚀 ~ file: AddAttendance.js:72 ~ fetchData ~ data:', data);
+    if (data) {
+      setRecord(data);
+    } else {
+      setRecord({ date: '', stadium: '', attendeeList: [] });
+    }
+  };
+
   // On initial rendering
   useEffect(() => {
-    // Get data for today
-    getAttendance(selectedDate);
-    // Get athletes list
+    fetchData();
     getAthletes();
   }, []);
 
-  // On user selecting a new date, get data
+  // On user selecting a new date, get data of that day
   useEffect(() => {
-    getAttendance(selectedDate);
+    fetchData();
   }, [selectedDate]);
-
-  // On there is a new record, update date
-  useEffect(() => {
-    if (record) {
-      setStadium(record.stadium);
-      setAttendeeList([...record.attendeeList]);
-    } else {
-      setStadium('');
-      setAttendeeList([]);
-    }
-    console.log(attendeeList);
-  }, [record]);
 
   // Convert a Date to yyyy-mm-dd
   const convertDateForInput = (date) => {
@@ -97,20 +111,28 @@ export default function AddAttendance() {
       .join('-');
   };
 
+  const handelChangeDate = (e) => {
+    // selectDate is in javascript Date format
+    setSelectedDate(new Date(e.target.value));
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setRecord({ ...record, [name]: value });
+  };
+  
   const addAttendee = (id) => {
-    setAttendeeList([...attendeeList, id]);
+    setRecord({ ...record, attendeeList: [...attendeeList, id] });
     console.log(attendeeList);
   };
-
+  
   const removeAttendee = (id) => {
-    setAttendeeList(attendeeList.filter((attendeeId) => attendeeId !== id));
+    const filteredList = attendeeList.filter((attendeeId) => attendeeId !== id);
+    setRecord({ ...record, attendeeList: filteredList });
     console.log(attendeeList);
   };
-
-  const attendenceCollection = collection(db, 'attendance');
-  const navigate = useNavigate();
-  const startOfSelectedDate = startOfDay(selectedDate);
-
+  
+  // ! ------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (attendeeList.length) {
@@ -133,6 +155,7 @@ export default function AddAttendance() {
               stadium,
               attendeeList,
             };
+            console.log("🚀 ~ file: AddAttendance.js:158 ~ handleSubmit ~ data:", data)
             await addDoc(attendenceCollection, data);
             console.log('New attendance record added.');
             alert('New attendance record added.');
@@ -190,11 +213,6 @@ export default function AddAttendance() {
     setIsOpen(false);
   };
 
-  const handelChangeDate = (e) => {
-    // selectDate is in javascript Date format
-    setSelectedDate(new Date(e.target.value));
-  };
-
   return (
     <main>
       <p>
@@ -218,8 +236,9 @@ export default function AddAttendance() {
           <Form.Select
             required
             isInvalid={isStadiumEmpty}
+            name="stadium"
             value={stadium}
-            onChange={(e) => setStadium(e.target.value)}
+            onChange={handleChange}
           >
             <option>-</option>
             <option value="Bukit Gombak">Bukit Gombak</option>
