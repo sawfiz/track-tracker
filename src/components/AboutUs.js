@@ -3,9 +3,6 @@ import React, { useState, useEffect } from 'react';
 import {
   collection,
   getDocs,
-  doc,
-  addDoc,
-  updateDoc,
 } from 'firebase/firestore';
 
 // Config

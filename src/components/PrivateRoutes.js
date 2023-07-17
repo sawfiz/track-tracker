@@ -33,7 +33,6 @@ export const PrivateRoutes = () => {
         <Route path="/athletes/:id" element={<AthleteDetails />} />
         <Route path="/edit-about" element={<EditAboutUs />} />
         <Route path="/edit-news" element={<EditNews />} />
-
       </Routes>
     </>
   );

@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+
+// Components
 import { UserContext } from '../contexts/UserContext';
 import AboutUs from './AboutUs';
 import News from './News';

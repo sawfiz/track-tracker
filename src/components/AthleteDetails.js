@@ -23,7 +23,6 @@ const S = {
     /* font-family: 'Roboto'; */
     color: #444;
   `,
-  ImgContainer: styled.div``,
   ImageContainer: styled.div`
     position: absolute;
     top: 105px;

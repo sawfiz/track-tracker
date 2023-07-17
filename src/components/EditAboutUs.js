@@ -18,12 +18,6 @@ import Button from 'react-bootstrap/esm/Button';
 import Form from 'react-bootstrap/Form';
 
 const S = {
-  Grid: styled.div`
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin: 1rem 0;
-  `,
   Buttons: styled.div`
     margin: 1rem;
     display: flex;
