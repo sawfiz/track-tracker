@@ -1,16 +1,13 @@
 // Libraries
-import React, { useState } from 'react';
-import {
-  collection,
-  getDocs,
-  doc,
-  addDoc,
-  updateDoc,
-} from 'firebase/firestore';
+import React, { useState, useContext } from 'react';
+import { collection, addDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 // Config
 import { db } from '../config/firebase';
+
+// Contexts
+import { UserContext } from '../contexts/UserContext';
 
 // Styling
 import Modal from 'react-bootstrap/Modal';
@@ -18,8 +15,10 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 
+// Code
 export default function AddNewsModal({ show, hideAddModal }) {
   const newsCollection = collection(db, 'news');
+  const { userInfo } = useContext(UserContext);
 
   // Input fields in the form
   const [formData, setFormData] = useState({
@@ -28,19 +27,20 @@ export default function AddNewsModal({ show, hideAddModal }) {
     text: '',
     photoURL: '',
     publish: false,
+    publishedBy: userInfo.name,
   });
 
-  const [hasNoName, setHasNoName] = useState(false);
-  const [hasNoGender, setHasNoGendar] = useState(false);
+  const [hasDate, setHasDate] = useState(false);
+  const [hasHeadline, setHasHeadline] = useState(false);
 
   // Function to handle changes in the form
   const handleChange = (e) => {
-    // if (e.target.name === 'name' && e.target.value) {
-    //   setHasNoName(false);
-    // }
-    // if (e.target.name === 'gender' && e.target.value) {
-    //   setHasNoGendar(false);
-    // }
+    if (e.target.name === 'date' && e.target.value) {
+      setHasDate(true);
+    }
+    if (e.target.name === 'headline' && e.target.value) {
+      setHasHeadline(true);
+    }
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -63,21 +63,18 @@ export default function AddNewsModal({ show, hideAddModal }) {
     e.preventDefault();
 
     console.log(formData);
-    await addDoc(newsCollection, formData);
 
-    hideAddModal();
-
-    // if (formData.name) {
-    //   setHasNoName(false);
-    //   if (formData.gender) {
-    //     setHasNoGendar(false);
-    //     // addAthlete(formData);
-    //     hideAddModal();
-    //   } else {
-    //     setHasNoGendar(true);
-    //   }
-    //   setHasNoName(true);
-    // }
+    if (formData.date) {
+      setHasDate(true);
+      if (formData.headline) {
+        setHasHeadline(true);
+        await addDoc(newsCollection, formData);
+        hideAddModal();
+      } else {
+        setHasHeadline(false);
+      }
+      setHasDate(false);
+    }
   };
 
   return (
@@ -92,18 +89,19 @@ export default function AddNewsModal({ show, hideAddModal }) {
             <InputGroup className="mb-3">
               <InputGroup.Text>Date</InputGroup.Text>
               <Form.Control
+                isInvalid={!hasDate}
                 type="date"
                 name="date"
                 onChange={handleChange}
                 placeholder="Date of Birth"
-                />
+              />
             </InputGroup>
 
             <InputGroup className="mb-3">
               <InputGroup.Text>Headline</InputGroup.Text>
               <Form.Control
                 autoFocus
-                isInvalid={hasNoName}
+                isInvalid={!hasHeadline}
                 as="textarea"
                 rows={2}
                 placeholder=""
@@ -113,7 +111,6 @@ export default function AddNewsModal({ show, hideAddModal }) {
             </InputGroup>
 
             <Form.Control
-              isInvalid={hasNoName}
               as="textarea"
               rows={8}
               placeholder="Enter news here..."
