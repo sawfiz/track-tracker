@@ -20,9 +20,28 @@ export default function AddNewsModal({ show, hideAddModal }) {
   const newsCollection = collection(db, 'news');
   const { userInfo } = useContext(UserContext);
 
+  // Convert a Date to yyyy-mm-dd
+  const convertDateForInput = (date) => {
+    const options = {
+      timeZone: 'Asia/Singapore',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    };
+    return date
+      .toLocaleDateString('en-GB', options)
+      .split('/')
+      .reverse()
+      .join('-');
+  };
+
   // Input fields in the form
+  const [selectedDate, setSelectedDate] = useState(() =>
+    convertDateForInput(new Date())
+  );
+  const [hasHeadline, setHasHeadline] = useState(true);
   const [formData, setFormData] = useState({
-    date: '',
+    date: selectedDate,
     headline: '',
     text: '',
     photoURL: '',
@@ -30,14 +49,8 @@ export default function AddNewsModal({ show, hideAddModal }) {
     publishedBy: userInfo.name,
   });
 
-  const [hasDate, setHasDate] = useState(false);
-  const [hasHeadline, setHasHeadline] = useState(false);
-
   // Function to handle changes in the form
   const handleChange = (e) => {
-    if (e.target.name === 'date' && e.target.value) {
-      setHasDate(true);
-    }
     if (e.target.name === 'headline' && e.target.value) {
       setHasHeadline(true);
     }
@@ -61,11 +74,7 @@ export default function AddNewsModal({ show, hideAddModal }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log(formData);
-
     if (formData.date) {
-      setHasDate(true);
       if (formData.headline) {
         setHasHeadline(true);
         await addDoc(newsCollection, formData);
@@ -73,7 +82,6 @@ export default function AddNewsModal({ show, hideAddModal }) {
       } else {
         setHasHeadline(false);
       }
-      setHasDate(false);
     }
   };
 
@@ -89,9 +97,9 @@ export default function AddNewsModal({ show, hideAddModal }) {
             <InputGroup className="mb-3">
               <InputGroup.Text>Date</InputGroup.Text>
               <Form.Control
-                isInvalid={!hasDate}
                 type="date"
                 name="date"
+                value={selectedDate}
                 onChange={handleChange}
                 placeholder="Date of Birth"
               />
@@ -143,7 +151,7 @@ export default function AddNewsModal({ show, hideAddModal }) {
             Cancel
           </Button>
           <Button variant="primary" onClick={handleSubmit}>
-            Add
+            Save
           </Button>
         </Modal.Footer>
       </Modal.Dialog>

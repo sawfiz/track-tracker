@@ -46,13 +46,11 @@ export default function NewsDetails() {
     fetchData();
   }, []);
 
-
   const openDelModal = () => {
     setShowDelModal(true)
   }
 
   const hideDelModal = () => {
-    console.log("close");
     setShowDelModal(false)
   }
 

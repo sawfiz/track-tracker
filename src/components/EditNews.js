@@ -1,11 +1,9 @@
 // Libraries
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   collection,
   getDocs,
-  doc,
-  addDoc,
-  updateDoc,
 } from 'firebase/firestore';
 
 // Config
@@ -59,16 +57,17 @@ export default function EditNews() {
 
   const showAddModal = () => {
     setShow(true);
-    console.log('clicked on Add');
   };
 
   const hideAddModal = () => {
     setShow(false);
-    console.log('clicked on Add');
   };
 
   return (
     <main>
+      <p>
+        <Link to="/admin">Admin Tools</Link>
+      </p>
       <h2>Edit News</h2>
       {news.map((item) => (
         <NewsBrief key={item.id} news={item} headlineOnly={true} />
