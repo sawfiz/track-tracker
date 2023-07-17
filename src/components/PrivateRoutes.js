@@ -10,6 +10,8 @@ import AthleteDetails from './AthleteDetails';
 import ManageUsers from './ManageUsers';
 import ManageParents from './ManageParents';
 import Children from './Children';
+import EditAboutUs from './EditAboutUs';
+import EditNews from './EditNews';
 
 export const PrivateRoutes = () => {
   const { isLoggedIn } = useContext(UserContext);
@@ -29,6 +31,9 @@ export const PrivateRoutes = () => {
         <Route path="/parents" element={<ManageParents />} />
         <Route path="/children" element={<Children />} />
         <Route path="/athletes/:id" element={<AthleteDetails />} />
+        <Route path="/edit-about" element={<EditAboutUs />} />
+        <Route path="/edit-news" element={<EditNews />} />
+
       </Routes>
     </>
   );

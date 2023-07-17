@@ -7,11 +7,17 @@ import styled from 'styled-components';
 const S = {
   H3: styled.h3`
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    color: var(--color-dark);
+    color: #444;
   `,
-  Grid: styled.div`
+  Grid2: styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 1rem 0;
+  `,
+  Grid3: styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     margin: 1rem 0;
   `,
@@ -40,8 +46,8 @@ export default function Admin() {
   return (
     <main>
       <h2>Admin Tools</h2>
-      <S.H3>Manage Attendances</S.H3>
-      <S.Grid>
+      <S.H3>Attendances</S.H3>
+      <S.Grid2>
         <Button variant="primary">
           <Link to="/add-attendance" className='link-no-underline'> 
             <S.Content>
@@ -58,11 +64,11 @@ export default function Admin() {
             </S.Content>
           </Link>
         </Button>
-        <Download table="attendance" />
-      </S.Grid>
+        {/* <Download table="attendance" /> */}
+      </S.Grid2>
       <hr></hr>
-      <S.H3>Manage Users</S.H3>
-      <S.Grid>
+      <S.H3>Users</S.H3>
+      <S.Grid3>
         <Button variant="info">
           <Link to="/athletes" className='link-no-underline'>
             <S.Content>
@@ -82,13 +88,35 @@ export default function Admin() {
         <Button variant="info">
           <Link to="/manage-users"  className='link-no-underline'>
             <S.Content>
-              <S.Icon>🥷❓</S.Icon>
+              <S.Icon>🥷</S.Icon>
               <S.TextDark>Strangers</S.TextDark>
             </S.Content>
           </Link>
         </Button>
-        <Download table="users" />
-      </S.Grid>
+        {/* <Download table="users" /> */}
+      </S.Grid3>
+
+      <hr></hr>
+      <S.H3>Content</S.H3>
+      <S.Grid2>
+        <Button variant="success">
+          <Link to="/edit-news" className='link-no-underline'>
+            <S.Content>
+              <S.Icon>📰</S.Icon>
+              <S.TextLight>News</S.TextLight>
+            </S.Content>
+          </Link>
+        </Button>
+        <Button variant="success">
+          <Link to="/edit-about" className='link-no-underline'>
+            <S.Content>
+              <S.Icon>💪🏽💪🏽</S.Icon>
+              <S.TextLight>About Us</S.TextLight>
+            </S.Content>
+          </Link>
+        </Button>
+      </S.Grid2>
+      <div style={{ height: '2rem' }}></div>
     </main>
   );
 }

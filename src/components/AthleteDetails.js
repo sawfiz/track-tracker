@@ -15,11 +15,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import boyImg from '../images/boy.png';
 import girlImg from '../images/girl.png';
+import 'typeface-roboto';
 
 const S = {
   H3: styled.h3`
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    color: var(--color-dark);
+    /* font-family: 'Roboto'; */
+    color: #444;
   `,
   ImgContainer: styled.div``,
   ImageContainer: styled.div`
