@@ -29,9 +29,12 @@ const S = {
     margin: 1rem 0;
   `,
   CroppedImage: styled.img`
+    margin: 1rem 0;
+    border-radius: 10px;
     object-fit: cover;
     object-position: center center;
     width: 100%;
+    max-height: 200px;
   `,
 };
 
@@ -111,6 +114,7 @@ export default function NewsDetails() {
     e.preventDefault();
     if (news.headline) {
       setHasHeadline(true);
+      setNews({ ...news, publishedBy: userInfo.name });
       const newsDoc = doc(newsCollection, id);
       await updateDoc(newsDoc, news);
       hideEditModal();
@@ -147,7 +151,7 @@ export default function NewsDetails() {
             <S.CroppedImage src={newsImg} alt="news" />
           )}
         </>
-        {news.text}
+        <div dangerouslySetInnerHTML={{ __html: news.text }} />
       </div>
       <DelNewsModal
         show={showDelModal}
@@ -164,6 +168,7 @@ export default function NewsDetails() {
         handleChangePhoto={handleChangePhoto}
         handleSubmit={handleSubmit}
       />
+      <div style={{ height: '2rem' }}></div>
     </main>
   );
 }
