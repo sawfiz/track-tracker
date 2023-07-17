@@ -1,12 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import newsImg from '../images/default-news.png';
 
 const S = {
-  NewsContainer : styled.div`
-  margin: 1rem 0;
-  display: grid;
-  grid-template-columns: 120px auto;
+  NewsContainer: styled.div`
+    margin: 1rem 0;
+    display: grid;
+    grid-template-columns: 120px auto;
   `,
   ImageContainer: styled.div`
     width: 100px;
@@ -23,14 +24,13 @@ const S = {
   `,
 };
 
-export default function NewsItem({ news, headlineOnly }) {
-  const {date, headline, text, photoURL, publish} = news.data();
+export default function NewsBrief({ news, headlineOnly }) {
+  const { date, headline, text, photoURL, publish } = news.data();
   return (
     <div>
       {headlineOnly ? (
         <>
-          {' '}
-          {date} {headline}{' '}
+          {date} <Link to={`/news/${news.id}`}>{headline}</Link>{' '}
         </>
       ) : (
         <S.NewsContainer>
@@ -40,11 +40,11 @@ export default function NewsItem({ news, headlineOnly }) {
             ) : (
               <S.CroppedImage src={newsImg} alt="news" />
             )}
-          </S.ImageContainer>{' '}
+          </S.ImageContainer>
           <div>
-            <div>{date}</div> 
-          {headline}
-            </div>
+            <div>{date}</div>
+            <Link to={`/news/${news.id}`}>{headline}</Link>
+          </div>
         </S.NewsContainer>
       )}
     </div>

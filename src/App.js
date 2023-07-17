@@ -19,6 +19,7 @@ import { Header } from './components/Header';
 import { Home } from './components/Home';
 import { PrivateRoutes } from './components/PrivateRoutes';
 import Footer from './components/Footer';
+import NewsDetails from './components/NewsDetails';
 
 // Code
 function App() {
@@ -45,10 +46,11 @@ function App() {
 
   return (
     <>
-      <div className='App'>
-        <Header/>
+      <div className="App">
+        <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/news/:id" element={<NewsDetails />} />
           <Route path="/*" element={<PrivateRoutes />} />
         </Routes>
       </div>

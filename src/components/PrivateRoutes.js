@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { UserContext } from '../contexts/UserContext';
 
+// Components
 import Admin from './Admin';
 import AddAttendance from './AddAttendance';
 import ShowAttendance from './ShowAttendance';

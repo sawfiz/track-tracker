@@ -12,7 +12,7 @@ import {
 import { db } from '../config/firebase';
 
 // Components
-import NewsItem from './NewsItem';
+import NewsBrief from './NewsBrief';
 
 // Styling
 import styled from 'styled-components';
@@ -41,7 +41,12 @@ export default function EditNews() {
 
   const fetchData = async () => {
     const docRefs = await getDocs(newsCollection);
-    setNews(docRefs.docs);
+    const sortedNews = docRefs.docs.sort((a, b) => {
+      const dateA = a.data().date;
+      const dateB = b.data().date;
+      return dateB.localeCompare(dateA);
+    });
+    setNews(sortedNews);
   };
 
   useEffect(() => {
@@ -52,7 +57,6 @@ export default function EditNews() {
     fetchData();
   }, [show]);
 
-  
   const showAddModal = () => {
     setShow(true);
     console.log('clicked on Add');
@@ -63,12 +67,11 @@ export default function EditNews() {
     console.log('clicked on Add');
   };
 
-
   return (
     <main>
       <h2>Edit News</h2>
       {news.map((item) => (
-        <NewsItem key={item.id} news={item} headlineOnly={true}/>
+        <NewsBrief key={item.id} news={item} headlineOnly={true} />
       ))}
       <S.Buttons>
         <Button variant="primary" onClick={showAddModal}>
