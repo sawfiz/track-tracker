@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams } from 'react-router-dom';
-import { collection, doc, getDoc } from 'firebase/firestore';
+import { useParams, useNavigate } from 'react-router-dom';
+import { collection, doc, getDoc, deleteDoc } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -8,6 +8,8 @@ import styled from 'styled-components';
 import { db } from '../config/firebase';
 
 import { UserContext } from '../contexts/UserContext';
+
+import DelNewsModal from '../modals/DelNewsModal';
 
 import Button from 'react-bootstrap/esm/Button';
 import newsImg from '../images/default-news.png';
@@ -29,8 +31,10 @@ export default function NewsDetails() {
   const { isLoggedIn, userInfo } = useContext(UserContext);
   const { id } = useParams();
   const newsCollection = collection(db, 'news');
+  const navigate = useNavigate();
 
   const [news, setNews] = useState([]);
+  const [showDelModal, setShowDelModal] = useState(false)
 
   const fetchData = async () => {
     const docRef = doc(newsCollection, id);
@@ -42,6 +46,29 @@ export default function NewsDetails() {
     fetchData();
   }, []);
 
+
+  const openDelModal = () => {
+    setShowDelModal(true)
+  }
+
+  const hideDelModal = () => {
+    console.log("close");
+    setShowDelModal(false)
+  }
+
+  const deleteNews = async () => {
+    try {
+      const docRef = doc(newsCollection, id);
+      await deleteDoc(docRef);
+      console.log('Document deleted successfully.');
+      navigate('/edit-news')
+      hideDelModal();
+    } catch (error) {
+      console.error('Error deleting document:', error);
+    }
+  }
+
+  
   return (
     <main>
       {isLoggedIn &&
@@ -52,7 +79,7 @@ export default function NewsDetails() {
             </p>
             <S.Buttons>
               <Button variant="primary">Edit this</Button>
-              <Button variant="danger">Delete this</Button>
+              <Button variant="danger" onClick={openDelModal}>Delete this</Button>
             </S.Buttons>
           </>
         )}
@@ -68,6 +95,7 @@ export default function NewsDetails() {
         </>
         {news.text}
       </div>
+      <DelNewsModal show={showDelModal} hideDelModal={hideDelModal} deleteNews={deleteNews} />
     </main>
   );
 }
