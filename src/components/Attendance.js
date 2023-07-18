@@ -21,7 +21,7 @@ S.Heading2 = styled.div`
 `;
 
 export default function Attendance({ attendance, showNames }) {
-  const date = attendance.data().date.toDate().toDateString();
+  const date = attendance.data().date;
   const stadium = attendance.data().stadium;
   const attendees = attendance.data().attendeeList;
 

@@ -1,7 +1,6 @@
 // Libraries
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import startOfDay from 'date-fns/startOfDay';
 import {
   collection,
   getDocs,
@@ -9,7 +8,6 @@ import {
   where,
   addDoc,
   setDoc,
-  updateDoc,
 } from 'firebase/firestore';
 import styled from 'styled-components';
 
@@ -58,65 +56,6 @@ export default function AddAttendance() {
   const attendenceCollection = collection(db, 'attendance');
   const navigate = useNavigate();
 
-  // States
-  // ^ Very import that selectedDate is initialize by calling a function
-  // Not just `new Date()`
-  // This way it is initialized only once upon rendering
-  // Not getting a new value on each rerender
-  const [selectedDate, setSelectedDate] = useState(() => new Date());
-  const startOfSelectedDate = startOfDay(selectedDate);
-  // Data
-  const [record, setRecord] = useState({
-    date: '',
-    stadium: '',
-    attendeeList: [],
-  });
-  const { stadium, attendeeList } = record;
-
-  const [isInitialRender, setIsInitialRender] = useState(true);
-  const [isStadiumEmpty, setIsStadiumEmpty] = useState(false);
-  const [existingDoc, setExistingDoc] = useState(null);
-  const [show, setShow] = useState(false);
-
-  const fetchDataInit = async () => {
-    const data = await getAttendance(selectedDate);
-    if (data) {
-      setRecord(data);
-    } else {
-      setRecord({ date: '', stadium: '', attendeeList: [] });
-    }
-    setIsInitialRender(false);
-  };
-
-  const fetchDataLater = async (std) => {
-    const data = await getAttendance(selectedDate, std);
-    if (data) {
-      setRecord(data);
-    }
-    else {
-      setRecord({ ...record, attendeeList: [] });
-    }
-  };
-
-  // On initial rendering
-  useEffect(() => {
-    fetchDataInit();
-    getAthletes();
-  }, []);
-
-  useEffect(() => {
-    if (!isInitialRender) {
-      fetchDataLater(stadium);
-    }
-  }, [stadium]);
-
-  // On user selecting a new date, get data of that day
-  useEffect(() => {
-    if (!isInitialRender) {
-      fetchDataInit();
-    }
-  }, [selectedDate]);
-
   // Convert a Date to yyyy-mm-dd
   const convertDateForInput = (date) => {
     const options = {
@@ -132,10 +71,57 @@ export default function AddAttendance() {
       .join('-');
   };
 
-  const handelChangeDate = (e) => {
-    // selectDate is in javascript Date format
-    setSelectedDate(new Date(e.target.value));
+  // States
+  const [today, setToday] = useState(()=> convertDateForInput(new Date()))
+  const [record, setRecord] = useState({
+    date: today,
+    stadium: '',
+    attendeeList: [],
+  });
+  const { date, stadium, attendeeList } = record;
+
+  const [isInitialRender, setIsInitialRender] = useState(true);
+  const [isStadiumEmpty, setIsStadiumEmpty] = useState(false);
+  const [existingDoc, setExistingDoc] = useState(null);
+  // Show submit confirmation modal
+  const [show, setShow] = useState(false);
+
+  const fetchDataInit = async () => {
+    const data = await getAttendance(date);
+    if (data) {
+      setRecord(data);
+    }
+    setIsInitialRender(false);
   };
+
+  const fetchDataLater = async (std) => {
+    const data = await getAttendance(date, std);
+    if (data) {
+      setRecord(data);
+    } else {
+      setRecord({ ...record, stadium: '', attendeeList: [] });
+    }
+  };
+
+  // On initial rendering
+  useEffect(() => {
+    fetchDataInit();
+    getAthletes();
+  }, []);
+
+  // On user selecting a new stadium
+  useEffect(() => {
+    if (!isInitialRender) {
+      fetchDataLater(stadium);
+    }
+  }, [stadium]);
+
+  // On user selecting a new date
+  useEffect(() => {
+    if (!isInitialRender) {
+      fetchDataLater();
+    }
+  }, [date]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -154,14 +140,11 @@ export default function AddAttendance() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (attendeeList.length) {
-      if (stadium && stadium !== '-') {
+      if (stadium) {
         try {
           // Check if docs with the same date already exist
           const existingDocRef = await getDocs(
-            query(
-              attendenceCollection,
-              where('date', '==', startOfSelectedDate)
-            )
+            query(attendenceCollection, where('date', '==', date))
           );
 
           // Identify the doc that has the same stadium
@@ -179,12 +162,7 @@ export default function AddAttendance() {
           if (recordExists) {
             setShow(true);
           } else {
-            const data = {
-              date: startOfSelectedDate,
-              stadium,
-              attendeeList,
-            };
-            await addDoc(attendenceCollection, data);
+            await addDoc(attendenceCollection, record);
             alert('New attendance record added.');
             navigate('/admin');
           }
@@ -192,7 +170,6 @@ export default function AddAttendance() {
           console.log('Error adding or updating attendance', err.message);
         }
       } else {
-        // alert('Please select a stadium.');
         setIsStadiumEmpty(true);
       }
     } else {
@@ -205,34 +182,9 @@ export default function AddAttendance() {
   };
 
   const handleOverwrite = async () => {
-    const data = { date: startOfSelectedDate, stadium, attendeeList };
+    const data = { date, stadium, attendeeList };
     await setDoc(existingDoc.ref, data);
     console.log('Attendance record overwritten.');
-    navigate('/admin');
-  };
-
-  const handleMerge = async () => {
-    const existingAttendeeList = existingDoc.data().attendeeList;
-
-    // Create a set with existing attendees
-    const uniqueAttendeeSet = new Set(existingAttendeeList);
-
-    // Add unique attendees from attendeeList to the set
-    // The Set data structure automatically removes duplicates.
-    attendeeList.forEach((attendee) => {
-      uniqueAttendeeSet.add(attendee);
-    });
-
-    // Convert the set back to an array
-    const mergedAttendeeList = Array.from(uniqueAttendeeSet);
-
-    const data = {
-      date: startOfSelectedDate,
-      stadium,
-      attendeeList: mergedAttendeeList,
-    };
-    await updateDoc(existingDoc.ref, data);
-    console.log('Attendance record merged.');
     navigate('/admin');
   };
 
@@ -253,9 +205,10 @@ export default function AddAttendance() {
           </InputGroup.Text>
           <Form.Control
             type="date"
+            name="date"
             // value needs to be in yyyy-mm-dd format
-            value={convertDateForInput(selectedDate)}
-            onChange={handelChangeDate}
+            value={date}
+            onChange={handleChange}
           />
         </InputGroup>
         <InputGroup className="mb-3">
@@ -267,7 +220,7 @@ export default function AddAttendance() {
             value={stadium}
             onChange={handleChange}
           >
-            <option>-</option>
+            <option></option>
             <option value="Bukit Gombak">Bukit Gombak</option>
             <option value="Choa Chu Kang">Choa Chu Kang</option>
             <option value="Clmenti">Clementi</option>

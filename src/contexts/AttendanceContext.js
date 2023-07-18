@@ -21,7 +21,7 @@ export default function AttendenceContextProvider(props) {
     console.log('Getting attendance');
     try {
       const existingDocRef = await getDocs(
-        query(attendanceCollection, where('date', '==', startOfDay(date)))
+        query(attendanceCollection, where('date', '==', date))
       );
       if (!stadium) {
         return existingDocRef.docs[0].data();
@@ -35,7 +35,7 @@ export default function AttendenceContextProvider(props) {
     } catch (error) {
       setRecord(null);
       console.log('Error getting documents: ', error);
-      console.log('No record for ', startOfDay(date));
+      console.log('No record for ', date);
     }
   };
 
@@ -43,9 +43,9 @@ export default function AttendenceContextProvider(props) {
     const docRefs = await getDocs(attendanceCollection);
     // Sort date in descending order
     const sortedAttendances = docRefs.docs.sort((a, b) => {
-      const dateA = a.data().date.toDate();
-      const dateB = b.data().date.toDate();
-      return dateB - dateA;
+      const dateA = a.data().date;
+      const dateB = b.data().date;
+      return dateB.localeCompare(dateA);
     });
     return sortedAttendances;
   };

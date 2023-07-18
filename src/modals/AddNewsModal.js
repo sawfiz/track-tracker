@@ -36,12 +36,12 @@ export default function AddNewsModal({ show, hideAddModal }) {
   };
 
   // Input fields in the form
-  const [selectedDate, setSelectedDate] = useState(() =>
-    convertDateForInput(new Date())
-  );
+  // const [selectedDate, setSelectedDate] = useState());
   const [hasHeadline, setHasHeadline] = useState(true);
+  const [today, setToday] = useState(() => convertDateForInput(new Date()));
   const [formData, setFormData] = useState({
-    date: selectedDate,
+    // date: today,
+    date: today,
     headline: '',
     text: '',
     photoURL: '',
@@ -51,10 +51,11 @@ export default function AddNewsModal({ show, hideAddModal }) {
 
   // Function to handle changes in the form
   const handleChange = (e) => {
-    if (e.target.name === 'headline' && e.target.value) {
+    const { name, value } = e.target;
+    if (name === 'headline' && value) {
       setHasHeadline(true);
     }
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleChangePhoto = async (e) => {
@@ -99,9 +100,8 @@ export default function AddNewsModal({ show, hideAddModal }) {
               <Form.Control
                 type="date"
                 name="date"
-                value={selectedDate}
+                value={formData.date}
                 onChange={handleChange}
-                placeholder="Date of Birth"
               />
             </InputGroup>
 
