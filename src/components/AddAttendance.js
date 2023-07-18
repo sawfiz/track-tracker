@@ -73,28 +73,46 @@ export default function AddAttendance() {
   });
   const { stadium, attendeeList } = record;
 
+  const [isInitialRender, setIsInitialRender] = useState(true);
   const [isStadiumEmpty, setIsStadiumEmpty] = useState(false);
   const [existingDoc, setExistingDoc] = useState(null);
   const [show, setShow] = useState(false);
 
-  const fetchData = async () => {
+  const fetchDataInit = async () => {
     const data = await getAttendance(selectedDate);
+    console.log('🚀 ~ file: AddAttendance.js:83 ~ fetchDataInit ~ data:', data);
     if (data) {
       setRecord(data);
     } else {
       setRecord({ date: '', stadium: '', attendeeList: [] });
     }
+    setIsInitialRender(false);
+  };
+
+  const fetchDataLater = async (std) => {
+    const data = await getAttendance(selectedDate, std);
+    if (data) {
+      setRecord({ ...data, attendeeList: data.attendeeList });
+    }
   };
 
   // On initial rendering
   useEffect(() => {
-    fetchData();
+    fetchDataInit();
     getAthletes();
   }, []);
 
+  useEffect(() => {
+    if (!isInitialRender) {
+      fetchDataLater(stadium);
+    }
+  }, [stadium]);
+
   // On user selecting a new date, get data of that day
   useEffect(() => {
-    fetchData();
+    if (!isInitialRender) {
+      fetchDataInit();
+    }
   }, [selectedDate]);
 
   // Convert a Date to yyyy-mm-dd
@@ -136,7 +154,7 @@ export default function AddAttendance() {
     if (attendeeList.length) {
       if (stadium) {
         try {
-          // Check if doc with the same date already exists
+          // Check if docs with the same date already exist
           const existingDocRef = await getDocs(
             query(
               attendenceCollection,
@@ -144,8 +162,19 @@ export default function AddAttendance() {
             )
           );
 
+          // Identify the doc that has the same stadium
+          let recordExists = false;
           if (existingDocRef.docs.length > 0) {
-            setExistingDoc(existingDocRef.docs[0]);
+            existingDocRef.forEach((docRef) => {
+              if (docRef.data().stadium === stadium) {
+                setExistingDoc(docRef);
+                recordExists = true;
+              }
+            });
+          }
+
+          // if (existingDocRef.docs.length > 0 && existingDocRef.docs[0].data().stadium === stadium) {
+          if (recordExists) {
             setShow(true);
           } else {
             const data = {
