@@ -99,7 +99,7 @@ export default function AddAttendance() {
     if (data) {
       setRecord(data);
     } else {
-      setRecord({ ...record, stadium: '', attendeeList: [] });
+      setRecord({ ...record, attendeeList: [] });
     }
   };
 
