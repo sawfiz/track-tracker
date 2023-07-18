@@ -80,7 +80,6 @@ export default function AddAttendance() {
 
   const fetchDataInit = async () => {
     const data = await getAttendance(selectedDate);
-    console.log('🚀 ~ file: AddAttendance.js:83 ~ fetchDataInit ~ data:', data);
     if (data) {
       setRecord(data);
     } else {
@@ -92,7 +91,10 @@ export default function AddAttendance() {
   const fetchDataLater = async (std) => {
     const data = await getAttendance(selectedDate, std);
     if (data) {
-      setRecord({ ...data, attendeeList: data.attendeeList });
+      setRecord(data);
+    }
+    else {
+      setRecord({ ...record, attendeeList: [] });
     }
   };
 
@@ -152,7 +154,7 @@ export default function AddAttendance() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (attendeeList.length) {
-      if (stadium) {
+      if (stadium && stadium !== '-') {
         try {
           // Check if docs with the same date already exist
           const existingDocRef = await getDocs(

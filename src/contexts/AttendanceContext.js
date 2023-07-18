@@ -18,20 +18,19 @@ export default function AttendenceContextProvider(props) {
   const [record, setRecord] = useState(null);
 
   const getAttendance = async (date, stadium) => {
-    console.log("Getting attendance");
+    console.log('Getting attendance');
     try {
       const existingDocRef = await getDocs(
         query(attendanceCollection, where('date', '==', startOfDay(date)))
       );
-      // setRecord(existingDocRef.docs[0].data());
       if (!stadium) {
         return existingDocRef.docs[0].data();
       } else {
         const stadiumAttandees = existingDocRef.docs.filter(
-          (record) => (record.data().stadium = stadium)
+          (d) => d.data().stadium === stadium
         );
-        
-        return stadiumAttandees.docs[0].data();
+
+        return stadiumAttandees[0].data();
       }
     } catch (error) {
       setRecord(null);
