@@ -10,8 +10,6 @@ export default function ParentsContextProvider(props) {
   const { getUserInfo } = useContext(UserContext);
   const userCollection = collection(db, 'users');
 
-  const [parents, setParents] = useState([]);
-
   const getParents = async () => {
     const docRefs = await getDocs(userCollection);
     const list = docRefs.docs.filter((doc) => {
@@ -36,7 +34,6 @@ export default function ParentsContextProvider(props) {
   return (
     <ParentsContext.Provider
       value={{
-        parents,
         getParents,
         getParentName,
         getChildren,

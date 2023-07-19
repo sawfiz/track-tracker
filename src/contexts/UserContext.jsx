@@ -71,15 +71,15 @@ export default function UserContextProvider(props) {
     <UserContext.Provider
       value={{
         userId,
+        userInfo,
+        isLoggedIn,
         setUserId,
         setUserInfo,
         checkUser,
         getUserInfo,
         getUserData,
-        userInfo,
         getUsersWithNoRoles,
         updateUser,
-        isLoggedIn,
         setIsLoggedIn,
       }}
     >

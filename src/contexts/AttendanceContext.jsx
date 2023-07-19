@@ -13,10 +13,6 @@ export default function AttendenceContextProvider(props) {
   // DB collection to use
   const attendanceCollection = collection(db, 'attendance');
 
-  // States
-  //
-  const [record, setRecord] = useState(null);
-
   const getAttendance = async (date, stadium) => {
     try {
       const existingDocRef = await getDocs(
@@ -32,7 +28,6 @@ export default function AttendenceContextProvider(props) {
         return stadiumAttandees[0].data();
       }
     } catch (error) {
-      setRecord(null);
       console.log('Error getting documents: ', error);
       console.log('No record for ', date);
     }
@@ -50,9 +45,7 @@ export default function AttendenceContextProvider(props) {
   };
 
   return (
-    <AttendanceContext.Provider
-      value={{ record, getAttendance, getAttendances }}
-    >
+    <AttendanceContext.Provider value={{ getAttendance, getAttendances }}>
       {props.children}
     </AttendanceContext.Provider>
   );
