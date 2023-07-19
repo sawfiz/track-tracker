@@ -72,7 +72,7 @@ export default function AddAttendance() {
   };
 
   // States
-  const [today, setToday] = useState(()=> convertDateForInput(new Date()))
+  const [today, setToday] = useState(() => convertDateForInput(new Date()));
   const [record, setRecord] = useState({
     date: today,
     stadium: '',
@@ -80,7 +80,6 @@ export default function AddAttendance() {
   });
   const { date, stadium, attendeeList } = record;
 
-  const [isInitialRender, setIsInitialRender] = useState(true);
   const [isStadiumEmpty, setIsStadiumEmpty] = useState(false);
   const [existingDoc, setExistingDoc] = useState(null);
   // Show submit confirmation modal
@@ -94,12 +93,12 @@ export default function AddAttendance() {
     setIsInitialRender(false);
   };
 
-  const fetchDataLater = async (std) => {
-    const data = await getAttendance(date, std);
+  const fetchDataOnChange = async (day, std) => {
+    const data = await getAttendance(day, std);
     if (data) {
       setRecord(data);
     } else {
-      setRecord({ ...record, attendeeList: [] });
+      setRecord((prev) => ({ ...prev, attendeeList: [] }));
     }
   };
 
@@ -109,23 +108,11 @@ export default function AddAttendance() {
     getAthletes();
   }, []);
 
-  // On user selecting a new stadium
-  useEffect(() => {
-    if (!isInitialRender) {
-      fetchDataLater(stadium);
-    }
-  }, [stadium]);
-
-  // On user selecting a new date
-  useEffect(() => {
-    if (!isInitialRender) {
-      fetchDataLater();
-    }
-  }, [date]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setRecord({ ...record, [name]: value });
+    if (name === 'date') fetchDataOnChange(value); // value is the new date
+    if (name === 'stadium') fetchDataOnChange(date, value); // value is the new stadium
+    setRecord((prev) => ({ ...prev, [name]: value }));
   };
 
   const addAttendee = (id) => {
