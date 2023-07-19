@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import newsImg from '../images/default-news.png';
 
 const S = {
   NewsContainer: styled.div`
@@ -38,7 +37,7 @@ export default function NewsBrief({ news, headlineOnly }) {
             {photoURL ? (
               <S.CroppedImage src={photoURL} alt="news" />
             ) : (
-              <S.CroppedImage src={newsImg} alt="news" />
+              <S.CroppedImage src="/images/default-news.png" alt="news" />
             )}
           </S.ImageContainer>
           <div>

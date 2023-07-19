@@ -2,8 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { AthleteContext } from '../contexts/AthleteContext';
-import boyImg from '../images/boy.png';
-import girlImg from '../images/girl.png';
 
 const S = {
   Button: styled.button`
@@ -77,11 +75,11 @@ export default function Athlete({ athleteID, small }) {
           {data.name}{' '}
           <S.ImageContainer>
             {data.photoURL ? (
-              <S.CroppedImage src={data.photoURL} alt="boyImg" />
+              <S.CroppedImage src={data.photoURL} alt="profile" />
             ) : (
               <S.CroppedImage
-                src={data.gender === 'Male' ? boyImg : girlImg}
-                alt="boyImg"
+              src={(data.gender==='Male') ? '/images/boy.png' : '/images/girl.png'}
+                alt="profile"
               />
             )}
           </S.ImageContainer>
@@ -90,11 +88,11 @@ export default function Athlete({ athleteID, small }) {
         <S.ButtonLarge>
           <S.ImageContainerLarge>
             {data.photoURL ? (
-              <S.CroppedImage src={data.photoURL} alt="boyImg" />
+              <S.CroppedImage src={data.photoURL} alt="profile" />
             ) : (
               <S.CroppedImageLarge
-                src={data.gender === 'Male' ? boyImg : girlImg}
-                alt="boyImg"
+                src={(data.gender==='Male') ? '/images/boy.png' : '/images/girl.png'}
+                alt="profile"
               />
             )}
           </S.ImageContainerLarge>

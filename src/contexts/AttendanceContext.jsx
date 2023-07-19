@@ -18,7 +18,6 @@ export default function AttendenceContextProvider(props) {
   const [record, setRecord] = useState(null);
 
   const getAttendance = async (date, stadium) => {
-    console.log('Getting attendance');
     try {
       const existingDocRef = await getDocs(
         query(attendanceCollection, where('date', '==', date))

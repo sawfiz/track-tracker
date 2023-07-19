@@ -10,8 +10,6 @@ import { UserContext } from '../contexts/UserContext';
 
 import { Auth } from './Auth';
 
-import athleliteImg from '../images/athlelite.png';
-
 const S = {};
 
 S.Header = styled.div`
@@ -99,7 +97,7 @@ export const Header = () => {
     <S.Header>
       <S.SplashImgContainer>
         <Link to={"/"}>
-          <S.SplashImg src={athleliteImg} alt="Team Athlelite" />
+          <S.SplashImg src="/images/athlelite.png" alt="Team Athlelite" />
         </Link>
       </S.SplashImgContainer>
       <S.H1>Team Athlelite</S.H1>

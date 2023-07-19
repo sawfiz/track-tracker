@@ -19,7 +19,6 @@ import { UserContext } from '../contexts/UserContext';
 import DelNewsModal from '../modals/DelNewsModal';
 
 import Button from 'react-bootstrap/esm/Button';
-import newsImg from '../images/default-news.png';
 import EditNewsModal from '../modals/EditNewsModal';
 
 const S = {
@@ -148,7 +147,7 @@ export default function NewsDetails() {
           {news.photoURL ? (
             <S.CroppedImage src={news.photoURL} alt="news" />
           ) : (
-            <S.CroppedImage src={newsImg} alt="news" />
+            <S.CroppedImage src='/images/default-news.png' alt="news" />
           )}
         </>
         <div dangerouslySetInnerHTML={{ __html: news.text }} />

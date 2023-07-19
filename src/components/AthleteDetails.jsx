@@ -13,14 +13,11 @@ import {
   faChevronDown,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
-import boyImg from '../images/boy.png';
-import girlImg from '../images/girl.png';
 import 'typeface-roboto';
 
 const S = {
   H3: styled.h3`
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    /* font-family: 'Roboto'; */
     color: #444;
   `,
   ImageContainer: styled.div`
@@ -111,12 +108,12 @@ export default function AthleteDetails() {
       {athleteInfo.photoURL ? (
             <S.CroppedImage
               src={athleteInfo.photoURL}
-              alt="boyImg"
+              alt="profile"
             />
           ) : (
             <S.CroppedImage
-              src={(athleteInfo.gender==='Male') ? boyImg : girlImg}
-              alt="boyImg"
+              src={(athleteInfo.gender==='Male') ? '/images/boy.png' : '/images/girl.png'}
+              alt="profile"
             />
           )}
       </S.ImageContainer>
