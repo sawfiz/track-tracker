@@ -73,7 +73,7 @@ export default function ManageAthletes() {
         <input
           type="checkbox"
           onChange={(e) => setActiveOnly(e.target.checked)}
-        />{' '}
+        />
         Show active athletes only
       </S.Section>
 

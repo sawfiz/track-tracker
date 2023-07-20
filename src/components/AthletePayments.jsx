@@ -1,10 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import Button from 'react-bootstrap/esm/Button';
-import styled from 'styled-components';
-import { db } from '../config/firebase';
+// Libraries
+import React, { useState, useEffect, useContext } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
+
+// Config
+import { db } from '../config/firebase';
+
+//Context
+import { UserContext } from '../contexts/UserContext';
+
+// Components
 import Payment from './Payment';
 import AddPaymentModal from '../modals/AddPaymentModal';
+
+// Styling
+import Button from 'react-bootstrap/esm/Button';
+import styled from 'styled-components';
 
 const S = {};
 
@@ -20,8 +30,10 @@ S.ButtonContainer = styled.div`
   margin-right: 1rem;
 `;
 
+export default function AthletePayments({ athleteID }) {
+  const { userInfo } = useContext(UserContext);
+  const allowEditing = ['admin', 'coach'].includes(userInfo.role);
 
-export default function AthletePayments({athleteID}) {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const paymentsCollection = collection(db, 'users', athleteID, 'payments');
   const [payments, setPayments] = useState([]);
@@ -29,8 +41,8 @@ export default function AthletePayments({athleteID}) {
   const fetchData = async () => {
     const docRefs = await getDocs(paymentsCollection);
     const sortedDocs = docRefs.docs.sort((a, b) =>
-    b.data().date > a.data().date ? 1 : -1
-  );
+      b.data().date > a.data().date ? 1 : -1
+    );
     setPayments(sortedDocs);
   };
 
@@ -53,18 +65,22 @@ export default function AthletePayments({athleteID}) {
   return (
     <>
       <S.Container>
-      {payments.map((payment) => (
+        {payments.map((payment) => (
           <Payment key={payment.id} payment={payment} />
         ))}
       </S.Container>
-      <S.ButtonContainer>
-        <Button onClick={handleClick}>Add a Payment</Button>
-      </S.ButtonContainer>
-      <AddPaymentModal
-        show={showPaymentModal}
-        closePaymentModal={closePaymentModal}
-        athleteID={athleteID}
-      />
+      {allowEditing && (
+        <>
+          <S.ButtonContainer>
+            <Button onClick={handleClick}>Add a Payment</Button>
+          </S.ButtonContainer>
+          <AddPaymentModal
+            show={showPaymentModal}
+            closePaymentModal={closePaymentModal}
+            athleteID={athleteID}
+          />
+        </>
+      )}
     </>
   );
 }
