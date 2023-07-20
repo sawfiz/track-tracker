@@ -1,9 +1,16 @@
+// Libraries
 import React, { useContext, useState, useEffect } from 'react';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import styled from 'styled-components';
+
+// Contexts
 import { AthleteContext } from '../contexts/AthleteContext';
-import Button from 'react-bootstrap/esm/Button';
+
+// Modals
 import EditAthleteModal from '../modals/EditAthleteModal';
+
+// Styling
+import styled from 'styled-components';
+import Button from 'react-bootstrap/esm/Button';
 
 const S = {
   InfoGrid: styled.div`

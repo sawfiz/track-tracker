@@ -1,8 +1,17 @@
+// Libraries
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+
+// Contexts
 import { AthleteContext } from '../contexts/AthleteContext';
+
+// Components
 import Athlete from './Athlete';
+
+// Modals
 import AddAthleteModal from '../modals/AddAthleteModal';
+
+// Styling
 import styled from 'styled-components';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/esm/Button';

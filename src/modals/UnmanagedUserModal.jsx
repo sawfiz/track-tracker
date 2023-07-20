@@ -1,27 +1,33 @@
-import React, { useContext, useState } from 'react';
+// Libraries
+import React, { useContext, useState, useContext } from 'react';
+
+// Modals
 import Modal from 'react-bootstrap/Modal';
+
+// Styling
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
-import { UserContext } from '../contexts/UserContext';
 
 export default function UnmanagedUserModal({ show, hideModal, user }) {
-  const {updateUser} = useContext(UserContext)
-  const [data, setData] = useState(null)
+  const { updateUser } = useContext(UserContext);
+  const [data, setData] = useState(null);
 
   const handleChange = (e) => {
     setData({ ...user.data(), [e.target.name]: e.target.value });
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (data && data.role !== '-') {
-      console.log("🚀 ~ file: UnmanagedUserModal.js:12 ~ handleChange ~ data:", data)
-      updateUser(user, data)
+      console.log(
+        '🚀 ~ file: UnmanagedUserModal.js:12 ~ handleChange ~ data:',
+        data
+      );
+      updateUser(user, data);
     } else {
-      alert("Please assign a role to the user.")
+      alert('Please assign a role to the user.');
     }
-
   };
 
   return (

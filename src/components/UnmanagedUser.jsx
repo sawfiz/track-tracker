@@ -1,6 +1,11 @@
+// Libraries
 import React, { useState } from 'react';
-import styled from 'styled-components';
+
+// Modals
 import UnmanagedUserModal from '../modals/UnmanagedUserModal';
+
+// Styling
+import styled from 'styled-components';
 
 const S = {
   Button: styled.div`
@@ -29,7 +34,7 @@ export default function UnmanagedUser({ user }) {
   return (
     <>
       <S.Button onClick={handleClick}>{user.data().name}</S.Button>
-      <UnmanagedUserModal user={user} show={show} hideModal={hideModal}/>
+      <UnmanagedUserModal user={user} show={show} hideModal={hideModal} />
     </>
-  )
+  );
 }

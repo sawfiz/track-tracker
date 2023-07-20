@@ -1,13 +1,17 @@
+// Libraries
 import React, { useContext, useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
+// Config
 import { auth } from '../config/firebase';
 
+// Contexts
 import { UserContext } from '../contexts/UserContext';
 
+// Components
 import { Auth } from './Auth';
 
 const S = {
@@ -16,7 +20,6 @@ const S = {
     display: grid;
     grid-template-columns: 100px auto;
     color: white;
-    /* border-bottom: 2px black solid; */
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
   `,
   SplashImgContainer: styled.div`
@@ -82,7 +85,7 @@ const S = {
   `,
 };
 
-export const Header = () => {
+export function Header () {
   const { setUserInfo, isLoggedIn, setIsLoggedIn } = useContext(UserContext);
   const user = auth.currentUser;
   const navigate = useNavigate();

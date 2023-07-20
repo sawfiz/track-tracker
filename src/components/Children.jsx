@@ -1,9 +1,13 @@
+// Libraries
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+// Contexts
 import { UserContext } from '../contexts/UserContext';
 import { ParentsContext } from '../contexts/ParentsContext';
+
+// Components
 import Athlete from './Athlete';
 
 const S = {

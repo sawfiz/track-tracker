@@ -1,7 +1,9 @@
+// Libraries
 import React, { useContext } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { UserContext } from '../contexts/UserContext';
 
+// Contexts
+import { UserContext } from '../contexts/UserContext';
 
 export const ProtectedRoute = ({children, roles}) => {
   console.log("🚀 ~ file: ProtectedRoute.jsx:7 ~ ProtectedRoute ~ roles:", roles)

@@ -1,4 +1,7 @@
+// Libraries
 import React, { useState } from 'react';
+
+// Styling
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
@@ -9,7 +12,7 @@ S.Section = styled.div`
   justify-content: space-around;
 `;
 
-export default function SubmitAttendanceModal ({
+export default function SubmitAttendanceModal({
   show,
   handleClose,
   handleOverwrite,
@@ -29,21 +32,24 @@ export default function SubmitAttendanceModal ({
   const handleConfirm = () => {
     if (selectedOption === 'overwrite') {
       handleOverwrite();
-    // } else if (selectedOption === 'merge') {
-    //   handleMerge();
+      // } else if (selectedOption === 'merge') {
+      //   handleMerge();
     }
     handleModalClose();
   };
 
   return (
     <Modal show={show} onHide={handleModalClose} centered backdrop="static">
-      <Modal.Header >
+      <Modal.Header>
         <Modal.Title>Data on this day already exists.</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-      <p>Make a choice</p>
+        <p>Make a choice</p>
         <S.Section>
-          <Button variant="primary" onClick={() => handleOptionSelect('overwrite')}>
+          <Button
+            variant="primary"
+            onClick={() => handleOptionSelect('overwrite')}
+          >
             Overwrite
           </Button>
           {/* <Button variant="primary" onClick={() => handleOptionSelect('merge')}>
@@ -55,10 +61,14 @@ export default function SubmitAttendanceModal ({
         </S.Section>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={handleConfirm} disabled={!selectedOption}>
+        <Button
+          variant="primary"
+          onClick={handleConfirm}
+          disabled={!selectedOption}
+        >
           Confirm
         </Button>
       </Modal.Footer>
     </Modal>
   );
-};
+}

@@ -1,7 +1,14 @@
+// Libraries
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+
+// Contexts
 import { UserContext } from '../contexts/UserContext';
+
+// Components
 import UnmanagedUser from './UnmanagedUser';
+
+// Styling
 import styled from 'styled-components';
 
 const S = {

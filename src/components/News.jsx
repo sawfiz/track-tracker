@@ -1,4 +1,5 @@
-import React, { useContext, useState, useEffect } from 'react';
+// Libraries
+import React, { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 
 // Config

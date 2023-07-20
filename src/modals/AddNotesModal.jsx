@@ -1,11 +1,18 @@
+// Libraries
 import React, { useState, useContext } from 'react';
+import { collection, addDoc } from 'firebase/firestore';
+
+// Config
+import { db } from '../config/firebase';
+
+// Contexts
+import { UserContext } from '../contexts/UserContext';
+
+// Styling
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/esm/Button';
-import { UserContext } from '../contexts/UserContext';
-import { db } from '../config/firebase';
-import { collection, addDoc } from 'firebase/firestore';
 
 export default function AddNotesModal({ show, closeNotesModal, athleteID }) {
   const { userInfo } = useContext(UserContext);

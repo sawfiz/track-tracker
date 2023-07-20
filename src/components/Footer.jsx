@@ -1,8 +1,9 @@
+// Libraries
 import React from 'react';
 import styled from 'styled-components';
 
-const S = {};
-  S.Footer = styled.div`
+const S = {
+  Footer: styled.div`
     position: fixed;
     bottom: 0;
     width: 100vw;
@@ -12,20 +13,16 @@ const S = {};
     height: 1.3rem;
     display: flex;
     justify-content: center;
-  `;
-
-  S.GitHub = styled.a`
+  `,
+  GitHub: styled.a`
     color: white;
-  `;
-
+  `,
+};
 
 export default function Footer() {
-  
   return (
     <S.Footer>
-      <p>
-        Copyright © 2023 VZ 
-      </p>
+      <p>Copyright © 2023 VZ</p>
     </S.Footer>
   );
 }

@@ -1,9 +1,12 @@
+// Libraries
 import React from 'react';
 import { utils as XLSXUtils, write as XLSXWrite } from 'xlsx';
-import { db } from '../config/firebase';
 import { saveAs } from 'file-saver';
 import { collection, getDocs } from 'firebase/firestore';
 import Button from 'react-bootstrap/esm/Button';
+
+// Config
+import { db } from '../config/firebase';
 
 const exportFirestoreDataToExcel = async (table) => {
   const collectionRef = collection(db, table);
@@ -48,6 +51,8 @@ const handleExportToExcel = async (table) => {
 
 export default function Download({ table }) {
   return (
-    <Button variant="secondary" onClick={() => handleExportToExcel(table)}>⏬ {table}</Button>
+    <Button variant="secondary" onClick={() => handleExportToExcel(table)}>
+      ⏬ {table}
+    </Button>
   );
 }

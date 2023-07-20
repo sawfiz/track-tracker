@@ -1,9 +1,14 @@
+// Libraries
 import React, { useContext } from 'react';
+
+// Contexts
+import { AthleteContext } from '../contexts/AthleteContext';
+
+// Styling
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
-import { AthleteContext } from '../contexts/AthleteContext';
 
 export default function EditAthleteModal({
   show,
@@ -99,7 +104,6 @@ export default function EditAthleteModal({
                 onChange={handleChange}
               />
             </InputGroup>
-
           </Form>
         </Modal.Body>
 

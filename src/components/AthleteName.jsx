@@ -1,5 +1,8 @@
+// Libraries
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+
+// Contexts
 import { AthleteContext } from '../contexts/AthleteContext';
 
 export default function AthleteName({ id }) {

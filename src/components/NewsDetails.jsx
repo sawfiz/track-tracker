@@ -1,3 +1,4 @@
+// Libraries
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
@@ -9,15 +10,18 @@ import {
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 
 // Config
 import { db } from '../config/firebase';
 
+// Contexts
 import { UserContext } from '../contexts/UserContext';
 
+// Modals
 import DelNewsModal from '../modals/DelNewsModal';
 
+// Styling
+import styled from 'styled-components';
 import Button from 'react-bootstrap/esm/Button';
 import EditNewsModal from '../modals/EditNewsModal';
 
@@ -147,7 +151,7 @@ export default function NewsDetails() {
           {news.photoURL ? (
             <S.CroppedImage src={news.photoURL} alt="news" />
           ) : (
-            <S.CroppedImage src='/images/default-news.png' alt="news" />
+            <S.CroppedImage src="/images/default-news.png" alt="news" />
           )}
         </>
         <div dangerouslySetInnerHTML={{ __html: news.text }} />

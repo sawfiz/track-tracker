@@ -1,4 +1,7 @@
+// Libraries
 import React, { useState, useEffect } from 'react';
+
+// Styling
 import styled from 'styled-components';
 
 const S = {

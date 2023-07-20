@@ -1,24 +1,28 @@
+// Libraries
 import React from 'react';
 import styled from 'styled-components';
+
+// Components
 import AthleteName from './AthleteName';
 
-const S = {};
-S.Attdendance = styled.div`
-  margin-bottom: 1rem;
-`;
-S.Item = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-`;
-S.Heading = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border-bottom: 1px hotpink dashed;
-`;
-S.Heading2 = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-`;
+const S = {
+  Attdendance: styled.div`
+    margin-bottom: 1rem;
+  `,
+  Item: styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  `,
+  Heading: styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px hotpink dashed;
+  `,
+  Heading2: styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  `,
+};
 
 export default function Attendance({ attendance, showNames }) {
   const date = attendance.data().date;
@@ -27,7 +31,7 @@ export default function Attendance({ attendance, showNames }) {
 
   return (
     <>
-      {showNames ? ( 
+      {showNames ? (
         // When rendering in ShowAttendances
         <S.Attdendance>
           <S.Heading>
@@ -37,9 +41,7 @@ export default function Attendance({ attendance, showNames }) {
           {/* Render the following if need names of the attendees */}
           <S.Item>
             {showNames &&
-              attendees.map((id) => (
-                <AthleteName key={id} id={id} />
-              ))}
+              attendees.map((id) => <AthleteName key={id} id={id} />)}
           </S.Item>
         </S.Attdendance>
       ) : (

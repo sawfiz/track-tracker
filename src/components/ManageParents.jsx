@@ -1,8 +1,15 @@
+// Libraries
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+
+// Contexts
 import { ParentsContext } from '../contexts/ParentsContext';
-import styled from 'styled-components';
+
+// Components
 import Parent from './Parent';
+
+// Styling
+import styled from 'styled-components';
 
 const S = {
   Grid: styled.div`
@@ -28,7 +35,7 @@ export default function ManageParents() {
 
   return (
     <main>
-        <p>
+      <p>
         <Link to="/admin">Admin Tools</Link>
       </p>
       <h2>Manage Parents</h2>

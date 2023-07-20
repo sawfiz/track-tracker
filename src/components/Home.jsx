@@ -1,12 +1,14 @@
+// Libraries
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-// Components
+// Contexts
 import { UserContext } from '../contexts/UserContext';
-import AboutUs from './AboutUs';
+
+// Components
 import News from './News';
 
-export default function Home () {
+export default function Home() {
   const { isLoggedIn, userInfo } = useContext(UserContext);
 
   return (
@@ -27,4 +29,4 @@ export default function Home () {
       <News />
     </main>
   );
-};
+}

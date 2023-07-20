@@ -1,8 +1,12 @@
-import React, { createContext, useState, useContext } from 'react';
-import { db } from '../config/firebase';
-import { UserContext } from './UserContext';
-
+// Libraries
+import React, { createContext, useContext } from 'react';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+
+// Config
+import { db } from '../config/firebase';
+
+// Contexts
+import { UserContext } from './UserContext';
 
 export const ParentsContext = createContext();
 

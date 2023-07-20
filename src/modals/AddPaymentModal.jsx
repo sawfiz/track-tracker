@@ -1,12 +1,19 @@
+// Libraries
 import React, { useState, useContext, useEffect } from 'react';
+import { collection, addDoc } from 'firebase/firestore';
+
+// Config
+import { db } from '../config/firebase';
+
+// Contexts
+import { UserContext } from '../contexts/UserContext';
+import { AthleteContext } from '../contexts/AthleteContext';
+
+// Styling
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/esm/Button';
-import { UserContext } from '../contexts/UserContext';
-import { AthleteContext } from '../contexts/AthleteContext';
-import { db } from '../config/firebase';
-import { collection, addDoc } from 'firebase/firestore';
 
 export default function AddPaymentModal({
   show,

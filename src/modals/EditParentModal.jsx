@@ -1,14 +1,20 @@
+// Libraries
 import React, { useContext, useState, useEffect } from 'react';
+
+// Contexts
+import { UserContext } from '../contexts/UserContext';
+import { AthleteContext } from '../contexts/AthleteContext';
+
+// Styling
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
-import { UserContext } from '../contexts/UserContext';
-import { AthleteContext } from '../contexts/AthleteContext';
 
 export default function EditParentModal({ show, hideModal, user }) {
   const { updateUser, getUserData } = useContext(UserContext);
-  const { athletes, getAthletes, updateAthleteParent } = useContext(AthleteContext);
+  const { athletes, getAthletes, updateAthleteParent } =
+    useContext(AthleteContext);
   const [children, setChildren] = useState(['', '', '', '']);
 
   const [data, setData] = useState({

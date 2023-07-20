@@ -1,6 +1,11 @@
+// Libraries
 import React, { useState, useContext } from 'react';
-import styled from 'styled-components';
+
+// Modals
 import EditParentModal from '../modals/EditParentModal';
+
+// Styling
+import styled from 'styled-components';
 
 const S = {
   Button: styled.div`
@@ -15,8 +20,8 @@ const S = {
   `,
 };
 
-export default function Parent({user}) {
-  const [show, setShow] = useState(false)
+export default function Parent({ user }) {
+  const [show, setShow] = useState(false);
 
   const handleClick = () => {
     setShow(true);
@@ -29,7 +34,9 @@ export default function Parent({user}) {
   return (
     <>
       <S.Button onClick={handleClick}>{user.data().name}</S.Button>
-      {show && <EditParentModal user={user} show={show} hideModal={hideModal}/>}
+      {show && (
+        <EditParentModal user={user} show={show} hideModal={hideModal} />
+      )}
     </>
-  )
+  );
 }
