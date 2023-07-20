@@ -1,5 +1,5 @@
 // Libraries
-import React, { useContext, useState, useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 // Modals
 import Modal from 'react-bootstrap/Modal';

@@ -85,7 +85,7 @@ const S = {
   `,
 };
 
-export function Header () {
+export default function Header () {
   const { setUserInfo, isLoggedIn, setIsLoggedIn } = useContext(UserContext);
   const user = auth.currentUser;
   const navigate = useNavigate();
