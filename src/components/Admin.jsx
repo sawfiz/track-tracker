@@ -1,6 +1,8 @@
+// Libraries
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Download from './Download';
+
+// Styling
 import Button from 'react-bootstrap/esm/Button';
 import styled from 'styled-components';
 

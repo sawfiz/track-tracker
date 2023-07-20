@@ -1,7 +1,12 @@
+// Libraries
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+
+// Contexts
 import { AthleteContext } from '../contexts/AthleteContext';
+
+// Styling
+import styled from 'styled-components';
 
 const S = {
   Button: styled.button`

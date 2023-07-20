@@ -16,19 +16,18 @@ import AddNotesModal from '../modals/AddNotesModal';
 import Button from 'react-bootstrap/esm/Button';
 import styled from 'styled-components';
 
-const S = {};
-
-S.Container = styled.div`
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
-  border: 1px dashed hotpink;
-`;
-
-S.ButtonContainer = styled.div`
-  display: flex;
-  justify-content: right;
-  margin-right: 1rem;
-`;
+const S = {
+  Container: styled.div`
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border: 1px dashed hotpink;
+  `,
+  ButtonContainer: styled.div`
+    display: flex;
+    justify-content: right;
+    margin-right: 1rem;
+  `,
+};
 
 export default function AthleteNotes({ athleteID }) {
   const { userInfo } = useContext(UserContext);

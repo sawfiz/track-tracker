@@ -1,14 +1,21 @@
+// Libraries
 import React, { useContext, useEffect, useState } from 'react';
+
+// Contexts
 import { AttendanceContext } from '../contexts/AttendanceContext';
+
+// Components
 import Attendance from './Attendance';
+
+// Styling
 import styled from 'styled-components';
 
-const S = {};
-
-S.Container = styled.div`
-  margin: 0 0 1rem 1rem;
-  border: 1px dashed hotpink;
-`;
+const S = {
+  Container: styled.div`
+    margin: 0 0 1rem 1rem;
+    border: 1px dashed hotpink;
+  `,
+};
 
 export default function AthleteAttendance({ athleteID }) {
   const { getAttendances } = useContext(AttendanceContext);

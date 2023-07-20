@@ -1,13 +1,20 @@
+// Libraries
 import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
+
+// Contexts
 import { UserContext } from '../contexts/UserContext';
 import { AthleteContext } from '../contexts/AthleteContext';
+
+// Components
 import AthletePersonalDetails from './AthletePersonalDetails';
 import AthleteAttendance from './AthleteAttendance';
 import AthleteNotes from './AthleteNotes';
 import AthletePayments from './AthletePayments';
+
+// Styling
+import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronDown,
@@ -45,34 +52,18 @@ export default function AthleteDetails() {
 
   const [athleteInfo, setAthleteInfo] = useState({});
 
-  const [expandPersonalDetails, setExpandPersonalDetails] = useState(false);
-  const [expandAttendances, setExpandAttendances] = useState(false);
-  const [expandNotes, setExpandNotes] = useState(false);
-  const [expandPayments, setExpandPayments] = useState(false);
+  const [expand, setExpand] = useState({
+    personalDetails: false,
+    attendances: false,
+    notes: false,
+    payments: false,
+  });
 
-  const handlePersonalToggle = () => {
-    setExpandPersonalDetails(!expandPersonalDetails);
-    setExpandAttendances(false);
-    setExpandNotes(false);
-    setExpandPayments(false);
-  };
-  const handleAttendanceToggle = () => {
-    setExpandPersonalDetails(false);
-    setExpandAttendances(!expandAttendances);
-    setExpandNotes(false);
-    setExpandPayments(false);
-  };
-  const handleNotesToggle = () => {
-    setExpandPersonalDetails(false);
-    setExpandAttendances(false);
-    setExpandNotes(!expandNotes);
-    setExpandPayments(false);
-  };
-  const handlePaymentsToggle = () => {
-    setExpandPersonalDetails(false);
-    setExpandAttendances(false);
-    setExpandNotes(false);
-    setExpandPayments(!expandPayments);
+  const handleToggle = (section) => {
+    setExpand((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
   };
 
   const fetchData = async () => {
@@ -105,57 +96,58 @@ export default function AthleteDetails() {
       <p></p>
       <h2>{athleteInfo.name}</h2>
       <S.ImageContainer>
-      {athleteInfo.photoURL ? (
-            <S.CroppedImage
-              src={athleteInfo.photoURL}
-              alt="profile"
-            />
-          ) : (
-            <S.CroppedImage
-              src={(athleteInfo.gender==='Male') ? '/images/boy.png' : '/images/girl.png'}
-              alt="profile"
-            />
-          )}
+        {athleteInfo.photoURL ? (
+          <S.CroppedImage src={athleteInfo.photoURL} alt="profile" />
+        ) : (
+          <S.CroppedImage
+            src={
+              athleteInfo.gender === 'Male'
+                ? '/images/boy.png'
+                : '/images/girl.png'
+            }
+            alt="profile"
+          />
+        )}
       </S.ImageContainer>
-      <S.H3 onClick={handlePersonalToggle}>
-        {expandPersonalDetails ? (
+      <S.H3 onClick={() => handleToggle('personalDetails')}>
+        {expand.personalDetails ? (
           <FontAwesomeIcon icon={faChevronDown} className="fa-thin" />
         ) : (
           <FontAwesomeIcon icon={faChevronRight} className="fa-thin" />
         )}{' '}
         Personal Details
       </S.H3>
-      {expandPersonalDetails && <AthletePersonalDetails id={id} />}
+      {expand.personalDetails && <AthletePersonalDetails id={id} />}
 
-      <S.H3 onClick={handleAttendanceToggle}>
-        {expandAttendances ? (
+      <S.H3 onClick={() => handleToggle('attendances')}>
+        {expand.attendances ? (
           <FontAwesomeIcon icon={faChevronDown} className="fa-thin" />
         ) : (
           <FontAwesomeIcon icon={faChevronRight} className="fa-thin" />
         )}{' '}
         Attendance
       </S.H3>
-      {expandAttendances && <AthleteAttendance athleteID={id} />}
+      {expand.attendances && <AthleteAttendance athleteID={id} />}
 
-      <S.H3 onClick={handleNotesToggle}>
-        {expandNotes ? (
+      <S.H3 onClick={() => handleToggle('notes')}>
+        {expand.notes ? (
           <FontAwesomeIcon icon={faChevronDown} className="fa-thin" />
         ) : (
           <FontAwesomeIcon icon={faChevronRight} className="fa-thin" />
         )}{' '}
         Notes
       </S.H3>
-      {expandNotes && <AthleteNotes athleteID={id} />}
+      {expand.notes && <AthleteNotes athleteID={id} />}
 
-      <S.H3 onClick={handlePaymentsToggle}>
-        {expandPayments ? (
+      <S.H3 onClick={() => handleToggle('payments')}>
+        {expand.payments ? (
           <FontAwesomeIcon icon={faChevronDown} className="fa-thin" />
         ) : (
           <FontAwesomeIcon icon={faChevronRight} className="fa-thin" />
         )}{' '}
         Payments
       </S.H3>
-      {expandPayments && <AthletePayments athleteID={id} />}
+      {expand.payments && <AthletePayments athleteID={id} />}
       {/* A div at the end of page to make sure Foot shows properly */}
       <div style={{ height: '2rem' }}></div>
     </main>
