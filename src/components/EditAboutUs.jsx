@@ -90,11 +90,11 @@ export default function EditAboutUs() {
         ></Form.Control>
       </Form>
       <S.Buttons>
-        <Button variant="primary" onClick={handleSubmit}>
-          Save
-        </Button>
         <Button variant="secondary" onClick={handleCancel}>
           Cancel
+        </Button>
+        <Button variant="primary" onClick={handleSubmit}>
+          Save
         </Button>
       </S.Buttons>
     </main>
