@@ -25,9 +25,6 @@ const S = {
     display: grid;
     grid-template-rows: 2fr 1fr;
   `,
-  Link: styled.a`
-    text-decoration: none;
-  `,
   Icon: styled.div`
     font-size: 2rem;
     text-shadow: 1px 1px 2px black;

@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
@@ -9,22 +9,18 @@ import { auth } from '../config/firebase';
 import { UserContext } from '../contexts/UserContext';
 
 import { Auth } from './Auth';
+import Home from './Home';
+import AboutUs from './AboutUs';
 
 const S = {};
 
 S.Header = styled.div`
   background: var(--color-dark);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 100px auto;
   color: white;
   /* border-bottom: 2px black solid; */
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
-`;
-
-S.H1 = styled.h1`
-  font-size: clamp(1.4rem, 3vw, 4rem);
-  text-shadow: 2px 2px 4px rgb(0, 0, 0, 0.4);
 `;
 
 S.SplashImgContainer = styled.div`
@@ -37,7 +33,21 @@ S.SplashImg = styled.img`
   /* width: clamp(300px, 70%, 600px); */
   width: 100px;
 `;
-
+S.Container1 = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+`;
+S.Container2 = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+S.H1 = styled.h1`
+  font-size: clamp(1.4rem, 3vw, 4rem);
+  text-shadow: 2px 2px 4px rgb(0, 0, 0, 0.4);
+  margin: auto;
+`;
 S.Button = styled.button`
   /* border: none; */
   cursor: pointer;
@@ -77,6 +87,11 @@ S.SignOut = styled.button`
   }
 `;
 
+S.Nav = styled.nav`
+  display: flex;
+  justify-content: space-around;
+`;
+
 export const Header = () => {
   const { setUserInfo, isLoggedIn, setIsLoggedIn } = useContext(UserContext);
   const user = auth.currentUser;
@@ -87,7 +102,7 @@ export const Header = () => {
       await signOut(auth);
       setUserInfo({});
       navigate('/');
-      setIsLoggedIn(false)
+      setIsLoggedIn(false);
     } catch (err) {
       console.log('Error signing out', err.message);
     }
@@ -96,18 +111,27 @@ export const Header = () => {
   return (
     <S.Header>
       <S.SplashImgContainer>
-        <Link to={"/"}>
+        <Link to={'/'}>
           <S.SplashImg src="/images/athlelite.png" alt="Team Athlelite" />
         </Link>
       </S.SplashImgContainer>
-      <S.H1>Team Athlelite</S.H1>
-      {!isLoggedIn && <Auth />}
-      {isLoggedIn && (
-        <S.Google>
-          <S.Avatar src={user.photoURL} alt="Avatar" />
-          <S.SignOut onClick={handleSignOut}> Sign Out </S.SignOut>
-        </S.Google>
-      )}
+
+      <S.Container1>
+        <S.Container2>
+          <S.H1>Team Athlelite</S.H1>
+          {!isLoggedIn && <Auth />}
+          {isLoggedIn && (
+            <S.Google>
+              <S.Avatar src={user.photoURL} alt="Avatar" />
+              <S.SignOut onClick={handleSignOut}> Sign Out </S.SignOut>
+            </S.Google>
+          )}
+        </S.Container2>
+        <S.Nav>
+          <NavLink to="/" style={{textDecoration: 'none'}}>Home</NavLink>
+          <NavLink to="/about" style={{textDecoration: 'none'}}>About Us</NavLink>
+        </S.Nav>
+      </S.Container1>
     </S.Header>
   );
 };

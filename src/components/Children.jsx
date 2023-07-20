@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { UserContext } from '../contexts/UserContext';
@@ -24,7 +25,7 @@ export default function Children() {
 
   const fetchData = async () => {
     const data = await getChildren(userId);
-    const filteredData = data.filter((d)=> d !== '')
+    const filteredData = data.filter((d) => d !== '');
     setChildren(filteredData);
   };
   useEffect(() => {

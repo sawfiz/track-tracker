@@ -90,7 +90,6 @@ export default function AddAttendance() {
     if (data) {
       setRecord(data);
     }
-    setIsInitialRender(false);
   };
 
   const fetchDataOnChange = async (day, std) => {

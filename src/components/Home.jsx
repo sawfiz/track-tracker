@@ -6,7 +6,7 @@ import { UserContext } from '../contexts/UserContext';
 import AboutUs from './AboutUs';
 import News from './News';
 
-export const Home = () => {
+export default function Home () {
   const { isLoggedIn, userInfo } = useContext(UserContext);
 
   return (
@@ -25,7 +25,6 @@ export const Home = () => {
       )}
 
       <News />
-      <AboutUs />
     </main>
   );
 };

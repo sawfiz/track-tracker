@@ -1,11 +1,12 @@
 // Libraries
 import React, { useContext, useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { Routes, Route } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
 // import styled from 'styled-components';
 
 // Config
 import { auth } from './config/firebase';
+import router from './routing/Router';
 
 // Contexts
 import { UserContext } from './contexts/UserContext';
@@ -15,11 +16,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Components
-import { Header } from './components/Header';
-import { Home } from './components/Home';
-import { PrivateRoutes } from './components/PrivateRoutes';
 import Footer from './components/Footer';
-import NewsDetails from './components/NewsDetails';
 
 // Code
 function App() {
@@ -47,14 +44,8 @@ function App() {
   return (
     <>
       <div className="App">
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/news/:id" element={<NewsDetails />} />
-          <Route path="/*" element={<PrivateRoutes />} />
-        </Routes>
+        <RouterProvider router={router}></RouterProvider>
       </div>
-      <Footer />
     </>
   );
 }
