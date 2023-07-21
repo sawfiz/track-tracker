@@ -9,7 +9,6 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { Link } from 'react-router-dom';
 
 // Config
 import { db } from '../config/firebase';
@@ -21,25 +20,8 @@ import { UserContext } from '../contexts/UserContext';
 import DelNewsModal from '../modals/DelNewsModal';
 
 // Styling
-import styled from 'styled-components';
 import Button from 'react-bootstrap/esm/Button';
 import EditNewsModal from '../modals/EditNewsModal';
-
-const S = {
-  Buttons: styled.div`
-    display: flex;
-    justify-content: space-around;
-    margin: 1rem 0;
-  `,
-  CroppedImage: styled.img`
-    margin: 1rem 0;
-    border-radius: 10px;
-    object-fit: cover;
-    object-position: center center;
-    width: 100%;
-    max-height: 200px;
-  `,
-};
 
 export default function NewsDetails() {
   const { isLoggedIn, userInfo } = useContext(UserContext);
@@ -131,30 +113,36 @@ export default function NewsDetails() {
       {isLoggedIn &&
         (userInfo.role === 'admin' || userInfo.role === 'coach') && (
           <>
-            <p>
-              <Link to="/admin">Admin Tools</Link>
-            </p>
-            <S.Buttons>
+            <div className="flex justify-around my-3">
               <Button variant="primary" onClick={openEditModal}>
-                Edit this
+                Edit
               </Button>
               <Button variant="danger" onClick={openDelModal}>
-                Delete this
+                Delete
               </Button>
-            </S.Buttons>
+            </div>
           </>
         )}
-      <h5>{news.headline}</h5>
-      <div>{news.date}</div>{' '}
+      <h5 className="text-slate-700">{news.headline}</h5>
+      <div className="text-slate-500">{news.date}</div>
       <div>
-        <>
-          {news.photoURL ? (
-            <S.CroppedImage src={news.photoURL} alt="news" />
-          ) : (
-            <S.CroppedImage src="/images/default-news.png" alt="news" />
-          )}
-        </>
-        <div dangerouslySetInnerHTML={{ __html: news.text }} />
+        {news.photoURL ? (
+          <img
+            className="w-full max-h-[200px] object-cover object-center my-1 rounded-lg"
+            src={news.photoURL}
+            alt="news"
+          />
+        ) : (
+          <img
+            className="w-full max-h-[200px] object-cover object-center my-1 rounded-lg"
+            src="/images/default-news.png"
+            alt="news"
+          />
+        )}
+        <div
+          className="text-slate-600"
+          dangerouslySetInnerHTML={{ __html: news.text }}
+        />
       </div>
       <DelNewsModal
         show={showDelModal}

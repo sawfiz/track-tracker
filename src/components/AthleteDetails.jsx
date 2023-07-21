@@ -83,14 +83,9 @@ export default function AthleteDetails() {
 
   return (
     <main>
-      {userInfo.role === 'admin' && (
+      {['admin', 'coach'].includes(userInfo.role) && (
         <p>
           <Link to="/athletes">Manage Athletes</Link>
-        </p>
-      )}
-      {userInfo.role === 'parent' && (
-        <p>
-          <Link to="/children">My children</Link>
         </p>
       )}
       <p></p>

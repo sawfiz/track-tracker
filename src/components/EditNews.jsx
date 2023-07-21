@@ -1,6 +1,5 @@
 // Libraries
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import {
   collection,
   getDocs,
@@ -65,9 +64,6 @@ export default function EditNews() {
 
   return (
     <main>
-      <p>
-        <Link to="/admin">Admin Tools</Link>
-      </p>
       <h2>Edit News</h2>
       {news.map((item) => (
         <NewsBrief key={item.id} news={item} headlineOnly={true} />

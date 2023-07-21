@@ -1,6 +1,5 @@
 // Libraries
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
 
 // Contexts
 import { ParentsContext } from '../contexts/ParentsContext';
@@ -35,9 +34,6 @@ export default function ManageParents() {
 
   return (
     <main>
-      <p>
-        <Link to="/admin">Admin Tools</Link>
-      </p>
       <h2>Manage Parents</h2>
       <S.Grid>
         {list.map((user) => (

@@ -1,6 +1,5 @@
 // Libraries
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 // Contexts
 import { AttendanceContext } from '../contexts/AttendanceContext';
@@ -23,9 +22,6 @@ export default function ShowAttendance() {
   }, []);
   return (
     <main>
-      <p>
-        <Link to="/admin">Admin Tools</Link>
-      </p>
       <h2>Show Attendance</h2>
       {list.map((attendance) => {
         return (

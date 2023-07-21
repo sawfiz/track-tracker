@@ -17,7 +17,7 @@ import { Auth } from './Auth';
 import SignOutModal from '../modals/SignOutModal';
 
 export default function Header() {
-  const { setUserInfo, isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+  const { userInfo, setUserInfo, isLoggedIn, setIsLoggedIn } = useContext(UserContext);
   const user = auth.currentUser;
   const navigate = useNavigate();
 
@@ -60,13 +60,32 @@ export default function Header() {
         >
           Home
         </NavLink>
+
+       {(isLoggedIn && ['admin', 'coach'].includes(userInfo.role )) && <NavLink
+          to="/admin"
+          className={
+            'flex items-end pb-1 no-underline text-slate-400 hover:text-slate-200'
+          }
+        >
+          Admin
+        </NavLink>}
+
+       {(isLoggedIn && userInfo.role === 'parent' ) && <NavLink
+          to="/children"
+          className={
+            'flex items-end pb-1 no-underline text-slate-400 hover:text-slate-200'
+          }
+        >
+          My Children
+        </NavLink>}
+
         <NavLink
           to="/about"
           className={
             'flex items-end pb-1 no-underline  text-slate-400 hover:text-slate-200'
           }
         >
-          About Us
+          About
         </NavLink>
         <div className="flex justify-center items-end pb-1">
           {!isLoggedIn && <Auth />}

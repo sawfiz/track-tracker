@@ -27,11 +27,11 @@ export default function AboutUs() {
 
 
   return (
-    <div>
+    <main>
       <h2>About Us</h2>
       <p>
         {about.text}
       </p>
-    </div>
+    </main>
   );
 }

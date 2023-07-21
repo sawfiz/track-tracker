@@ -1,6 +1,5 @@
 // Libraries
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
 
 // Contexts
 import { UserContext } from '../contexts/UserContext';
@@ -35,9 +34,6 @@ export default function ManageUsers() {
 
   return (
     <main>
-      <p>
-        <Link to="/admin">Admin Tools</Link>
-      </p>
       <h3>Unmanaged users</h3>
       <S.Grid>
         {list.map((user) => (

@@ -1,8 +1,7 @@
 // Libraries
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-
 // Contexts
+
 import { AthleteContext } from '../contexts/AthleteContext';
 
 // Components
@@ -61,9 +60,6 @@ export default function ManageAthletes() {
 
   return (
     <main>
-      <p>
-        <Link to="/admin">Admin Tools</Link>
-      </p>
       <h2>Manage Athletes</h2>
       <Button onClick={openAddModal} style={{ margin: '1rem 0' }}>
         Add an athlete

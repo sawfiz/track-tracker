@@ -46,75 +46,94 @@ export default function Admin() {
     <main>
       <h2>Admin Tools</h2>
       <S.H3>Attendances</S.H3>
-      <S.Grid2>
-        <Button variant="primary">
-          <Link to="/add-attendance" className='link-no-underline'> 
-            <S.Content>
-              <S.Icon>📝</S.Icon>
-              <S.TextLight>Add</S.TextLight>
-            </S.Content>
-          </Link>
-        </Button>
-        <Button>
-          <Link to="/attendance" className='link-no-underline'>
-            <S.Content>
-              <S.Icon>🗂️</S.Icon>
-              <S.TextLight>View</S.TextLight>
-            </S.Content>
-          </Link>
-        </Button>
-        {/* <Download table="attendance" /> */}
-      </S.Grid2>
-      <hr></hr>
+      <div className="outline-dashed outline-pink-300 px-2 py-1 mb-4">
+        <S.Grid2>
+          <Button variant="primary">
+            <Link to="/add-attendance" className="no-underline">
+              <S.Content>
+                <S.Icon>📝</S.Icon>
+                <div className="text-white drop-shadow-[1px_1px_2px_rgba(0,0,0,0.9)]">
+                  Add
+                </div>
+              </S.Content>
+            </Link>
+          </Button>
+          <Button>
+            <Link to="/attendance" className="no-underline">
+              <S.Content>
+                <S.Icon>🗂️</S.Icon>
+                <div className="text-white drop-shadow-[1px_1px_2px_rgba(0,0,0,0.9)]">
+                  View
+                </div>
+              </S.Content>
+            </Link>
+          </Button>
+          {/* <Download table="attendance" /> */}
+        </S.Grid2>
+      </div>
+      {/* <hr></hr> */}
       <S.H3>Users</S.H3>
+      <div className="outline-dashed outline-pink-300 px-2 py-1 mb-4">
       <S.Grid3>
         <Button variant="info">
-          <Link to="/athletes" className='link-no-underline'>
+          <Link to="/athletes" className="no-underline">
             <S.Content>
               <S.Icon>🏃🏻‍♂️🏃🏻‍♀️</S.Icon>
-              <S.TextDark>Athletes</S.TextDark>
+              <div className="text-black drop-shadow-[1px_1px_2px_rgba(255,255,255,0.9)]">
+                Athletes
+              </div>
             </S.Content>
           </Link>
         </Button>
         <Button variant="info">
-          <Link to="/parents" className='link-no-underline'>
+          <Link to="/parents" className="no-underline">
             <S.Content>
               <S.Icon>👨🏻👩🏻</S.Icon>
-              <S.TextDark>Parents</S.TextDark>
+              <div className="text-black drop-shadow-[1px_1px_2px_rgba(255,255,255,0.9)]">
+                Parents
+              </div>
             </S.Content>
           </Link>
         </Button>
         <Button variant="info">
-          <Link to="/manage-users"  className='link-no-underline'>
+          <Link to="/manage-users" className="no-underline">
             <S.Content>
               <S.Icon>🥷</S.Icon>
-              <S.TextDark>Strangers</S.TextDark>
+              <div className="text-black drop-shadow-[1px_1px_2px_rgba(255,255,255,0.9)]">
+                Strangers
+              </div>
             </S.Content>
           </Link>
         </Button>
-        {/* <Download table="users" /> */}
       </S.Grid3>
+      </div>
 
-      <hr></hr>
+      {/* <hr></hr> */}
       <S.H3>Content</S.H3>
+      <div className="outline-dashed outline-pink-300 px-2 py-1">
       <S.Grid2>
         <Button variant="success">
-          <Link to="/edit-news" className='link-no-underline'>
+          <Link to="/edit-news" className="no-underline">
             <S.Content>
               <S.Icon>📰</S.Icon>
-              <S.TextLight>News</S.TextLight>
+              <div className="text-white drop-shadow-[1px_1px_2px_rgba(0,0,0,0.9)]">
+                News
+              </div>
             </S.Content>
           </Link>
         </Button>
         <Button variant="success">
-          <Link to="/edit-about" className='link-no-underline'>
+          <Link to="/edit-about" className="no-underline">
             <S.Content>
               <S.Icon>💪🏽💪🏽</S.Icon>
-              <S.TextLight>About Us</S.TextLight>
+              <div className="text-white drop-shadow-[1px_1px_2px_rgba(0,0,0,0.9)]">
+                About Us
+              </div>
             </S.Content>
           </Link>
         </Button>
       </S.Grid2>
+      </div>
       <div style={{ height: '2rem' }}></div>
     </main>
   );

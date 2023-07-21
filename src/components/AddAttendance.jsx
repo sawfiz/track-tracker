@@ -1,6 +1,6 @@
 // Libraries
 import React, { useState, useContext, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   collection,
   getDocs,
@@ -180,9 +180,6 @@ export default function AddAttendance() {
 
   return (
     <main>
-      <p>
-        <Link to="/admin">Admin Tools</Link>
-      </p>
       <h2>Track Attendance</h2>
       <form>
         <InputGroup className="mb-3">
