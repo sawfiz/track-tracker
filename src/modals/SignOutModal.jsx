@@ -4,7 +4,6 @@ import React from 'react'
 // Styling
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import styled from 'styled-components';
 
 export default function SignOutModal({show, hideModal, handleSignout, handleSignOut}) {
   return (

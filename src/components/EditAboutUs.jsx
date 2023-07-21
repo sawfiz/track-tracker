@@ -13,17 +13,8 @@ import {
 import { db } from '../config/firebase';
 
 // Styling
-import styled from 'styled-components';
 import Button from 'react-bootstrap/esm/Button';
 import Form from 'react-bootstrap/Form';
-
-const S = {
-  Buttons: styled.div`
-    margin: 1rem;
-    display: flex;
-    justify-content: space-around;
-  `,
-};
 
 export default function EditAboutUs() {
   const aboutCollection = collection(db, 'about');
@@ -89,14 +80,14 @@ export default function EditAboutUs() {
           onChange={handleChange}
         ></Form.Control>
       </Form>
-      <S.Buttons>
+      <div className='flex justify-around mt-4'>
         <Button variant="secondary" onClick={handleCancel}>
           Cancel
         </Button>
         <Button variant="primary" onClick={handleSubmit}>
           Save
         </Button>
-      </S.Buttons>
+      </div>
     </main>
   );
 }

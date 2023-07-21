@@ -9,28 +9,7 @@ import { AthleteContext } from '../contexts/AthleteContext';
 import EditAthleteModal from '../modals/EditAthleteModal';
 
 // Styling
-import styled from 'styled-components';
 import Button from 'react-bootstrap/esm/Button';
-
-const S = {
-  InfoGrid: styled.div`
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 10px;
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    border: 1px dashed hotpink;
-  `,
-  Attr: styled.div`
-    font-weight: bold;
-  `,
-  Data: styled.div``,
-  ButtonContainer: styled.div`
-    display: flex;
-    justify-content: right;
-    margin-right: 1rem;
-  `,
-};
 
 export default function AthletePersonalDetails({ id }) {
   const {
@@ -105,37 +84,37 @@ export default function AthletePersonalDetails({ id }) {
 
   return (
     <>
-      <S.InfoGrid>
-        <S.Attr>Active</S.Attr>
-        <S.Data>{athleteInfo.active ? '✅' : '❌'}</S.Data>
-        <S.Attr>Gender</S.Attr>
-        <S.Data>{athleteInfo.gender}</S.Data>
-        <S.Attr>Birthdate</S.Attr>
-        <S.Data>{athleteInfo.birthdate}</S.Data>
-        <S.Attr>School</S.Attr>
-        <S.Data>{athleteInfo.school}</S.Data>
-        <S.Attr>Phone</S.Attr>
-        <S.Data>{athleteInfo.phone}</S.Data>
-        <S.Attr>Father</S.Attr>
-        <S.Data>{athleteInfo.father}</S.Data>
-        <S.Attr>Mother</S.Attr>
-        <S.Data>{athleteInfo.mother}</S.Data>
-      </S.InfoGrid>
-      <S.ButtonContainer>
+      <div className='outline-dashed outline-pink-300 p-2 grid grid-cols-[1fr_2fr] my-2'>
+        <div className=" font-bold">Active</div>
+        <div>{athleteInfo.active ? '✅' : '❌'}</div>
+        <div className=" font-bold">Gender</div>
+        <div>{athleteInfo.gender}</div>
+        <div className=" font-bold">Birthdate</div>
+        <div>{athleteInfo.birthdate}</div>
+        <div className=" font-bold">School</div>
+        <div>{athleteInfo.school}</div>
+        <div className=" font-bold">Phone</div>
+        <div>{athleteInfo.phone}</div>
+        <div className=" font-bold">Father</div>
+        <div>{athleteInfo.father}</div>
+        <div className=" font-bold">Mother</div>
+        <div>{athleteInfo.mother}</div>
+      </div>
+
+      <div className="flex justify-end">
         <Button onClick={handleClick}>Edit</Button>
-      </S.ButtonContainer>
-      {showEditModal && (
-        <EditAthleteModal
-          show={showEditModal}
-          athleteInfo={athleteInfo}
-          handleChange={handleChange}
-          handleChangeCheckbox={handleChangeCheckbox}
-          handleChangePhoto={handleChangePhoto}
-          handleSubmit={handleSubmit}
-          hasNoName={hasNoName}
-          hasNoGender={hasNoGender}
-        />
-      )}
+      </div>
+
+      <EditAthleteModal
+        show={showEditModal}
+        athleteInfo={athleteInfo}
+        handleChange={handleChange}
+        handleChangeCheckbox={handleChangeCheckbox}
+        handleChangePhoto={handleChangePhoto}
+        handleSubmit={handleSubmit}
+        hasNoName={hasNoName}
+        hasNoGender={hasNoGender}
+      />
     </>
   );
 }

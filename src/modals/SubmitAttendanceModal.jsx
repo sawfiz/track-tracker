@@ -4,13 +4,6 @@ import React, { useState } from 'react';
 // Styling
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import styled from 'styled-components';
-
-const S = {};
-S.Section = styled.div`
-  display: flex;
-  justify-content: space-around;
-`;
 
 export default function SubmitAttendanceModal({
   show,
@@ -45,20 +38,17 @@ export default function SubmitAttendanceModal({
       </Modal.Header>
       <Modal.Body>
         <p>Make a choice</p>
-        <S.Section>
+        <div className='flex justify-around'>
           <Button
             variant="primary"
             onClick={() => handleOptionSelect('overwrite')}
           >
             Overwrite
           </Button>
-          {/* <Button variant="primary" onClick={() => handleOptionSelect('merge')}>
-            Merge
-          </Button> */}
           <Button variant="secondary" onClick={handleModalClose}>
             Cancel
           </Button>
-        </S.Section>
+        </div>
       </Modal.Body>
       <Modal.Footer>
         <Button

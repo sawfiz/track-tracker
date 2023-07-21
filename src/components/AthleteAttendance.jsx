@@ -7,16 +7,6 @@ import { AttendanceContext } from '../contexts/AttendanceContext';
 // Components
 import Attendance from './Attendance';
 
-// Styling
-import styled from 'styled-components';
-
-const S = {
-  Container: styled.div`
-    margin: 0 0 1rem 1rem;
-    border: 1px dashed hotpink;
-  `,
-};
-
 export default function AthleteAttendance({ athleteID }) {
   const { getAttendances } = useContext(AttendanceContext);
 
@@ -35,7 +25,7 @@ export default function AthleteAttendance({ athleteID }) {
   );
 
   return (
-    <S.Container>
+    <div className="outline-pink-500 outline-dashed p-2 mb-2">
       {filteredList.map((attendance) => {
         return (
           <Attendance
@@ -45,6 +35,6 @@ export default function AthleteAttendance({ athleteID }) {
           />
         );
       })}
-    </S.Container>
+    </div>
   );
 }

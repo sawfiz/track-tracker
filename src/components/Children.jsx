@@ -1,7 +1,5 @@
 // Libraries
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 
 // Contexts
 import { UserContext } from '../contexts/UserContext';
@@ -9,18 +7,6 @@ import { ParentsContext } from '../contexts/ParentsContext';
 
 // Components
 import Athlete from './Athlete';
-
-const S = {
-  Grid: styled.div`
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin: 1rem 0;
-  `,
-  Section: styled.div`
-    margin: 1rem 0;
-  `,
-};
 
 export default function Children() {
   const { userId } = useContext(UserContext);
@@ -46,7 +32,9 @@ export default function Children() {
   return (
     <main>
       <h2>My Children</h2>
-      <S.Grid>{childrenComponents}</S.Grid>
+      <div className="grid grid-cols-2 gap-[10px] md:grid-cols-3 lg:grid-cols-4">
+        {childrenComponents}
+      </div>
     </main>
   );
 }

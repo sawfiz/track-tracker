@@ -44,8 +44,8 @@ export default function Header() {
   };
 
   return (
-    <div className="grid grid-cols-[4rem_auto] bg-blue-800">
-      <div className="flex items-center">
+    <div className="grid grid-cols-[3rem_auto] bg-slate-800">
+      <div className="flex">
         <Link to={'/'}>
           <img src="/images/athlelite.png" alt="Team Athlelite" className="" />
         </Link>

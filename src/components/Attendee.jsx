@@ -1,15 +1,6 @@
 // Libraries
 import React, { useState, useEffect } from 'react';
 
-// Styling
-import styled from 'styled-components';
-
-const S = {
-  Li : styled.div`
-  margin: 0.2rem;
-  `,
-};
-
 export default function Attendee({
   athlete,
   attendeeList,
@@ -34,9 +25,9 @@ export default function Attendee({
   };
 
   return (
-    <S.Li>
+    <div className='m-1'>
       <input type="checkbox" checked={isChecked} onChange={handleChange} />{' '}
       {athlete.data().name}
-    </S.Li>
+    </div>
   );
 }

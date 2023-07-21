@@ -64,9 +64,9 @@ export default function AthleteDetails() {
         </p>
       )}
 
-      <h2>{athleteInfo.name}</h2>
+      <h2 className='mt-4'>{athleteInfo.name}</h2>
 
-      <div className=" absolute top-[4.5rem] right-[0.5rem] w-28 h-28 overflow-hidden">
+      <div className=" absolute top-[3.5rem] right-[0.5rem] w-28 h-28 overflow-hidden">
         <img
           className="w-full h-full object-center object-cover rounded-lg "
           src={imgSrc}

@@ -4,22 +4,6 @@ import React, { useState, useContext } from 'react';
 // Modals
 import EditParentModal from '../modals/EditParentModal';
 
-// Styling
-import styled from 'styled-components';
-
-const S = {
-  Button: styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    border: 1px dashed hotpink;
-    padding: 0.2rem 0.5rem;
-    height: 1.8rem;
-    background-color: #0000;
-    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-  `,
-};
-
 export default function Parent({ user }) {
   const [show, setShow] = useState(false);
 
@@ -33,10 +17,14 @@ export default function Parent({ user }) {
 
   return (
     <>
-      <S.Button onClick={handleClick}>{user.data().name}</S.Button>
-      {show && (
-        <EditParentModal user={user} show={show} hideModal={hideModal} />
-      )}
+      <div
+        className="outline-dashed outline-pink-500 h-8 flex items-center p-2"
+        onClick={handleClick}
+      >
+        {user.data().name}
+      </div>
+
+      <EditParentModal user={user} show={show} hideModal={hideModal} />
     </>
   );
 }

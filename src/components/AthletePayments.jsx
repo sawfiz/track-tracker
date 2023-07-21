@@ -14,20 +14,6 @@ import AddPaymentModal from '../modals/AddPaymentModal';
 
 // Styling
 import Button from 'react-bootstrap/esm/Button';
-import styled from 'styled-components';
-
-const S = {
-  Container: styled.div`
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    border: 1px dashed hotpink;
-  `,
-  ButtonContainer: styled.div`
-    display: flex;
-    justify-content: right;
-    margin-right: 1rem;
-  `,
-};
 
 export default function AthletePayments({ athleteID }) {
   const { userInfo } = useContext(UserContext);
@@ -63,16 +49,16 @@ export default function AthletePayments({ athleteID }) {
 
   return (
     <>
-      <S.Container>
+      <div className="outline-dashed outline-pink-300 p-2 mb-2">
         {payments.map((payment) => (
           <Payment key={payment.id} payment={payment} />
         ))}
-      </S.Container>
+      </div>
       {allowEditing && (
         <>
-          <S.ButtonContainer>
+          <div className="flex justify-end">
             <Button onClick={handleClick}>Add a Payment</Button>
-          </S.ButtonContainer>
+          </div>
           <AddPaymentModal
             show={showPaymentModal}
             closePaymentModal={closePaymentModal}

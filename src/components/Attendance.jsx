@@ -1,28 +1,8 @@
 // Libraries
 import React from 'react';
-import styled from 'styled-components';
 
 // Components
 import AthleteName from './AthleteName';
-
-const S = {
-  Attdendance: styled.div`
-    margin-bottom: 1rem;
-  `,
-  Item: styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  `,
-  Heading: styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border-bottom: 1px hotpink dashed;
-  `,
-  Heading2: styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  `,
-};
 
 export default function Attendance({ attendance, showNames }) {
   const date = attendance.data().date;
@@ -33,23 +13,23 @@ export default function Attendance({ attendance, showNames }) {
     <>
       {showNames ? (
         // When rendering in ShowAttendances
-        <S.Attdendance>
-          <S.Heading>
+        <div className='outline-dashed outline-pink-500 my-3 p-1'>
+          <div className='grid grid-cols-2 '>
             <div style={{ fontWeight: 'bold' }}>{date}</div>{' '}
             <div style={{ fontStyle: 'italic' }}>{stadium}</div>
-          </S.Heading>
+          </div>
           {/* Render the following if need names of the attendees */}
-          <S.Item>
+          <div className="grid grid-cols-2 gap-[10px] md:grid-cols-3 lg:grid-cols-4">
             {showNames &&
               attendees.map((id) => <AthleteName key={id} id={id} />)}
-          </S.Item>
-        </S.Attdendance>
+          </div>
+        </div>
       ) : (
         // When rendering in AthleteAttendance
-        <S.Heading2>
+        <div className='grid grid-cols-2'>
           <div style={{ fontWeight: 'bold' }}>{date}</div>
           <div style={{ fontStyle: 'italic' }}>{stadium}</div>
-        </S.Heading2>
+        </div>
       )}
     </>
   );

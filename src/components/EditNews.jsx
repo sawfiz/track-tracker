@@ -12,23 +12,8 @@ import { db } from '../config/firebase';
 import NewsBrief from './NewsBrief';
 
 // Styling
-import styled from 'styled-components';
 import Button from 'react-bootstrap/esm/Button';
 import AddNewsModal from '../modals/AddNewsModal';
-
-const S = {
-  Grid: styled.div`
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin: 1rem 0;
-  `,
-  Buttons: styled.div`
-    margin: 1rem;
-    display: flex;
-    justify-content: space-around;
-  `,
-};
 
 export default function EditNews() {
   const newsCollection = collection(db, 'news');
@@ -68,11 +53,11 @@ export default function EditNews() {
       {news.map((item) => (
         <NewsBrief key={item.id} news={item} headlineOnly={true} />
       ))}
-      <S.Buttons>
+      <div className='flex justify-center mt-4'>
         <Button variant="primary" onClick={showAddModal}>
           Add
         </Button>
-      </S.Buttons>
+      </div>
       <AddNewsModal show={show} hideAddModal={hideAddModal} />
     </main>
   );

@@ -2,7 +2,6 @@
 import React, { useContext, useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { RouterProvider } from 'react-router-dom';
-// import styled from 'styled-components';
 
 // Config
 import { auth } from './config/firebase';
@@ -14,9 +13,6 @@ import { UserContext } from './contexts/UserContext';
 // Styles
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-// Components
-import Footer from './components/Footer';
 
 // Code
 function App() {
