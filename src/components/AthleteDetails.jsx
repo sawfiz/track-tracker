@@ -12,6 +12,7 @@ import AthletePersonalDetails from './AthletePersonalDetails';
 import AthleteAttendance from './AthleteAttendance';
 import AthleteNotes from './AthleteNotes';
 import AthletePayments from './AthletePayments';
+import Chevron from './Chevron';
 
 // Styling
 import styled from 'styled-components';
@@ -20,30 +21,6 @@ import {
   faChevronDown,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
-import 'typeface-roboto';
-
-const S = {
-  H3: styled.h3`
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    color: #444;
-  `,
-  ImageContainer: styled.div`
-    position: absolute;
-    top: 105px;
-    right: 5px;
-    width: 100px;
-    height: 100px;
-    overflow: hidden;
-    border-radius: 10px;
-    box-shadow: 2px 2px 4px rgba(255, 255, 0, 0.5);
-  `,
-  CroppedImage: styled.img`
-    object-fit: cover;
-    object-position: center center;
-    width: 100%;
-    height: 100%;
-  `,
-};
 
 export default function AthleteDetails() {
   const { id } = useParams();
@@ -81,6 +58,12 @@ export default function AthleteDetails() {
     fetchData();
   }, [showEditModal]);
 
+  const imgSrc = athleteInfo.photoURL
+    ? athleteInfo.photoURL
+    : athleteInfo.gender === 'Male'
+    ? '/images/boy.png'
+    : '/images/girl.png';
+
   return (
     <main>
       {['admin', 'coach'].includes(userInfo.role) && (
@@ -88,60 +71,36 @@ export default function AthleteDetails() {
           <Link to="/athletes">Manage Athletes</Link>
         </p>
       )}
-      <p></p>
       <h2>{athleteInfo.name}</h2>
-      <S.ImageContainer>
-        {athleteInfo.photoURL ? (
-          <S.CroppedImage src={athleteInfo.photoURL} alt="profile" />
-        ) : (
-          <S.CroppedImage
-            src={
-              athleteInfo.gender === 'Male'
-                ? '/images/boy.png'
-                : '/images/girl.png'
-            }
-            alt="profile"
-          />
-        )}
-      </S.ImageContainer>
-      <S.H3 onClick={() => handleToggle('personalDetails')}>
-        {expand.personalDetails ? (
-          <FontAwesomeIcon icon={faChevronDown} className="fa-thin" />
-        ) : (
-          <FontAwesomeIcon icon={faChevronRight} className="fa-thin" />
-        )}{' '}
+      <div className=" absolute top-[4.5rem] right-[0.5rem] w-28 h-28 overflow-hidden">
+        <img
+          className="w-full h-full object-center object-cover rounded-lg "
+          src={imgSrc}
+          alt="profile"
+        />
+      </div>
+      <h3 onClick={() => handleToggle('personalDetails')}>
+        <Chevron expand={expand.personalDetails} />
         Personal Details
-      </S.H3>
+      </h3>
       {expand.personalDetails && <AthletePersonalDetails id={id} />}
 
-      <S.H3 onClick={() => handleToggle('attendances')}>
-        {expand.attendances ? (
-          <FontAwesomeIcon icon={faChevronDown} className="fa-thin" />
-        ) : (
-          <FontAwesomeIcon icon={faChevronRight} className="fa-thin" />
-        )}{' '}
+      <h3 onClick={() => handleToggle('attendances')}>
+        <Chevron expand={expand.attendances} />
         Attendance
-      </S.H3>
+      </h3>
       {expand.attendances && <AthleteAttendance athleteID={id} />}
 
-      <S.H3 onClick={() => handleToggle('notes')}>
-        {expand.notes ? (
-          <FontAwesomeIcon icon={faChevronDown} className="fa-thin" />
-        ) : (
-          <FontAwesomeIcon icon={faChevronRight} className="fa-thin" />
-        )}{' '}
+      <h3 onClick={() => handleToggle('notes')}>
+      <Chevron expand={expand.notes} />
         Notes
-      </S.H3>
+      </h3>
       {expand.notes && <AthleteNotes athleteID={id} />}
 
-      <S.H3 onClick={() => handleToggle('payments')}>
-        {expand.payments ? (
-          <FontAwesomeIcon icon={faChevronDown} className="fa-thin" />
-        ) : (
-          <FontAwesomeIcon icon={faChevronRight} className="fa-thin" />
-        )}{' '}
+      <h3 onClick={() => handleToggle('payments')}>
+      <Chevron expand={expand.payments} />
         Payments
-      </S.H3>
+      </h3>
       {expand.payments && <AthletePayments athleteID={id} />}
       {/* A div at the end of page to make sure Foot shows properly */}
       <div style={{ height: '2rem' }}></div>
