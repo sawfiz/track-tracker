@@ -37,5 +37,12 @@ export const Auth = () => {
     }
   };
 
-  return <S.Button onClick={(e) => signinWithGoogle(e)}>Sign In</S.Button>;
+  return (
+    <button
+      onClick={(e) => signinWithGoogle(e)}
+      className=" text-slate-300 hover:text-slate-100"
+    >
+      Login
+    </button>
+  );
 };
