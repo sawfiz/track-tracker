@@ -14,14 +14,6 @@ import AthleteNotes from './AthleteNotes';
 import AthletePayments from './AthletePayments';
 import Chevron from './Chevron';
 
-// Styling
-import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faChevronDown,
-  faChevronRight,
-} from '@fortawesome/free-solid-svg-icons';
-
 export default function AthleteDetails() {
   const { id } = useParams();
   const { getAthleteInfo, showEditModal } = useContext(AthleteContext);
@@ -71,7 +63,9 @@ export default function AthleteDetails() {
           <Link to="/athletes">Manage Athletes</Link>
         </p>
       )}
+
       <h2>{athleteInfo.name}</h2>
+
       <div className=" absolute top-[4.5rem] right-[0.5rem] w-28 h-28 overflow-hidden">
         <img
           className="w-full h-full object-center object-cover rounded-lg "
@@ -79,6 +73,7 @@ export default function AthleteDetails() {
           alt="profile"
         />
       </div>
+
       <h3 onClick={() => handleToggle('personalDetails')}>
         <Chevron expand={expand.personalDetails} />
         Personal Details
@@ -102,6 +97,7 @@ export default function AthleteDetails() {
         Payments
       </h3>
       {expand.payments && <AthletePayments athleteID={id} />}
+
       {/* A div at the end of page to make sure Foot shows properly */}
       <div style={{ height: '2rem' }}></div>
     </main>

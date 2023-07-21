@@ -33,25 +33,34 @@ export default function ManageAthletes() {
   const { showAddModal, openAddModal } = useContext(AthleteContext);
 
   const [activeOnly, setActiveOnly] = useState(false);
+  const [selectedGender, setSelectedGender] = useState('Male & Female');
   const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     getAthletes();
   }, []);
 
-  useEffect(() => {
-    getAthletes(activeOnly);
-  }, [activeOnly]);
-
   const handleSearch = (e) => {
     const text = e.target.value.toLowerCase();
     setSearchText(text);
   };
 
-  // Filter athletes based on searchText
-  const filteredAthletes = athletes.filter((athlete) =>
-    athlete.data().name.toLowerCase().includes(searchText)
-  );
+  // Filter athletes based on searchText, activeOnly and selectedGender
+  const filteredAthletes = athletes.filter((athlete) => {
+    const { name, gender, active } = athlete.data();
+    if (activeOnly) {
+      return (
+        name.toLowerCase().includes(searchText) &&
+        selectedGender.includes(gender) &&
+        active === activeOnly
+      );
+    } else {
+      return (
+        name.toLowerCase().includes(searchText) &&
+        selectedGender.includes(gender)
+      );
+    }
+  });
 
   // Render the Athlete components
   const athleteComponents = filteredAthletes.map((athlete) => (
@@ -74,15 +83,27 @@ export default function ManageAthletes() {
           onChange={handleSearch}
         />
       </InputGroup>
-      <S.Section>
-        <input
-          type="checkbox"
-          onChange={(e) => setActiveOnly(e.target.checked)}
-        />
-        Show active athletes only
-      </S.Section>
 
-      <S.Grid>{athleteComponents}</S.Grid>
+      <div className="flex justify-around my-3">
+        <div>
+          <input
+            type="checkbox"
+            onChange={(e) => setActiveOnly(e.target.checked)}
+          />{' '}
+          <span className="text-slate-800">Active only </span>
+        </div>
+        <div>
+          <select type="" onChange={(e) => setSelectedGender(e.target.value)}>
+            <option>Male & Female</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-[10px] md:grid-cols-3 lg:grid-cols-4">
+        {athleteComponents}
+      </div>
 
       {showAddModal && <AddAthleteModal show={showAddModal} />}
       {/* A div at the end of page to make sure Foot shows properly */}

@@ -9,15 +9,9 @@ import {
   addDoc,
   setDoc,
 } from 'firebase/firestore';
-import styled from 'styled-components';
 
 // Config
 import { db } from '../config/firebase';
-
-// Styling
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Button from 'react-bootstrap/Button';
 
 // Components
 import Attendee from './Attendee';
@@ -27,24 +21,10 @@ import { AthleteContext } from '../contexts/AthleteContext';
 // Modal
 import SubmitAttendanceModal from '../modals/SubmitAttendanceModal';
 
-const S = {
-  Container: styled.div`
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  `,
-  Grid: styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border: 1px dashed hotpink;
-    padding: 0.5rem;
-    margin: 1rem 0;
-  `,
-  ButtonContainer: styled.div`
-    display: flex;
-    justify-content: space-around;
-  `,
-};
+// Styling
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Button from 'react-bootstrap/Button';
 
 // Code
 export default function AddAttendance() {
@@ -210,7 +190,7 @@ export default function AddAttendance() {
           </Form.Select>
         </InputGroup>
 
-        <S.Grid>
+        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 outline-dashed outline-pink-300 p-1'>
           {athletes.map((athlete) => {
             return (
               <Attendee
@@ -222,15 +202,16 @@ export default function AddAttendance() {
               />
             );
           })}
-        </S.Grid>
-        <S.ButtonContainer>
+        </div>
+
+        <div className='m-4 flex justify-around'>
           <Button variant="primary" onClick={handleSubmit}>
             Save
           </Button>
           <Button variant="secondary" onClick={handleCancel}>
             Cancel
           </Button>
-        </S.ButtonContainer>
+        </div>
       </form>
       <SubmitAttendanceModal
         show={show}
