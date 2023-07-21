@@ -7,18 +7,6 @@ import { ParentsContext } from '../contexts/ParentsContext';
 // Components
 import Parent from './Parent';
 
-// Styling
-import styled from 'styled-components';
-
-const S = {
-  Grid: styled.div`
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin: 1rem 0;
-  `,
-};
-
 export default function ManageParents() {
   const { getParents } = useContext(ParentsContext);
   const [list, setList] = useState([]);
@@ -35,11 +23,11 @@ export default function ManageParents() {
   return (
     <main>
       <h2>Manage Parents</h2>
-      <S.Grid>
+      <div className="grid grid-cols-2 gap-[10px] md:grid-cols-3 lg:grid-cols-4">
         {list.map((user) => (
           <Parent key={user.id} user={user} />
         ))}
-      </S.Grid>
+      </div>
     </main>
   );
 }

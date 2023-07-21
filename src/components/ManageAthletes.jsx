@@ -11,22 +11,9 @@ import Athlete from './Athlete';
 import AddAthleteModal from '../modals/AddAthleteModal';
 
 // Styling
-import styled from 'styled-components';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/esm/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
-
-const S = {
-  Grid: styled.div`
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin: 1rem 0;
-  `,
-  Section: styled.div`
-    margin: 1rem 0;
-  `,
-};
 
 export default function ManageAthletes() {
   const { athletes, getAthletes } = useContext(AthleteContext);
@@ -94,9 +81,9 @@ export default function ManageAthletes() {
         </div>
         <div>
           <select type="" onChange={(e) => setSelectedGender(e.target.value)}>
-            <option>Male & Female</option>
-            <option>Male</option>
-            <option>Female</option>
+            <option value="Male Female">Boys & Girls</option>
+            <option value="Male">Boys</option>
+            <option value="Female">Girls</option>
           </select>
         </div>
       </div>
