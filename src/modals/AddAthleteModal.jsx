@@ -99,11 +99,13 @@ export default function AddAthleteModal({ show }) {
 
               <InputGroup className="mb-3">
                 <InputGroup.Text>Photo </InputGroup.Text>
-                <Form.Control
-                  type="file"
-                  accept="image/*"
-                  onChange={handleChangePhoto}
-                />
+                <div className='flex justify-center'>
+                  <Form.Control
+                    type="file"
+                    accept="image/*"
+                    onChange={handleChangePhoto}
+                    />
+                </div>
               </InputGroup>
 
               <InputGroup className="mb-3">
@@ -112,6 +114,7 @@ export default function AddAthleteModal({ show }) {
                   type="checkbox"
                   name="active"
                   onChange={handleChangeCheckbox}
+                  className='m-auto'
                 />
               </InputGroup>
 

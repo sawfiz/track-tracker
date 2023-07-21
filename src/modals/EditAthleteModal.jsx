@@ -59,6 +59,7 @@ export default function EditAthleteModal({
                 name="active"
                 checked={athleteInfo.active}
                 onChange={handleChangeCheckbox}
+                className='m-auto'
               />
             </InputGroup>
             <InputGroup className="mb-3">

@@ -71,7 +71,7 @@ export default function ManageAthletes() {
         />
       </InputGroup>
 
-      <div className="flex justify-around my-3">
+      <div className="flex justify-around items-center my-3">
         <div>
           <input
             type="checkbox"
