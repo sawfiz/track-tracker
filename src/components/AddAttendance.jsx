@@ -190,7 +190,7 @@ export default function AddAttendance() {
           </Form.Select>
         </InputGroup>
 
-        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 outline-dashed outline-pink-300 p-1'>
+        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 outline-dashed outline-2 outline-pink-300 p-1'>
           {athletes.map((athlete) => {
             return (
               <Attendee

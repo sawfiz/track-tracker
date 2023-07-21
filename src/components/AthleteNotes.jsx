@@ -49,7 +49,7 @@ export default function AthleteNotes({ athleteID }) {
 
   return (
     <>
-      <div className="outline-dashed outline-pink-300 p-2 mb-2">
+      <div className="outline-dashed outline-2 outline-pink-300 p-2 mb-2">
         {notes.map((note) => (
           <Note key={note.id} note={note} />
         ))}

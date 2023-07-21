@@ -25,7 +25,7 @@ export default function AthleteAttendance({ athleteID }) {
   );
 
   return (
-    <div className="outline-pink-500 outline-dashed p-2 mb-2">
+    <div className="outline-2 outline-pink-300 outline-dashed p-2 mb-2">
       {filteredList.map((attendance) => {
         return (
           <Attendance

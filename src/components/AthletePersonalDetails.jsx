@@ -84,7 +84,7 @@ export default function AthletePersonalDetails({ id }) {
 
   return (
     <>
-      <div className='outline-dashed outline-pink-300 p-2 grid grid-cols-[1fr_2fr] my-2'>
+      <div className='outline-dashed outline-2 outline-pink-300 p-2 grid grid-cols-[1fr_2fr] my-2'>
         <div className=" font-bold">Active</div>
         <div>{athleteInfo.active ? '✅' : '❌'}</div>
         <div className=" font-bold">Gender</div>

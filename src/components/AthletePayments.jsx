@@ -49,7 +49,7 @@ export default function AthletePayments({ athleteID }) {
 
   return (
     <>
-      <div className="outline-dashed outline-pink-300 p-2 mb-2">
+      <div className="outline-dashed outline-2 outline-pink-300 p-2 mb-2">
         {payments.map((payment) => (
           <Payment key={payment.id} payment={payment} />
         ))}

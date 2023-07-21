@@ -18,12 +18,12 @@ export default function UnmanagedUser({ user }) {
   return (
     <>
       <div
-        className="outline-dashed outline-pink-500 h-8 flex items-center p-2"
+        className="outline-dashed outline-2 outline-pink-300 h-8 flex items-center p-2"
         onClick={handleClick}
       >
         {user.data().name}
       </div>
-      
+
       <UnmanagedUserModal user={user} show={show} hideModal={hideModal} />
     </>
   );

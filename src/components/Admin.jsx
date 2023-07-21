@@ -10,7 +10,7 @@ export default function Admin() {
     <main>
       <h2>Admin Tools</h2>
       <h3 className="text-slate-600">Attendances</h3>
-      <div className="outline-dashed outline-pink-300 px-2 py-2 mb-4">
+      <div className="outline-dashed outline-2 outline-pink-300 px-2 py-2 mb-4">
         <div className="grid grid-cols-2 gap-2">
           <Button variant="primary">
             <Link to="/add-attendance" className="no-underline">
@@ -35,8 +35,9 @@ export default function Admin() {
           {/* <Download table="attendance" /> */}
         </div>
       </div>
+
       <h3 className="text-slate-600">Users</h3>
-      <div className="outline-dashed outline-pink-300 px-2 py-2 mb-4">
+      <div className="outline-dashed outline-2 outline-pink-300 px-2 py-2 mb-4">
         <div className="grid grid-cols-3 gap-2">
           <Button variant="info">
             <Link to="/athletes" className="no-underline">
@@ -72,7 +73,7 @@ export default function Admin() {
       </div>
 
       <h3 className="text-slate-600">Content</h3>
-      <div className="outline-dashed outline-pink-300 px-2 py-2">
+      <div className="outline-dashed outline-2 outline-pink-300 px-2 py-2">
         <div className="grid grid-cols-2 gap-2">
           <Button variant="success">
             <Link to="/edit-news" className="no-underline">
