@@ -9,7 +9,6 @@ import { db } from '../config/firebase';
 import { UserContext } from '../contexts/UserContext';
 
 // Components
-import Payment from './Payment';
 import AddPaymentModal from '../modals/AddPaymentModal';
 
 // Styling
@@ -67,5 +66,19 @@ export default function AthletePayments({ athleteID }) {
         </>
       )}
     </>
+  );
+}
+
+function Payment({ payment }) {
+  return (
+    <div>
+      <span style={{ fontWeight: 'bold' }}>{payment.data().date}</span>{' '}
+      <span style={{ fontWeight: 'bold', color: 'blue' }}>
+        ${payment.data().amount}
+      </span>{' '}
+      from <span style={{ fontStyle: 'italic' }}>{payment.data().paidBy}</span>{' '}
+      for <span style={{ fontStyle: 'italic' }}>{payment.data().for} </span>
+      {/* {payment.data().recordedBy} */}
+    </div>
   );
 }

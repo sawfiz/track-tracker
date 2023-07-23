@@ -9,7 +9,6 @@ import { db } from '../config/firebase';
 import { UserContext } from '../contexts/UserContext';
 
 // Components
-import Note from './Note';
 import AddNotesModal from '../modals/AddNotesModal';
 
 // Styling
@@ -69,4 +68,8 @@ export default function AthleteNotes({ athleteID }) {
       )}
     </>
   );
+}
+
+function Note({ note }) {
+  return <div>{note.data().date} {note.data().note}</div>;
 }

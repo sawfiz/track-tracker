@@ -34,6 +34,17 @@ export default function AddPaymentModal({
     recordedBy: userInfo.name,
   });
 
+  const resetFormData = () => {
+    // Reset the form data to its initial values or an empty state
+    setFormData({
+      date: new Date().toISOString().split('T')[0], // Set initial value to today's date
+      amount: null,
+      paidBy: '',
+      for: '',
+      recordedBy: userInfo.name,
+    });
+  };
+
   const fetchData = async () => {
     const info = await getAthleteInfo(athleteID);
     setData(info);
@@ -52,8 +63,15 @@ export default function AddPaymentModal({
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const value = e.target.type === 'number' ? parseFloat(e.target.value) : e.target.value;
+    setFormData({ ...formData, [e.target.name]: value });
+    // setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const handleCancel = () => {
+    resetFormData();
+    closePaymentModal();
+  }
 
   const handleSubmit = () => {
     if (formData.date && formData.amount && formData.for) {
@@ -61,6 +79,7 @@ export default function AddPaymentModal({
       // Perform the submission logic here
       addPayment();
       alert('Form submitted successfully!');
+      resetFormData();
       closePaymentModal();
     } else {
       // Date or note field is missing
@@ -119,8 +138,8 @@ export default function AddPaymentModal({
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={closePaymentModal}>
-            Close
+          <Button variant="secondary" onClick={handleCancel}>
+            Cancel
           </Button>
           <Button variant="primary" onClick={handleSubmit}>
             Save
