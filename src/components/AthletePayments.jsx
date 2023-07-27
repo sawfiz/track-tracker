@@ -10,6 +10,7 @@ import { UserContext } from '../contexts/UserContext';
 
 // Components
 import AddPaymentModal from '../modals/AddPaymentModal';
+import withModalForm from './withModalForm';
 
 // Styling
 import Button from 'react-bootstrap/esm/Button';
@@ -46,6 +47,35 @@ export default function AthletePayments({ athleteID }) {
     setShowPaymentModal(false);
   };
 
+  // Component to trigger the modal form
+  const TriggerModalButton = ({ openModal, label }) => {
+    return <button onClick={openModal}>{label}</button>;
+  };
+
+  // Configuration for the input elements
+  const inputConfig = [
+    {
+      name: 'date',
+      type: 'date',
+      label: 'Date Input',
+      required: true,
+    },
+    {
+      name: 'payment',
+      type: 'textarea',
+      label: 'Textarea Input',
+      required: true,
+      rows: 5,
+    },
+  ];
+
+  const CollectionVariable = 'myCollection'; // Replace 'myCollection' with your Firebase collection name
+  const EnhancedModalForm = withModalForm(
+    TriggerModalButton,
+    inputConfig,
+    CollectionVariable
+  );
+
   return (
     <>
       <div className="outline-dashed outline-2 outline-pink-300 p-2 mb-2">
@@ -56,13 +86,23 @@ export default function AthletePayments({ athleteID }) {
       {allowEditing && (
         <>
           <div className="flex justify-end">
+            <Button>
+              <EnhancedModalForm
+                label="Add a Note"
+                title="New Payment"
+                cancelLabel="Cancel"
+                saveLabel="Save"
+              />
+            </Button>
+          </div>
+          {/* <div className="flex justify-end">
             <Button onClick={handleClick}>Add a Payment</Button>
           </div>
           <AddPaymentModal
             show={showPaymentModal}
             closePaymentModal={closePaymentModal}
             athleteID={athleteID}
-          />
+          /> */}
         </>
       )}
     </>

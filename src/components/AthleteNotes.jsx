@@ -20,7 +20,6 @@ export default function AthleteNotes({ athleteID }) {
   const allowEditing = ['admin', 'coach'].includes(userInfo.role);
 
   const [showNotesModal, setShowNotesModal] = useState(false);
-  const [showModal, setShowModal] = useState(false);
   const notesCollection = collection(db, 'users', athleteID, 'notes');
   const [notes, setNotes] = useState([]);
 
@@ -48,15 +47,6 @@ export default function AthleteNotes({ athleteID }) {
     setShowNotesModal(false);
   };
 
-  // Use HOC
-  // const openModal = () => {
-  //   console.log('opening...');
-  //   setShowModal(true);
-  // };
-  // const closeModal = () => {
-  //   setShowModal(false);
-  // };
-
   // Component to trigger the modal form
   const TriggerModalButton = ({ openModal, label }) => {
     return <button onClick={openModal}>{label}</button>;
@@ -68,11 +58,13 @@ export default function AthleteNotes({ athleteID }) {
       name: 'date',
       type: 'date',
       label: 'Date Input',
+      required: true,
     },
     {
       name: 'note',
       type: 'textarea',
       label: 'Textarea Input',
+      required: true,
       rows: 5,
     },
   ];
@@ -98,16 +90,17 @@ export default function AthleteNotes({ athleteID }) {
             <Button>
               <EnhancedModalForm
                 label="Add a Note"
+                title="New Note"
                 cancelLabel="Cancel"
                 saveLabel="Save"
               />
             </Button>
           </div>
-          <AddNotesModal
+          {/* <AddNotesModal
             show={showNotesModal}
             closeNotesModal={closeNotesModal}
             athleteID={athleteID}
-          />
+          /> */}
         </>
       )}
     </>

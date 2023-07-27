@@ -1,10 +1,13 @@
+// Libraries
 import React, { useState } from 'react';
+
+// Styling
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/esm/Button';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+
+
 // import firebase from 'firebase/app';
 // import 'firebase/firestore';
 
@@ -27,6 +30,9 @@ export default function withModalForm(
 ) {
   return function WithModalForm(props) {
     const initialState = {};
+
+    const requiredInputs = inputConfig.filter((input) => input.required);
+
     inputConfig.forEach((input) => {
       initialState[input.name] = input.type === 'checkbox' ? false : '';
       initialState[input.name] =
@@ -59,7 +65,22 @@ export default function withModalForm(
     const handleSave = () => {
       // Perform save action with formData
       console.log('Saving...');
+
+      const isFormValid = requiredInputs.every((input) => {
+        const value = formData[input.name];
+        if (input.type === 'checkbox') {
+          return value === true;
+        } else {
+          return value.trim() !== '';
+        }
+      });
+
+      if (!isFormValid) {
+        alert('Please fill in all required fields.');
+        return; // Prevent saving the form if any required fields are empty
+      }
       console.log(formData);
+      setFormData(initialState);
       closeModal();
       // firestore.collection(collectionVariable).add(formData)
       //   .then(() => {
@@ -89,8 +110,8 @@ export default function withModalForm(
           centered
         >
           <Modal.Dialog>
-            <Modal.Header closeButton>
-              <Modal.Title>New Note</Modal.Title>
+            <Modal.Header>
+              <Modal.Title>{props.title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Form>
