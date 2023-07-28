@@ -25,7 +25,8 @@ export default function NewsBrief({ news, headlineOnly }) {
         {headline}
       </Link>{' '}
       <FontAwesomeIcon icon={faArrowUpRightFromSquare} size="xs" />
-      {publish && (
+      {/* Show an indicator for publish in admin tools */}
+      {publish && headlineOnly && (
         <div className="absolute top-0 right-1 text-blue-500 ">Published</div>
       )}
     </div>

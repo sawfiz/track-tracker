@@ -27,26 +27,30 @@ export default function withModalForm(
     });
 
     const [formData, setFormData] = useState(initialState);
+    const [isUploading, setIsUploading] = useState(false);
 
-    const handleInputChange = (event) => {
-      const { name, value, type, checkedgir } = event.target;
-      const inputValue =
-        type === 'checkbox' ? checked : value;
+    const handleInputChange = async (event) => {
+      const { name, value, type, checked, files } = event.target;
+      let inputValue;
+      if (type === 'checkbox') {
+        inputValue = checked;
+      } else if (type === 'file') {
+        setIsUploading(true);
+        const file = files[0];
+        // Upload the photo to Firebase Storage
+        const storage = getStorage();
+        const storageRef = ref(storage, `athlete_photos/${file.name}`);
+        await uploadBytes(storageRef, file);
+        inputValue = await getDownloadURL(storageRef);
+        setIsUploading(false);
+        // The save button is disabled during uploading using the isUploading state
+      } else {
+        inputValue = value;
+      }
       setFormData((prevFormData) => ({
         ...prevFormData,
         [name]: inputValue,
       }));
-    };
-
-    const handlePhotoChange = async (e) => {
-      const file = e.target.files[0];
-      // Upload the photo to Firebase Storage
-      const storage = getStorage();
-      const storageRef = ref(storage, `athlete_photos/${file.name}`);
-      await uploadBytes(storageRef, file);
-      const downloadURL = await getDownloadURL(storageRef);
-      // Update the photoURL field in the form data
-      setFormData({ ...formData, photoURL: downloadURL });
     };
 
     const handleCancel = () => {
@@ -194,9 +198,10 @@ export default function withModalForm(
                           <InputGroup.Text>{label} </InputGroup.Text>
                           <Form.Control
                             key={name}
+                            name={name}
                             type="file"
                             accept="image/*"
-                            onChange={handlePhotoChange}
+                            onChange={handleInputChange}
                           />
                         </InputGroup>
                       );
@@ -211,7 +216,11 @@ export default function withModalForm(
               <Button variant="secondary" onClick={handleCancel}>
                 {props.cancelLabel || 'Cancel'}
               </Button>
-              <Button variant="primary" onClick={handleSave}>
+              <Button
+                variant="primary"
+                onClick={handleSave}
+                disabled={isUploading}
+              >
                 {props.saveLabel || 'Save'}
               </Button>
             </Modal.Footer>

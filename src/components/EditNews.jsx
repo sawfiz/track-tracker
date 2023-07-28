@@ -67,7 +67,7 @@ export default function EditNews() {
       placeholder: "News text..."
     },
     {
-      name: 'photo',
+      name: 'photoURL',
       label: 'Photo',
       type: 'file',
     },
