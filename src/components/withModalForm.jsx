@@ -16,17 +16,19 @@ export default function withModalForm(
   collectionVariable
 ) {
   return function WithModalForm(props) {
+    // Set up initial state of formData
     const initialState = {};
-
-    const requiredInputs = inputConfig.filter((input) => input.required);
-
     inputConfig.forEach((input) => {
       initialState[input.name] = input.type === 'checkbox' ? false : '';
       initialState[input.name] =
         input.type === 'date' ? new Date().toISOString().split('T')[0] : '';
     });
-
     const [formData, setFormData] = useState(initialState);
+
+    // Filter the inputs that are required for submitting
+    const requiredInputs = inputConfig.filter((input) => input.required);
+
+    // Disable the Save button when uploading a photo
     const [isUploading, setIsUploading] = useState(false);
 
     const handleInputChange = async (event) => {
@@ -58,9 +60,9 @@ export default function withModalForm(
       closeModal();
     };
 
-    const addData = async () => {
+    const addData = async (dataToSave) => {
       try {
-        await addDoc(collectionVariable, formData);
+        await addDoc(collectionVariable, dataToSave);
       } catch (error) {
         console.error('Error adding data:', error);
       }
@@ -69,7 +71,8 @@ export default function withModalForm(
     const handleSave = () => {
       // Perform save action with formData
       console.log('Saving...');
-
+      
+      // Verify all required fills are valid
       const isFormValid = requiredInputs.every((input) => {
         const value = formData[input.name];
         if (input.type === 'checkbox') {
@@ -78,13 +81,20 @@ export default function withModalForm(
           return value.trim() !== '';
         }
       });
-
+      
       if (!isFormValid) {
         alert('Please fill in all required fields.');
         return; // Prevent saving the form if any required fields are empty
       }
-      console.log(formData);
-      addData();
+
+      // Add hidden additonal data to formData, e.g. {role: 'athlete'}
+      const dataToSave = { ...formData };
+      const hiddenInput = inputConfig.find((input) => input.type === 'hidden');
+      if (hiddenInput) {
+        dataToSave[hiddenInput.name] = hiddenInput.value;
+      }
+
+      addData(dataToSave);
       setFormData(initialState);
       closeModal();
     };
@@ -113,10 +123,30 @@ export default function withModalForm(
             <Modal.Body>
               <Form>
                 {inputConfig.map((input) => {
-                  const { name, type, label, rows, placeholder, options } =
-                    input;
+                  const {
+                    name,
+                    type,
+                    label,
+                    rows,
+                    placeholder,
+                    options,
+                    value,
+                  } = input;
                   switch (type) {
                     case 'text':
+                      return (
+                        <InputGroup className="mb-2">
+                          <InputGroup.Text>{label}</InputGroup.Text>
+                          <Form.Control
+                            key={name}
+                            type="text"
+                            name={name}
+                            value={formData[name]}
+                            onChange={handleInputChange}
+                          />
+                        </InputGroup>
+                      );
+
                     case 'number':
                       return (
                         <InputGroup className="mb-2">
@@ -152,7 +182,7 @@ export default function withModalForm(
                           <Form.Control
                             key={name}
                             type="date"
-                            name="date"
+                            name={name}
                             value={formData[name]}
                             onChange={handleInputChange}
                           />
@@ -165,7 +195,7 @@ export default function withModalForm(
                           <InputGroup.Text>{label}</InputGroup.Text>
                           <Form.Select
                             key={name}
-                            name="paidBy"
+                            name={name}
                             value={formData.paidBy}
                             onChange={handleInputChange}
                           >
@@ -185,7 +215,7 @@ export default function withModalForm(
                           <Form.Check
                             key={name}
                             type="checkbox"
-                            name="publish"
+                            name={name}
                             onChange={handleInputChange}
                             className="m-auto"
                           />

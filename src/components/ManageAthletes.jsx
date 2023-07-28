@@ -1,14 +1,16 @@
 // Libraries
 import React, { useContext, useEffect, useState } from 'react';
-// Contexts
+import { collection, getDocs } from 'firebase/firestore';
 
+// Config
+import { db } from '../config/firebase';
+
+// Contexts
 import { AthleteContext } from '../contexts/AthleteContext';
 
 // Components
 import Athlete from './Athlete';
-
-// Modals
-import AddAthleteModal from '../modals/AddAthleteModal';
+import withModalForm from './withModalForm';
 
 // Styling
 import Form from 'react-bootstrap/Form';
@@ -16,8 +18,12 @@ import Button from 'react-bootstrap/esm/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 
 export default function ManageAthletes() {
+  const myCollection = collection(db, 'users');
+
   const { athletes, getAthletes } = useContext(AthleteContext);
-  const { showAddModal, openAddModal } = useContext(AthleteContext);
+  // const { showAddModal, openAddModal } = useContext(AthleteContext);
+
+  const [showModal, setShowModal] = useState(false);
 
   const [activeOnly, setActiveOnly] = useState(false);
   const [selectedGender, setSelectedGender] = useState('Male & Female');
@@ -54,11 +60,76 @@ export default function ManageAthletes() {
     <Athlete key={athlete.id} athleteID={athlete.id} small={true} />
   ));
 
+  // Component to trigger the modal form
+  const TriggerModalButton = ({ openModal, label }) => {
+    return <button onClick={openModal}>{label}</button>;
+  };
+
+  // Configuration for the input elements
+  const inputConfig = [
+    {
+      name: 'name',
+      label: 'Name',
+      type: 'text',
+      required: true,
+    },
+    {
+      name: 'role',
+      type: 'hidden',
+      value: 'athlete',
+    },
+    {
+      name: 'photoURL',
+      label: 'Photo',
+      type: 'file',
+    },
+    {
+      name: 'active',
+      label: 'Active',
+      type: 'checkbox',
+    },
+    {
+      name: 'gender',
+      type: 'select',
+      label: 'Gender',
+      options: ['', 'Male', 'Female'],
+      required: true,
+    },
+    {
+      name: 'birthdate',
+      label: 'Birthdate',
+      type: 'date',
+    },
+    {
+      name: 'school',
+      label: 'School',
+      type: 'text',
+    },
+    {
+      name: 'phone',
+      label: 'Phone',
+      type: 'number',
+    },
+  ];
+
+  const EnhancedModalForm = withModalForm(
+    TriggerModalButton,
+    inputConfig,
+    myCollection
+  );
+
   return (
     <main>
       <h2>Manage Athletes</h2>
-      <Button onClick={openAddModal} style={{ margin: '1rem 0' }}>
-        Add an athlete
+      <Button style={{ margin: '1rem 0' }}>
+      <EnhancedModalForm
+            showModal={showModal}
+            setShowModal={setShowModal}
+            label="Add an athlete"
+            title="Add News"
+            cancelLabel="Cancel"
+            saveLabel="Save"
+          />
       </Button>
 
       <InputGroup className="mb-3">
@@ -92,7 +163,6 @@ export default function ManageAthletes() {
         {athleteComponents}
       </div>
 
-      {showAddModal && <AddAthleteModal show={showAddModal} />}
       {/* A div at the end of page to make sure Foot shows properly */}
       <div style={{ height: '2rem' }}></div>
     </main>
