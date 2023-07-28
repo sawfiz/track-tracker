@@ -1,28 +1,26 @@
 // Libraries
 import React, { useState, useEffect } from 'react';
-import {
-  collection,
-  getDocs,
-} from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 
 // Config
 import { db } from '../config/firebase';
 
 // Components
 import NewsBrief from './NewsBrief';
+import withModalForm from './withModalForm';
 
 // Styling
 import Button from 'react-bootstrap/esm/Button';
-import AddNewsModal from '../modals/AddNewsModal';
+// import AddNewsModal from '../modals/AddNewsModal';
 
 export default function EditNews() {
-  const newsCollection = collection(db, 'news');
+  const myCollection = collection(db, 'news');
 
+  const [showModal, setShowModal] = useState(false);
   const [news, setNews] = useState([]);
-  const [show, setShow] = useState(false);
 
   const fetchData = async () => {
-    const docRefs = await getDocs(newsCollection);
+    const docRefs = await getDocs(myCollection);
     const sortedNews = docRefs.docs.sort((a, b) => {
       const dateA = a.data().date;
       const dateB = b.data().date;
@@ -36,29 +34,75 @@ export default function EditNews() {
   }, []);
 
   useEffect(() => {
-    fetchData();
-  }, [show]);
+    if (!showModal) fetchData();
+  }, [showModal]);
 
-  const showAddModal = () => {
-    setShow(true);
+  // Component to trigger the modal form
+  const TriggerModalButton = ({ openModal, label }) => {
+    return <button onClick={openModal}>{label}</button>;
   };
 
-  const hideAddModal = () => {
-    setShow(false);
-  };
+  // Configuration for the input elements
+  const inputConfig = [
+    {
+      name: 'date',
+      label: 'Date',
+      type: 'date',
+      required: true,
+    },
+    {
+      name: 'headline',
+      label: 'Textarea Input',
+      type: 'textarea',
+      required: true,
+      rows: 3,
+      placeholder: "News headline..."
+    },
+    {
+      name: 'text',
+      label: 'Textarea Input',
+      type: 'textarea',
+      required: true,
+      rows: 8,
+      placeholder: "News text..."
+    },
+    {
+      name: 'photo',
+      label: 'Photo',
+      type: 'file',
+    },
+    {
+      name: 'publish',
+      label: 'Published',
+      type: 'checkbox',
+      lable: 'checkbox input',
+    },
+  ];
+
+  const EnhancedModalForm = withModalForm(
+    TriggerModalButton,
+    inputConfig,
+    myCollection
+  );
 
   return (
     <main>
-      <h2>Edit News</h2>
+      <h2>Manage News</h2>
       {news.map((item) => (
         <NewsBrief key={item.id} news={item} headlineOnly={true} />
       ))}
-      <div className='flex justify-center mt-4'>
-        <Button variant="primary" onClick={showAddModal}>
-          Add
+      <div className="flex justify-center mt-4">
+        <Button>
+          <EnhancedModalForm
+            showModal={showModal}
+            setShowModal={setShowModal}
+            label="Add"
+            title="Add News"
+            cancelLabel="Cancel"
+            saveLabel="Save"
+          />
         </Button>
       </div>
-      <AddNewsModal show={show} hideAddModal={hideAddModal} />
     </main>
   );
 }

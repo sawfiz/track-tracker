@@ -1,6 +1,7 @@
 // Libraries
 import React, { useState } from 'react';
 import { addDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 // Styling
 import Modal from 'react-bootstrap/Modal';
@@ -28,18 +29,24 @@ export default function withModalForm(
     const [formData, setFormData] = useState(initialState);
 
     const handleInputChange = (event) => {
-      const { name, value, type, checked } = event.target;
+      const { name, value, type, checkedgir } = event.target;
+      const inputValue =
+        type === 'checkbox' ? checked : value;
       setFormData((prevFormData) => ({
         ...prevFormData,
-        [name]: type === 'checkbox' ? checked : value,
+        [name]: inputValue,
       }));
     };
 
-    const handleDateChange = (date, name) => {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: date,
-      }));
+    const handlePhotoChange = async (e) => {
+      const file = e.target.files[0];
+      // Upload the photo to Firebase Storage
+      const storage = getStorage();
+      const storageRef = ref(storage, `athlete_photos/${file.name}`);
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
+      // Update the photoURL field in the form data
+      setFormData({ ...formData, photoURL: downloadURL });
     };
 
     const handleCancel = () => {
@@ -102,13 +109,14 @@ export default function withModalForm(
             <Modal.Body>
               <Form>
                 {inputConfig.map((input) => {
-                  const { name, type, label, rows, options } = input;
+                  const { name, type, label, rows, placeholder, options } =
+                    input;
                   switch (type) {
                     case 'text':
                     case 'number':
                       return (
-                        <InputGroup className="mb-3">
-                          <InputGroup.Text>Amount</InputGroup.Text>
+                        <InputGroup className="mb-2">
+                          <InputGroup.Text>{label}</InputGroup.Text>
                           <Form.Control
                             key={name}
                             type="number"
@@ -122,21 +130,21 @@ export default function withModalForm(
                     case 'textarea':
                       return (
                         <Form.Control
-                          className="mb-3"
+                          className="mb-2"
                           key={name}
                           as="textarea"
                           rows={rows}
                           name={name}
                           value={formData[name]}
-                          placeholder="Purpose of the payment..."
+                          placeholder={placeholder}
                           onChange={handleInputChange}
                         />
                       );
 
                     case 'date':
                       return (
-                        <InputGroup className="mb-3">
-                          <InputGroup.Text>Date</InputGroup.Text>
+                        <InputGroup className="mb-2">
+                          <InputGroup.Text>{label}</InputGroup.Text>
                           <Form.Control
                             key={name}
                             type="date"
@@ -149,8 +157,8 @@ export default function withModalForm(
 
                     case 'select':
                       return (
-                        <InputGroup className="mb-3">
-                          <InputGroup.Text>Paid By</InputGroup.Text>
+                        <InputGroup className="mb-2">
+                          <InputGroup.Text>{label}</InputGroup.Text>
                           <Form.Select
                             key={name}
                             name="paidBy"
@@ -168,18 +176,31 @@ export default function withModalForm(
 
                     case 'checkbox':
                       return (
-                        <div key={name}>
-                          <label>
-                            <input
-                              type="checkbox"
-                              name={name}
-                              checked={formData[name]}
-                              onChange={handleInputChange}
-                            />
-                            {label}
-                          </label>
-                        </div>
+                        <InputGroup className="mb-3">
+                          <InputGroup.Text>{label} </InputGroup.Text>
+                          <Form.Check
+                            key={name}
+                            type="checkbox"
+                            name="publish"
+                            onChange={handleInputChange}
+                            className="m-auto"
+                          />
+                        </InputGroup>
                       );
+
+                    case 'file':
+                      return (
+                        <InputGroup className="mb-2">
+                          <InputGroup.Text>{label} </InputGroup.Text>
+                          <Form.Control
+                            key={name}
+                            type="file"
+                            accept="image/*"
+                            onChange={handlePhotoChange}
+                          />
+                        </InputGroup>
+                      );
+
                     default:
                       return null;
                   }

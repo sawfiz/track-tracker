@@ -22,12 +22,12 @@ export default function AthletePayments({ athleteID }) {
   const allowEditing = ['admin', 'coach'].includes(userInfo.role);
 
   const [showModal, setShowModal] = useState(false);
-  const paymentsCollection = collection(db, 'users', athleteID, 'payments');
+  const myCollection = collection(db, 'users', athleteID, 'payments');
   const [payments, setPayments] = useState([]);
   const [info, setInfo] = useState({});
 
   const fetchPaymentData = async () => {
-    const docRefs = await getDocs(paymentsCollection);
+    const docRefs = await getDocs(myCollection);
     const sortedDocs = docRefs.docs.sort((a, b) =>
       b.data().date > a.data().date ? 1 : -1
     );
@@ -86,7 +86,7 @@ export default function AthletePayments({ athleteID }) {
   const EnhancedModalForm = withModalForm(
     TriggerModalButton,
     inputConfig,
-    paymentsCollection
+    myCollection
   );
 
   return (

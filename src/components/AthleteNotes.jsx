@@ -19,11 +19,11 @@ export default function AthleteNotes({ athleteID }) {
   const allowEditing = ['admin', 'coach'].includes(userInfo.role);
 
   const [showModal, setShowModal] = useState(false);
-  const notesCollection = collection(db, 'users', athleteID, 'notes');
+  const myCollection = collection(db, 'users', athleteID, 'notes');
   const [notes, setNotes] = useState([]);
 
   const fetchData = async () => {
-    const docRefs = await getDocs(notesCollection);
+    const docRefs = await getDocs(myCollection);
     const sortedDocs = docRefs.docs.sort((a, b) =>
       b.data().date > a.data().date ? 1 : -1
     );
@@ -63,7 +63,7 @@ export default function AthleteNotes({ athleteID }) {
   const EnhancedModalForm = withModalForm(
     TriggerModalButton,
     inputConfig,
-    notesCollection
+    myCollection
   );
 
   return (
