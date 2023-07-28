@@ -8,20 +8,6 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/esm/Button';
 
-// import firebase from 'firebase/app';
-// import 'firebase/firestore';
-
-// Initialize Firebase (make sure you have your own Firebase config)
-// const firebaseConfig = {
-// Your Firebase config goes here
-// };
-
-// if (!firebase.apps.length) {
-//   firebase.initializeApp(firebaseConfig);
-// }
-
-// const firestore = firebase.firestore();
-
 // Higher Order Component
 export default function withModalForm(
   WrappedComponent,
@@ -116,32 +102,70 @@ export default function withModalForm(
             <Modal.Body>
               <Form>
                 {inputConfig.map((input) => {
-                  const { name, type, label, rows } = input;
+                  const { name, type, label, rows, options } = input;
                   switch (type) {
                     case 'text':
                     case 'number':
                       return (
-                        <div key={name}>
-                          <label>{label}</label>
-                          <input
-                            type={type}
+                        <InputGroup className="mb-3">
+                          <InputGroup.Text>Amount</InputGroup.Text>
+                          <Form.Control
+                            key={name}
+                            type="number"
                             name={name}
                             value={formData[name]}
                             onChange={handleInputChange}
                           />
-                        </div>
+                        </InputGroup>
                       );
+
                     case 'textarea':
                       return (
                         <Form.Control
+                          className="mb-3"
                           key={name}
                           as="textarea"
                           rows={rows}
                           name={name}
                           value={formData[name]}
+                          placeholder="Purpose of the payment..."
                           onChange={handleInputChange}
                         />
                       );
+
+                    case 'date':
+                      return (
+                        <InputGroup className="mb-3">
+                          <InputGroup.Text>Date</InputGroup.Text>
+                          <Form.Control
+                            key={name}
+                            type="date"
+                            name="date"
+                            value={formData[name]}
+                            onChange={handleInputChange}
+                          />
+                        </InputGroup>
+                      );
+
+                    case 'select':
+                      return (
+                        <InputGroup className="mb-3">
+                          <InputGroup.Text>Paid By</InputGroup.Text>
+                          <Form.Select
+                            key={name}
+                            name="paidBy"
+                            value={formData.paidBy}
+                            onChange={handleInputChange}
+                          >
+                            {options.map((option) => (
+                              <option key={option} value={option}>
+                                {option}
+                              </option>
+                            ))}
+                          </Form.Select>
+                        </InputGroup>
+                      );
+
                     case 'checkbox':
                       return (
                         <div key={name}>
@@ -155,19 +179,6 @@ export default function withModalForm(
                             {label}
                           </label>
                         </div>
-                      );
-                    case 'date':
-                      return (
-                        <InputGroup className="mb-3">
-                          <InputGroup.Text>Date</InputGroup.Text>
-                          <Form.Control
-                            key={name}
-                            type="date"
-                            name="date"
-                            value={formData[name]}
-                            onChange={handleInputChange}
-                          />
-                        </InputGroup>
                       );
                     default:
                       return null;

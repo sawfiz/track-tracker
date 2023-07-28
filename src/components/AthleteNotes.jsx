@@ -9,7 +9,6 @@ import { db } from '../config/firebase';
 import { UserContext } from '../contexts/UserContext';
 
 // Components
-// import AddNotesModal from '../modals/AddNotesModal';
 import withModalForm from './withModalForm';
 
 // Styling
@@ -38,14 +37,6 @@ export default function AthleteNotes({ athleteID }) {
   useEffect(() => {
     if (!showModal) fetchData();
   }, [showModal]);
-
-  // const handleClick = () => {
-  //   setShowNotesModal(true);
-  // };
-
-  // const closeNotesModal = () => {
-  //   setShowNotesModal(false);
-  // };
 
   // Component to trigger the modal form
   const TriggerModalButton = ({ openModal, label }) => {
@@ -97,11 +88,6 @@ export default function AthleteNotes({ athleteID }) {
               />
             </Button>
           </div>
-          {/* <AddNotesModal
-            show={showNotesModal}
-            closeNotesModal={closeNotesModal}
-            athleteID={athleteID}
-          /> */}
         </>
       )}
     </>

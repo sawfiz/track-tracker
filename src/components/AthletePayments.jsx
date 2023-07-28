@@ -7,9 +7,9 @@ import { db } from '../config/firebase';
 
 //Context
 import { UserContext } from '../contexts/UserContext';
+import { AthleteContext } from '../contexts/AthleteContext';
 
 // Components
-import AddPaymentModal from '../modals/AddPaymentModal';
 import withModalForm from './withModalForm';
 
 // Styling
@@ -17,13 +17,16 @@ import Button from 'react-bootstrap/esm/Button';
 
 export default function AthletePayments({ athleteID }) {
   const { userInfo } = useContext(UserContext);
+  const { getAthleteInfo } = useContext(AthleteContext);
+
   const allowEditing = ['admin', 'coach'].includes(userInfo.role);
 
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const paymentsCollection = collection(db, 'users', athleteID, 'payments');
   const [payments, setPayments] = useState([]);
+  const [info, setInfo] = useState({});
 
-  const fetchData = async () => {
+  const fetchPaymentData = async () => {
     const docRefs = await getDocs(paymentsCollection);
     const sortedDocs = docRefs.docs.sort((a, b) =>
       b.data().date > a.data().date ? 1 : -1
@@ -31,21 +34,19 @@ export default function AthletePayments({ athleteID }) {
     setPayments(sortedDocs);
   };
 
+  const fetchAthleteInfo = async () => {
+    const data = await getAthleteInfo(athleteID);
+    setInfo(data);
+  };
+
   useEffect(() => {
-    fetchData();
+    fetchPaymentData();
+    fetchAthleteInfo();
   }, []);
 
   useEffect(() => {
-    fetchData();
-  }, [showPaymentModal]);
-
-  const handleClick = () => {
-    setShowPaymentModal(true);
-  };
-
-  const closePaymentModal = () => {
-    setShowPaymentModal(false);
-  };
+    if (!showModal) fetchPaymentData();
+  }, [showModal]);
 
   // Component to trigger the modal form
   const TriggerModalButton = ({ openModal, label }) => {
@@ -61,19 +62,31 @@ export default function AthletePayments({ athleteID }) {
       required: true,
     },
     {
-      name: 'payment',
+      name: 'amount',
+      type: 'number',
+      label: 'Amount',
+      required: true,
+    },
+    {
+      name: 'paidBy',
+      type: 'select',
+      label: 'Paid by',
+      required: true,
+      options: ['', info.father, info.mother],
+    },
+    {
+      name: 'for',
       type: 'textarea',
       label: 'Textarea Input',
       required: true,
-      rows: 5,
+      rows: 8,
     },
   ];
 
-  const CollectionVariable = 'myCollection'; // Replace 'myCollection' with your Firebase collection name
   const EnhancedModalForm = withModalForm(
     TriggerModalButton,
     inputConfig,
-    CollectionVariable
+    paymentsCollection
   );
 
   return (
@@ -88,21 +101,15 @@ export default function AthletePayments({ athleteID }) {
           <div className="flex justify-end">
             <Button>
               <EnhancedModalForm
-                label="Add a Note"
+                showModal={showModal}
+                setShowModal={setShowModal}
+                label="Add a Payment"
                 title="New Payment"
                 cancelLabel="Cancel"
                 saveLabel="Save"
               />
             </Button>
           </div>
-          {/* <div className="flex justify-end">
-            <Button onClick={handleClick}>Add a Payment</Button>
-          </div>
-          <AddPaymentModal
-            show={showPaymentModal}
-            closePaymentModal={closePaymentModal}
-            athleteID={athleteID}
-          /> */}
         </>
       )}
     </>
@@ -118,7 +125,6 @@ function Payment({ payment }) {
       </span>{' '}
       from <span style={{ fontStyle: 'italic' }}>{payment.data().paidBy}</span>{' '}
       for <span style={{ fontStyle: 'italic' }}>{payment.data().for} </span>
-      {/* {payment.data().recordedBy} */}
     </div>
   );
 }
