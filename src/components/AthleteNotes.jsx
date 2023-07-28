@@ -9,7 +9,7 @@ import { db } from '../config/firebase';
 import { UserContext } from '../contexts/UserContext';
 
 // Components
-import AddNotesModal from '../modals/AddNotesModal';
+// import AddNotesModal from '../modals/AddNotesModal';
 import withModalForm from './withModalForm';
 
 // Styling
@@ -19,7 +19,7 @@ export default function AthleteNotes({ athleteID }) {
   const { userInfo } = useContext(UserContext);
   const allowEditing = ['admin', 'coach'].includes(userInfo.role);
 
-  const [showNotesModal, setShowNotesModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const notesCollection = collection(db, 'users', athleteID, 'notes');
   const [notes, setNotes] = useState([]);
 
@@ -36,16 +36,16 @@ export default function AthleteNotes({ athleteID }) {
   }, []);
 
   useEffect(() => {
-    fetchData();
-  }, [showNotesModal]);
+    if (!showModal) fetchData();
+  }, [showModal]);
 
-  const handleClick = () => {
-    setShowNotesModal(true);
-  };
+  // const handleClick = () => {
+  //   setShowNotesModal(true);
+  // };
 
-  const closeNotesModal = () => {
-    setShowNotesModal(false);
-  };
+  // const closeNotesModal = () => {
+  //   setShowNotesModal(false);
+  // };
 
   // Component to trigger the modal form
   const TriggerModalButton = ({ openModal, label }) => {
@@ -69,11 +69,10 @@ export default function AthleteNotes({ athleteID }) {
     },
   ];
 
-  const CollectionVariable = 'myCollection'; // Replace 'myCollection' with your Firebase collection name
   const EnhancedModalForm = withModalForm(
     TriggerModalButton,
     inputConfig,
-    CollectionVariable
+    notesCollection
   );
 
   return (
@@ -89,6 +88,8 @@ export default function AthleteNotes({ athleteID }) {
           <div className="flex justify-end">
             <Button>
               <EnhancedModalForm
+                showModal={showModal}
+                setShowModal={setShowModal}
                 label="Add a Note"
                 title="New Note"
                 cancelLabel="Cancel"

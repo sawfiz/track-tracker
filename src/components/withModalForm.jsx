@@ -1,12 +1,12 @@
 // Libraries
 import React, { useState } from 'react';
+import { addDoc } from 'firebase/firestore';
 
 // Styling
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/esm/Button';
-
 
 // import firebase from 'firebase/app';
 // import 'firebase/firestore';
@@ -40,7 +40,6 @@ export default function withModalForm(
     });
 
     const [formData, setFormData] = useState(initialState);
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleInputChange = (event) => {
       const { name, value, type, checked } = event.target;
@@ -62,6 +61,14 @@ export default function withModalForm(
       closeModal();
     };
 
+    const addData = async () => {
+      try {
+        await addDoc(collectionVariable, formData);
+      } catch (error) {
+        console.error('Error adding data:', error);
+      }
+    };
+
     const handleSave = () => {
       // Perform save action with formData
       console.log('Saving...');
@@ -80,31 +87,24 @@ export default function withModalForm(
         return; // Prevent saving the form if any required fields are empty
       }
       console.log(formData);
+      addData();
       setFormData(initialState);
       closeModal();
-      // firestore.collection(collectionVariable).add(formData)
-      //   .then(() => {
-      //     console.log('Data saved successfully:', formData);
-      //     closeModal();
-      //   })
-      //   .catch((error) => {
-      //     console.error('Error saving data:', error);
-      //   });
     };
 
     const openModal = () => {
-      setIsModalOpen(true);
+      props.setShowModal(true);
     };
 
     const closeModal = () => {
-      setIsModalOpen(false);
+      props.setShowModal(false);
     };
 
     return (
       <React.Fragment>
         <WrappedComponent openModal={openModal} {...props} />
         <Modal
-          show={isModalOpen}
+          show={props.showModal}
           onHide={closeModal}
           backdrop="static"
           centered
@@ -133,15 +133,8 @@ export default function withModalForm(
                       );
                     case 'textarea':
                       return (
-                        // <div key={name}>
-                        //   <label>{label}</label>
-                        //   <textarea
-                        //     name={name}
-                        //     value={formData[name]}
-                        //     onChange={handleInputChange}
-                        //   />
-                        // </div>
                         <Form.Control
+                          key={name}
                           as="textarea"
                           rows={rows}
                           name={name}
@@ -168,22 +161,13 @@ export default function withModalForm(
                         <InputGroup className="mb-3">
                           <InputGroup.Text>Date</InputGroup.Text>
                           <Form.Control
+                            key={name}
                             type="date"
                             name="date"
                             value={formData[name]}
                             onChange={handleInputChange}
                           />
                         </InputGroup>
-                        // <div key={name}>
-                        //   <label>{label}</label>
-                        //   <DatePicker
-                        //     selected={
-                        //       formData[name] ? new Date(formData[name]) : null
-                        //     }
-                        //     onChange={(date) => handleDateChange(date, name)}
-                        //     placeholderText="Select a date"
-                        //   />
-                        // </div>
                       );
                     default:
                       return null;
