@@ -31,10 +31,6 @@ export default function AthleteNotes({ athleteID }) {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  useEffect(() => {
     if (!showModal) fetchData();
   }, [showModal]);
 
