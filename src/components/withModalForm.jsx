@@ -1,6 +1,6 @@
 // Libraries
-import React, { useState } from 'react';
-import { addDoc } from 'firebase/firestore';
+import React, { useState, useEffect } from 'react';
+import { doc, addDoc, updateDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 // Styling
@@ -16,14 +16,28 @@ export default function withModalForm(
   collectionVariable
 ) {
   return function WithModalForm(props) {
+    const { initialData } = props;
+
+    const [isSavingModalOpen, setIsSavingModalOpen] = useState(false);
+    const [formData, setFormData] = useState({});
+
     // Set up initial state of formData
-    const initialState = {};
-    inputConfig.forEach((input) => {
-      initialState[input.name] = input.type === 'checkbox' ? false : '';
-      initialState[input.name] =
-        input.type === 'date' ? new Date().toISOString().split('T')[0] : '';
-    });
-    const [formData, setFormData] = useState(initialState);
+    useEffect(() => {
+      // Populate formData with initialData when editing an existing record
+      if (initialData) {
+        setFormData(initialData.data());
+      } else {
+        // Initialize formData when creating a new record
+        const initialFormData = {};
+        inputConfig.forEach((input) => {
+          initialFormData[input.name] = input.type === 'checkbox' ? false : '';
+          initialFormData[input.name] =
+            input.type === 'date' ? new Date().toISOString().split('T')[0] : '';
+          // initialFormData[input.name] = '';
+        });
+        setFormData(initialFormData);
+      }
+    }, []);
 
     // Filter the inputs that are required for submitting
     const requiredInputs = inputConfig.filter((input) => input.required);
@@ -56,7 +70,7 @@ export default function withModalForm(
     };
 
     const handleCancel = () => {
-      setFormData(initialState);
+      setFormData({});
       closeModal();
     };
 
@@ -68,35 +82,55 @@ export default function withModalForm(
       }
     };
 
+    const updateData = async () => {
+      try {
+        const contentDoc = doc(collectionVariable, initialData.id);
+        await updateDoc(contentDoc, formData);
+        closeModal();
+      } catch (error) {
+        console.error('Error adding data:', error);
+      }
+    };
+
     const handleSave = () => {
-      // Perform save action with formData
-      console.log('Saving...');
-      
-      // Verify all required fills are valid
-      const isFormValid = requiredInputs.every((input) => {
-        const value = formData[input.name];
-        if (input.type === 'checkbox') {
-          return value === true;
-        } else {
-          return value.trim() !== '';
+      setIsSavingModalOpen(true); // Show "Saving..." modal before starting save process
+
+      if (!initialData) {
+        // Perform save action with formData
+        console.log('Saving...');
+
+        // Verify all required fills are valid
+        const isFormValid = requiredInputs.every((input) => {
+          const value = formData[input.name];
+          if (input.type === 'checkbox') {
+            return value === true;
+          } else {
+            return value.trim() !== '';
+          }
+        });
+
+        if (!isFormValid) {
+          alert('Please fill in all required fields.');
+          return; // Prevent saving the form if any required fields are empty
         }
-      });
-      
-      if (!isFormValid) {
-        alert('Please fill in all required fields.');
-        return; // Prevent saving the form if any required fields are empty
+
+        // Add hidden additonal data to formData, e.g. {role: 'athlete'}
+        const dataToSave = { ...formData };
+        const hiddenInput = inputConfig.find(
+          (input) => input.type === 'hidden'
+        );
+        if (hiddenInput) {
+          dataToSave[hiddenInput.name] = hiddenInput.value;
+        }
+
+        addData(dataToSave);
+        setFormData(initialState);
+      } else {
+        // Update the existing record in Firestore
+        updateData();
       }
 
-      // Add hidden additonal data to formData, e.g. {role: 'athlete'}
-      const dataToSave = { ...formData };
-      const hiddenInput = inputConfig.find((input) => input.type === 'hidden');
-      if (hiddenInput) {
-        dataToSave[hiddenInput.name] = hiddenInput.value;
-      }
-
-      addData(dataToSave);
-      setFormData(initialState);
-      closeModal();
+      setIsSavingModalOpen(false); // Show the "Saving..." modal 
     };
 
     const openModal = () => {
@@ -255,6 +289,18 @@ export default function withModalForm(
               </Button>
             </Modal.Footer>
           </Modal.Dialog>
+        </Modal>
+
+        {/* "Saving..." modal */}
+        <Modal
+          show={isSavingModalOpen}
+          // onHide={() => {}}
+          backdrop="static"
+          // centered
+        >
+          <div>
+            <h2 className="  text-center">Saving...</h2>
+          </div>
         </Modal>
       </React.Fragment>
     );

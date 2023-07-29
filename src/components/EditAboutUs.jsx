@@ -35,7 +35,7 @@ export default function EditAboutUs() {
     }
   };
 
-  useEffect(() => {
+  useEffect(() => { 
     fetchData();
   }, []);
 
