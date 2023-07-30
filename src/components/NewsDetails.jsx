@@ -16,33 +16,94 @@ import { db } from '../config/firebase';
 // Contexts
 import { UserContext } from '../contexts/UserContext';
 
+// Components
+import withModalForm from './withModalForm';
+
 // Modals
 import DelNewsModal from '../modals/DelNewsModal';
+// import EditNewsModal from '../modals/EditNewsModal';
 
 // Styling
 import Button from 'react-bootstrap/esm/Button';
-import EditNewsModal from '../modals/EditNewsModal';
 
 export default function NewsDetails() {
   const { isLoggedIn, userInfo } = useContext(UserContext);
   const { id } = useParams();
-  const newsCollection = collection(db, 'news');
   const navigate = useNavigate();
 
+  // Firestore collection
+  const myCollection = collection(db, 'news');
+  // Data for displaying
   const [news, setNews] = useState({});
+  // State to show/hide the edit modal
+  const [showModal, setShowModal] = useState(false);
+  // Data for editing
+  const [initialData, setInitialData] = useState(null);
+  // State to show/hide the delete modal
   const [showDelModal, setShowDelModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
+  //
   const [hasHeadline, setHasHeadline] = useState(true);
 
   const fetchData = async () => {
-    const docRef = doc(newsCollection, id);
+    const docRef = doc(myCollection, id);
     const data = await getDoc(docRef);
-    setNews(data.data());
+    setNews(data.data()); // For displaying
+    setInitialData(data); // For editing
   };
 
+  // Fetch data on initial render and when the edit modal closes 
+  // to update the news and initialData state
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (!showModal) fetchData();
+  }, [showModal]);
+
+  // Component to trigger the modal form
+  const TriggerModalButton = ({ openModal, label }) => {
+    return <button onClick={openModal}>{label}</button>;
+  };
+
+  // Configuration for the input elements
+  const inputConfig = [
+    {
+      name: 'date',
+      label: 'Date',
+      type: 'date',
+      required: true,
+    },
+    {
+      name: 'headline',
+      label: 'Textarea Input',
+      type: 'textarea',
+      required: true,
+      rows: 3,
+      placeholder: 'News headline...',
+    },
+    {
+      name: 'text',
+      label: 'Textarea Input',
+      type: 'textarea',
+      required: true,
+      rows: 8,
+      placeholder: 'News text...',
+    },
+    {
+      name: 'photoURL',
+      label: 'Photo',
+      type: 'file',
+    },
+    {
+      name: 'publish',
+      label: 'Published',
+      type: 'checkbox',
+      lable: 'checkbox input',
+    },
+  ];
+
+  const EnhancedModalForm = withModalForm(
+    TriggerModalButton,
+    inputConfig,
+    myCollection
+  );
 
   const openDelModal = () => {
     setShowDelModal(true);
@@ -54,56 +115,12 @@ export default function NewsDetails() {
 
   const deleteNews = async () => {
     try {
-      const docRef = doc(newsCollection, id);
+      const docRef = doc(myCollection, id);
       await deleteDoc(docRef);
       navigate('/manage-news');
       hideDelModal();
     } catch (error) {
       console.error('Error deleting document:', error);
-    }
-  };
-
-  const openEditModal = () => {
-    setShowEditModal(true);
-  };
-
-  const hideEditModal = () => {
-    setShowEditModal(false);
-  };
-
-  // Function to handle changes in the form
-  const handleChange = (e) => {
-    // if (e.target.name === 'headline' && e.target.value) {
-    //   setHasHeadline(true);
-    // }
-    setNews({ ...news, [e.target.name]: e.target.value });
-  };
-
-  const handleChangePhoto = async (e) => {
-    const file = e.target.files[0];
-    // Upload the photo to Firebase Storage
-    const storage = getStorage();
-    const storageRef = ref(storage, `athlete_photos/${file.name}`);
-    await uploadBytes(storageRef, file);
-    const downloadURL = await getDownloadURL(storageRef);
-    // Update the photoURL field in the form data
-    setNews({ ...news, photoURL: downloadURL });
-  };
-
-  const handleChangeCheckbox = (e) => {
-    setNews({ ...news, [e.target.name]: e.target.checked });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (news.headline) {
-      setHasHeadline(true);
-      setNews({ ...news, publishedBy: userInfo.name });
-      const newsDoc = doc(newsCollection, id);
-      await updateDoc(newsDoc, news);
-      hideEditModal();
-    } else {
-      setHasHeadline(false);
     }
   };
 
@@ -113,8 +130,16 @@ export default function NewsDetails() {
         (userInfo.role === 'admin' || userInfo.role === 'coach') && (
           <>
             <div className="flex justify-around my-3">
-              <Button variant="primary" onClick={openEditModal}>
-                Edit
+              <Button variant="primary">
+                <EnhancedModalForm
+                  showModal={showModal}
+                  setShowModal={setShowModal}
+                  label="Edit"
+                  title="About Us"
+                  cancelLabel="Cancel"
+                  saveLabel="Save"
+                  initialData={initialData}
+                />
               </Button>
               <Button variant="danger" onClick={openDelModal}>
                 Delete
@@ -147,16 +172,6 @@ export default function NewsDetails() {
         show={showDelModal}
         hideDelModal={hideDelModal}
         deleteNews={deleteNews}
-      />
-      <EditNewsModal
-        show={showEditModal}
-        news={news}
-        hasHeadline={hasHeadline}
-        hideEditModal={hideEditModal}
-        handleChange={handleChange}
-        handleChangeCheckbox={handleChangeCheckbox}
-        handleChangePhoto={handleChangePhoto}
-        handleSubmit={handleSubmit}
       />
       <div style={{ height: '2rem' }}></div>
     </main>

@@ -91,7 +91,6 @@ export default function withModalForm(
       try {
         const contentDoc = doc(collectionVariable, initialData.id);
         await updateDoc(contentDoc, formData);
-        closeModal();
       } catch (error) {
         console.error('Error adding data:', error);
       }
@@ -137,8 +136,8 @@ export default function withModalForm(
         // Update the existing record in Firestore
         updateData();
       }
+      await delay(200);
       closeModal();
-      await delay(2000);
       setIsSavingModalOpen(false); // Show the "Saving..." modal
     };
 
