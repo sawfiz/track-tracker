@@ -56,8 +56,7 @@ export default function NewsDetails() {
     try {
       const docRef = doc(newsCollection, id);
       await deleteDoc(docRef);
-      console.log('Document deleted successfully.');
-      navigate('/edit-news');
+      navigate('/manage-news');
       hideDelModal();
     } catch (error) {
       console.error('Error deleting document:', error);

@@ -13,7 +13,7 @@ import withModalForm from './withModalForm';
 import Button from 'react-bootstrap/esm/Button';
 // import AddNewsModal from '../modals/AddNewsModal';
 
-export default function EditNews() {
+export default function ManageNews() {
   const myCollection = collection(db, 'news');
 
   const [showModal, setShowModal] = useState(false);

@@ -8,6 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/esm/Button';
+import { faTruckPlane } from '@fortawesome/free-solid-svg-icons';
 
 // Higher Order Component
 export default function withModalForm(
@@ -21,21 +22,25 @@ export default function withModalForm(
     const [isSavingModalOpen, setIsSavingModalOpen] = useState(false);
     const [formData, setFormData] = useState({});
 
+    const setInitFormData = () => {
+      // Initialize formData when creating a new record
+      const initialFormData = {};
+      inputConfig.forEach((input) => {
+        initialFormData[input.name] = input.type === 'checkbox' ? false : '';
+        initialFormData[input.name] =
+          input.type === 'date' ? new Date().toISOString().split('T')[0] : '';
+        // initialFormData[input.name] = '';
+      });
+      setFormData(initialFormData);
+    };
+
     // Set up initial state of formData
     useEffect(() => {
       // Populate formData with initialData when editing an existing record
       if (initialData) {
         setFormData(initialData.data());
       } else {
-        // Initialize formData when creating a new record
-        const initialFormData = {};
-        inputConfig.forEach((input) => {
-          initialFormData[input.name] = input.type === 'checkbox' ? false : '';
-          initialFormData[input.name] =
-            input.type === 'date' ? new Date().toISOString().split('T')[0] : '';
-          // initialFormData[input.name] = '';
-        });
-        setFormData(initialFormData);
+        setInitFormData();
       }
     }, []);
 
@@ -92,7 +97,11 @@ export default function withModalForm(
       }
     };
 
-    const handleSave = () => {
+    function delay(time) {
+      return new Promise((resolve) => setTimeout(resolve, time));
+    }
+
+    const handleSave = async () => {
       setIsSavingModalOpen(true); // Show "Saving..." modal before starting save process
 
       if (!initialData) {
@@ -124,13 +133,14 @@ export default function withModalForm(
         }
 
         addData(dataToSave);
-        setFormData(initialState);
+        setInitFormData();
       } else {
         // Update the existing record in Firestore
         updateData();
       }
-
-      setIsSavingModalOpen(false); // Show the "Saving..." modal 
+      closeModal();
+      await delay(2000);
+      setIsSavingModalOpen(false); // Show the "Saving..." modal
     };
 
     const openModal = () => {
@@ -294,9 +304,10 @@ export default function withModalForm(
         {/* "Saving..." modal */}
         <Modal
           show={isSavingModalOpen}
-          // onHide={() => {}}
           backdrop="static"
-          // centered
+          z-index="2000"
+          centered
+          className="  bg-slate-400 opacity-50"
         >
           <div>
             <h2 className="  text-center">Saving...</h2>

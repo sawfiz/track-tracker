@@ -21,7 +21,7 @@ import AthleteDetails from '../components/AthleteDetails';
 import ManageUsers from '../components/ManageUsers';
 import ManageParents from '../components/ManageParents';
 import Children from '../components/Children';
-import EditNews from '../components/EditNews';
+import ManageNews from '../components/ManageNews';
 
 const routes = createRoutesFromElements(
   <Route path="/" element={<RootLayout />}>
@@ -36,7 +36,7 @@ const routes = createRoutesFromElements(
       <Route path="/athletes" element={<ManageAthletes />} />
       <Route path="/manage-users" element={<ManageUsers />} />
       <Route path="/parents" element={<ManageParents />} />
-      <Route path="/edit-news" element={<EditNews />} />
+      <Route path="/manage-news" element={<ManageNews />} />
     </Route>
 
     <Route element={<ProtectedRoute roles={['admin', 'coach', 'parent']} />}>
