@@ -106,7 +106,6 @@ export default function withModalForm(
 
       if (!initialData) {
         // Perform save action with formData
-        console.log('Saving...');
 
         // Verify all required fills are valid
         const isFormValid = requiredInputs.every((input) => {
