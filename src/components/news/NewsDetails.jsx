@@ -33,21 +33,17 @@ export default function NewsDetails() {
 
   // Firestore collection
   const myCollection = collection(db, 'news');
-  // Data for displaying
-  const [news, setNews] = useState({});
   // State to show/hide the edit modal
   const [showModal, setShowModal] = useState(false);
   // Data for editing
   const [initialData, setInitialData] = useState(null);
+  const news = initialData ? initialData.data() : '';
   // State to show/hide the delete modal
   const [showDelModal, setShowDelModal] = useState(false);
-  //
-  const [hasHeadline, setHasHeadline] = useState(true);
 
   const fetchData = async () => {
     const docRef = doc(myCollection, id);
     const data = await getDoc(docRef);
-    setNews(data.data()); // For displaying
     setInitialData(data); // For editing
   };
 

@@ -21,19 +21,19 @@ export default function NewsBrief({ news, headlineOnly }) {
   const headlineContent = (
     <div className="relative">
       <div className="text-slate-600">{date}</div>
-      <Link to={`/news/${news.id}`} className={'no-underline text-slate-700'}>
-        {headline}
-      </Link>{' '}
-      <FontAwesomeIcon icon={faArrowUpRightFromSquare} size="xs" />
-      {/* Show an indicator for publish in admin tools */}
-      {publish && headlineOnly && (
-        <div className="absolute top-0 right-1 text-blue-500 ">Published</div>
-      )}
+      <div>
+        <span className={' text-slate-700'}>{headline}</span>{' '}
+        <FontAwesomeIcon icon={faArrowUpRightFromSquare} size="xs" />
+        {/* Show an indicator for publish in admin tools */}
+        {publish && headlineOnly && (
+          <div className="absolute top-0 right-1 text-blue-500 ">Published</div>
+        )}
+      </div>
     </div>
   );
 
   return (
-    <div>
+    <Link to={`/news/${news.id}`} className="relative no-underline">
       {headlineOnly ? (
         <div className="my-3 outline-dashed outline-2 outline-pink-300 p-1">
           {headlineContent}
@@ -46,6 +46,6 @@ export default function NewsBrief({ news, headlineOnly }) {
           {headlineContent}
         </div>
       )}
-    </div>
+    </Link>
   );
 }
