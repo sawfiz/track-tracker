@@ -13,8 +13,8 @@ export default function Attendance({ attendance, showNames }) {
     <>
       {showNames ? (
         // When rendering in ShowAttendances
-        <div className='outline-dashed outline-2 outline-pink-300 my-3 p-1'>
-          <div className='grid grid-cols-2 '>
+        <div className="outline-dashed outline-2 outline-pink-300 my-3 p-1">
+          <div className="grid grid-cols-2 ">
             <div style={{ fontWeight: 'bold' }}>{date}</div>{' '}
             <div style={{ fontStyle: 'italic' }}>{stadium}</div>
           </div>
@@ -26,7 +26,7 @@ export default function Attendance({ attendance, showNames }) {
         </div>
       ) : (
         // When rendering in AthleteAttendance
-        <div className='grid grid-cols-2'>
+        <div className="grid grid-cols-2">
           <div style={{ fontWeight: 'bold' }}>{date}</div>
           <div style={{ fontStyle: 'italic' }}>{stadium}</div>
         </div>

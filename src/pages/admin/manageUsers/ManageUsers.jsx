@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 
 // Contexts
-import { UserContext } from '../contexts/UserContext';
+import { UserContext } from '../../../contexts/UserContext';
 
 // Components
 import UnmanagedUser from './UnmanagedUser';

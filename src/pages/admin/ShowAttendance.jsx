@@ -2,10 +2,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 // Contexts
-import { AttendanceContext } from '../contexts/AttendanceContext';
+import {AttendanceContext} from '../../contexts/AttendanceContext';
 
 // Components
-import Attendance from './Attendance';
+import Attendance from '../../components/Attendance';
 
 export default function ShowAttendance() {
   const { getAttendances } = useContext(AttendanceContext);

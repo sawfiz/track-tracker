@@ -1,6 +1,9 @@
 // Libraries
 import React, { useContext, useState } from 'react';
 
+// Contexts
+import { UserContext } from '../contexts/UserContext';
+
 // Modals
 import Modal from 'react-bootstrap/Modal';
 

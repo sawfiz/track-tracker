@@ -11,16 +11,16 @@ import {
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 // Config
-import { db } from '../config/firebase';
+import { db } from '../../config/firebase';
 
 // Contexts
-import { UserContext } from '../contexts/UserContext';
+import { UserContext } from '../../contexts/UserContext';
 
 // Components
-import withModalForm from './withModalForm';
+import withModalForm from '../withModalForm';
 
 // Modals
-import DelNewsModal from '../modals/DelNewsModal';
+import DelNewsModal from '../../modals/DelNewsModal';
 // import EditNewsModal from '../modals/EditNewsModal';
 
 // Styling

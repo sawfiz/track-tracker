@@ -6,7 +6,7 @@ import { UserContext } from '../contexts/UserContext';
 import { ParentsContext } from '../contexts/ParentsContext';
 
 // Components
-import Athlete from './Athlete';
+import Athlete from '../components/Athlete';
 
 export default function Children() {
   const { userId } = useContext(UserContext);

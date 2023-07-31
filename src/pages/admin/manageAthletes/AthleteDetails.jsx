@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
 // Contexts
-import { UserContext } from '../contexts/UserContext';
-import { AthleteContext } from '../contexts/AthleteContext';
+import { UserContext } from '../../../contexts/UserContext';
+import { AthleteContext } from '../../../contexts/AthleteContext';
 
 // Components
 import AthletePersonalDetails from './AthletePersonalDetails';

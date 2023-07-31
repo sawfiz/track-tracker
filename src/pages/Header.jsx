@@ -11,7 +11,7 @@ import { auth } from '../config/firebase';
 import { UserContext } from '../contexts/UserContext';
 
 // Components
-import { Auth } from './Auth';
+import { Auth } from '../components/Auth';
 
 // Modals
 import SignOutModal from '../modals/SignOutModal';

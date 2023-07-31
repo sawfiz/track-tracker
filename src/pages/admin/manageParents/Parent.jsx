@@ -1,10 +1,10 @@
 // Libraries
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 // Modals
-import UnmanagedUserModal from '../modals/UnmanagedUserModal';
+import EditParentModal from '../../../modals/EditParentModal';
 
-export default function UnmanagedUser({ user }) {
+export default function Parent({ user }) {
   const [show, setShow] = useState(false);
 
   const handleClick = () => {
@@ -24,7 +24,7 @@ export default function UnmanagedUser({ user }) {
         {user.data().name}
       </div>
 
-      <UnmanagedUserModal user={user} show={show} hideModal={hideModal} />
+      <EditParentModal user={user} show={show} hideModal={hideModal} />
     </>
   );
 }

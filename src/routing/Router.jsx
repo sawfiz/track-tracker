@@ -10,18 +10,18 @@ import RootLayout from './RootLayout';
 import { ProtectedRoute } from './ProtectedRoute';
 
 // Page components
-import Home from '../components/Home';
-import AboutUs from '../components/AboutUs';
-import NewsDetails from '../components/NewsDetails';
-import Admin from '../components/Admin';
-import AddAttendance from '../components/AddAttendance';
-import ShowAttendance from '../components/ShowAttendance';
-import ManageAthletes from '../components/ManageAthletes';
-import AthleteDetails from '../components/AthleteDetails';
-import ManageUsers from '../components/ManageUsers';
-import ManageParents from '../components/ManageParents';
-import Children from '../components/Children';
-import ManageNews from '../components/ManageNews';
+import Home from '../pages/home/Home'
+import AboutUs from '../pages/AboutUs';
+import NewsDetails from '../components/news/NewsDetails';
+import Admin from '../pages/admin/Admin';
+import AddAttendance from '../pages/admin/AddAttendance';
+import ShowAttendance from '../pages/admin/ShowAttendance';
+import ManageAthletes from '../pages/admin/manageAthletes/ManageAthletes';
+import AthleteDetails from '../pages/admin/manageAthletes/AthleteDetails';
+import ManageUsers from '../pages/admin/manageUsers/ManageUsers';
+import ManageParents from '../pages/admin/manageParents/ManageParents';
+import Children from '../pages/Children';
+import ManageNews from '../pages/admin/ManageNews'
 
 const routes = createRoutesFromElements(
   <Route path="/" element={<RootLayout />}>

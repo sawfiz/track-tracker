@@ -3,10 +3,10 @@ import React, { useContext, useState, useEffect } from 'react';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 // Contexts
-import { AthleteContext } from '../contexts/AthleteContext';
+import { AthleteContext } from '../../../contexts/AthleteContext';
 
 // Modals
-import EditAthleteModal from '../modals/EditAthleteModal';
+import EditAthleteModal from '../../../modals/EditAthleteModal';
 
 // Styling
 import Button from 'react-bootstrap/esm/Button';

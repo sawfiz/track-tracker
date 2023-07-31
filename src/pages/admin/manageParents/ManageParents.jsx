@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 
 // Contexts
-import { ParentsContext } from '../contexts/ParentsContext';
+import { ParentsContext } from '../../../contexts/ParentsContext';
 
 // Components
 import Parent from './Parent';

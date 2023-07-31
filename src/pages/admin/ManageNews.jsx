@@ -3,11 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 
 // Config
-import { db } from '../config/firebase';
+import { db } from '../../config/firebase';
 
 // Components
-import NewsBrief from './NewsBrief';
-import withModalForm from './withModalForm';
+import NewsBrief from '../../components/news/NewsBrief';
+import withModalForm from '../../components/withModalForm';
 
 // Styling
 import Button from 'react-bootstrap/esm/Button';

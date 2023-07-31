@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 
 // Config
-import { db } from '../config/firebase';
+import { db } from '../../config/firebase';
 
 // Components
-import NewsBrief from './NewsBrief';
+import NewsBrief from '../../components/news/NewsBrief';
 
 export default function News() {
   const newsCollection = collection(db, 'news');

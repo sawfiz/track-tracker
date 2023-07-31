@@ -1,5 +1,5 @@
 // Libraries
-import React, { useContext } from 'react';
+import React from 'react';
 
 // Components
 import News from './News';

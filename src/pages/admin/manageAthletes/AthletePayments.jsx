@@ -3,14 +3,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 
 // Config
-import { db } from '../config/firebase';
+import { db } from '../../../config/firebase';
 
 //Context
-import { UserContext } from '../contexts/UserContext';
-import { AthleteContext } from '../contexts/AthleteContext';
+import { UserContext } from '../../../contexts/UserContext';
+import { AthleteContext } from '../../../contexts/AthleteContext';
 
 // Components
-import withModalForm from './withModalForm';
+import withModalForm from '../../../components/withModalForm';
 
 // Styling
 import Button from 'react-bootstrap/esm/Button';

@@ -9,7 +9,7 @@ import { db } from '../config/firebase';
 import { UserContext } from '../contexts/UserContext';
 
 // Components
-import withModalForm from './withModalForm';
+import withModalForm from '../components/withModalForm';
 
 // Styling
 import Button from 'react-bootstrap/esm/Button';
