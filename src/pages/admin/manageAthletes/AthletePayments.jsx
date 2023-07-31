@@ -35,8 +35,8 @@ export default function AthletePayments({ athleteID }) {
   };
 
   const fetchAthleteInfo = async () => {
-    const data = await getAthleteInfo(athleteID);
-    setInfo(data);
+    const document = await getAthleteInfo(athleteID);
+    setInfo(document.data());
   };
 
   useEffect(() => {

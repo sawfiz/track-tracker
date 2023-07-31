@@ -11,7 +11,7 @@ export default function Athlete({ athleteID, small }) {
 
   const fetchAthleteName = async () => {
     const info = await getAthleteInfo(athleteID);
-    setData(info);
+    setData(info.data());
   };
 
   useEffect(() => {

@@ -1,90 +1,97 @@
 // Libraries
 import React, { useContext, useState, useEffect } from 'react';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { collection } from 'firebase/firestore';
+
+// Config
+import { db } from '../../../config/firebase';
 
 // Contexts
 import { AthleteContext } from '../../../contexts/AthleteContext';
 
-// Modals
-import EditAthleteModal from '../../../modals/EditAthleteModal';
+// Components
+import withModalForm from '../../../components/withModalForm';
 
 // Styling
 import Button from 'react-bootstrap/esm/Button';
 
-export default function AthletePersonalDetails({ id }) {
-  const {
-    editAthlete,
-    getAthleteInfo,
-    showEditModal,
-    updateAthlete,
-    closeEditModal,
-  } = useContext(AthleteContext);
+export default function AthletePersonalDetails({ id, showModal, setShowModal }) {
+  const { getAthleteInfo } = useContext(AthleteContext);
 
-  const [athleteInfo, setAthleteInfo] = useState({});
-  const [hasNoName, setHasNoName] = useState(false);
-  const [hasNoGender, setHasNoGendar] = useState(false);
+  const myCollection = collection(db, 'users');
+  // const [showModal, setShowModal] = useState(false);
+  const [initialData, setInitialData] = useState(null);
+  const athleteInfo = initialData ? initialData.data() : {};
 
   const fetchData = async () => {
-    const data = await getAthleteInfo(id);
-    setAthleteInfo(data);
+    const document = await getAthleteInfo(id);
+    setInitialData(document); 
   };
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   useEffect(() => {
     fetchData();
-  }, [showEditModal]);
+  }, [showModal]);
 
-  const handleClick = () => {
-    editAthlete(id);
+  // Component to trigger the modal form
+  const TriggerModalButton = ({ openModal, label }) => {
+    return <button onClick={openModal}>{label}</button>;
   };
 
-  // Function to handle changes in the form
-  const handleChange = (e) => {
-    if (e.target.name === 'name' && e.target.value) {
-      setHasNoName(false);
-    }
-    if (e.target.name === 'gender' && e.target.value) {
-      setHasNoGendar(false);
-    }
+  // Configuration for the input elements
+  const inputConfig = [
+    {
+      name: 'name',
+      label: 'Name',
+      type: 'text',
+      required: true,
+    },
+    {
+      name: 'role',
+      type: 'hidden',
+      value: 'athlete',
+    },
+    {
+      name: 'photoURL',
+      label: 'Photo',
+      type: 'file',
+    },
+    {
+      name: 'active',
+      label: 'Active',
+      type: 'checkbox',
+    },
+    {
+      name: 'gender',
+      type: 'select',
+      label: 'Gender',
+      options: ['', 'Male', 'Female'],
+      required: true,
+    },
+    {
+      name: 'birthdate',
+      label: 'Birthdate',
+      type: 'date',
+    },
+    {
+      name: 'school',
+      label: 'School',
+      type: 'text',
+    },
+    {
+      name: 'phone',
+      label: 'Phone',
+      type: 'number',
+    },
+  ];
 
-    setAthleteInfo({ ...athleteInfo, [e.target.name]: e.target.value });
-  };
-
-  const handleChangeCheckbox = (e) => {
-    setAthleteInfo({ ...athleteInfo, [e.target.name]: e.target.checked });
-  };
-
-  // Function to handle adding a photo in the form
-  const handleChangePhoto = async (e) => {
-    const file = e.target.files[0];
-    const storage = getStorage();
-    const storageRef = ref(storage, `athlete_photos/${file.name}`);
-    await uploadBytes(storageRef, file);
-    const downloadURL = await getDownloadURL(storageRef);
-    // Update the photoURL field in the form data
-    setAthleteInfo({ ...athleteInfo, photoURL: downloadURL });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (athleteInfo.name) {
-      setHasNoName(false);
-      if (athleteInfo.gender) {
-        setHasNoGendar(false);
-        updateAthlete(athleteInfo);
-        closeEditModal();
-      } else {
-        setHasNoGendar(true);
-      }
-      setHasNoName(true);
-    }
-  };
+  const EnhancedModalForm = withModalForm(
+    TriggerModalButton,
+    inputConfig,
+    myCollection
+  );
 
   return (
     <>
-      <div className='outline-dashed outline-2 outline-pink-300 p-2 grid grid-cols-[1fr_2fr] my-2'>
+      <div className="outline-dashed outline-2 outline-pink-300 p-2 grid grid-cols-[1fr_2fr] my-2">
         <div className=" font-bold">Active</div>
         <div>{athleteInfo.active ? '✅' : '❌'}</div>
         <div className=" font-bold">Gender</div>
@@ -102,19 +109,18 @@ export default function AthletePersonalDetails({ id }) {
       </div>
 
       <div className="flex justify-end">
-        <Button onClick={handleClick}>Edit</Button>
+        <Button>
+          <EnhancedModalForm
+            showModal={showModal}
+            setShowModal={setShowModal}
+            label="Edit"
+            title="About Us"
+            cancelLabel="Cancel"
+            saveLabel="Save"
+            initialData={initialData}
+          />
+        </Button>
       </div>
-
-      <EditAthleteModal
-        show={showEditModal}
-        athleteInfo={athleteInfo}
-        handleChange={handleChange}
-        handleChangeCheckbox={handleChangeCheckbox}
-        handleChangePhoto={handleChangePhoto}
-        handleSubmit={handleSubmit}
-        hasNoName={hasNoName}
-        hasNoGender={hasNoGender}
-      />
     </>
   );
 }

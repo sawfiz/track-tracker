@@ -22,31 +22,11 @@ export default function AthleteContextProvider(props) {
   // States
   const [athletes, setAthletes] = useState([]);
   const [athleteToEdit, setAthleteToEdit] = useState(null);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
 
   // Set bookToEdit when an athlete's edit button is clicked
   const editAthlete = (athleteID) => {
     setAthleteToEdit(athleteID);
     openEditModal();
-  };
-
-  // Functions to open/close the AddAthleteModal
-  const openAddModal = () => {
-    setShowAddModal(true);
-  };
-  const closeAddModal = () => {
-    setShowAddModal(false);
-    getAthletes();
-  };
-
-  // Functions to open/close the EditBookModal
-  const openEditModal = () => {
-    setShowEditModal(true);
-  };
-  const closeEditModal = () => {
-    setShowEditModal(false);
-    getAthletes();
   };
 
   // Functions to get data from DB
@@ -72,11 +52,12 @@ export default function AthleteContextProvider(props) {
       const docRef = doc(userCollection, athlete);
       const docDoc = await getDoc(docRef);
       const docData = docDoc.data();
-      return docData;
+      return docDoc;
     } catch (error) {
       console.log('Error getting documents: ', error);
     }
   };
+
   const getAthleteName = async (id) => {
     const docSnapshot = await getDoc(doc(userCollection, id));
     const name = docSnapshot.data().name;
@@ -136,13 +117,8 @@ export default function AthleteContextProvider(props) {
         getAthletes,
         getAthleteName,
         getAthleteID,
-        showAddModal,
-        openAddModal,
-        closeAddModal,
         addAthlete,
-        showEditModal,
         editAthlete,
-        closeEditModal,
         athleteToEdit,
         getAthleteInfo,
         updateAthlete,

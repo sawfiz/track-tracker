@@ -1,6 +1,6 @@
 // Libraries
 import React, { useContext, useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection } from 'firebase/firestore';
 
 // Config
 import { db } from '../../../config/firebase';
@@ -18,11 +18,9 @@ import Button from 'react-bootstrap/esm/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 
 export default function ManageAthletes() {
-  const myCollection = collection(db, 'users');
-
   const { athletes, getAthletes } = useContext(AthleteContext);
-  // const { showAddModal, openAddModal } = useContext(AthleteContext);
-
+  
+  const myCollection = collection(db, 'users');
   const [showModal, setShowModal] = useState(false);
 
   const [activeOnly, setActiveOnly] = useState(false);
@@ -122,14 +120,14 @@ export default function ManageAthletes() {
     <main>
       <h2>Manage Athletes</h2>
       <Button style={{ margin: '1rem 0' }}>
-      <EnhancedModalForm
-            showModal={showModal}
-            setShowModal={setShowModal}
-            label="Add an athlete"
-            title="Add News"
-            cancelLabel="Cancel"
-            saveLabel="Save"
-          />
+        <EnhancedModalForm
+          showModal={showModal}
+          setShowModal={setShowModal}
+          label="Add an athlete"
+          title="Add News"
+          cancelLabel="Cancel"
+          saveLabel="Save"
+        />
       </Button>
 
       <InputGroup className="mb-3">

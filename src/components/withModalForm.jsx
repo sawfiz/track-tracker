@@ -238,7 +238,7 @@ export default function withModalForm(
                           <Form.Select
                             key={name}
                             name={name}
-                            value={formData.paidBy}
+                            value={formData[name]}
                             onChange={handleInputChange}
                           >
                             {options.map((option) => (
@@ -258,6 +258,7 @@ export default function withModalForm(
                             key={name}
                             type="checkbox"
                             name={name}
+                            checked={formData[name]}
                             onChange={handleInputChange}
                             className="m-auto"
                           />

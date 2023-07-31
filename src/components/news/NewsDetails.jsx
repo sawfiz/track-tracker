@@ -95,7 +95,6 @@ export default function NewsDetails() {
       name: 'publish',
       label: 'Published',
       type: 'checkbox',
-      lable: 'checkbox input',
     },
   ];
 

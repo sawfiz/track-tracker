@@ -16,9 +16,10 @@ import Chevron from './Chevron';
 
 export default function AthleteDetails() {
   const { id } = useParams();
-  const { getAthleteInfo, showEditModal } = useContext(AthleteContext);
+  const { getAthleteInfo } = useContext(AthleteContext);
   const { userInfo } = useContext(UserContext);
 
+  const [showEditModal, setShowEditModal] = useState(false);
   const [athleteInfo, setAthleteInfo] = useState({});
 
   const [expand, setExpand] = useState({
@@ -36,8 +37,8 @@ export default function AthleteDetails() {
   };
 
   const fetchData = async () => {
-    const data = await getAthleteInfo(id);
-    setAthleteInfo(data);
+    const document = await getAthleteInfo(id);
+    setAthleteInfo(document.data());
   };
 
   useEffect(() => {
@@ -78,7 +79,7 @@ export default function AthleteDetails() {
         <Chevron expand={expand.personalDetails} />
         Personal Details
       </h3>
-      {expand.personalDetails && <AthletePersonalDetails id={id} />}
+      {expand.personalDetails && <AthletePersonalDetails id={id} showModal={showEditModal} setShowModal={setShowEditModal} />}
 
       <h3 onClick={() => handleToggle('attendances')}>
         <Chevron expand={expand.attendances} />
