@@ -11,7 +11,7 @@ import router from './routing/Router';
 import { UserContext } from './contexts/UserContext';
 
 // Styles
-import './App.css';
+import './assets/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Code
