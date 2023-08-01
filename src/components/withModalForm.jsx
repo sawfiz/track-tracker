@@ -36,6 +36,7 @@ export default function withModalForm(
 
     // Set up initial state of formData
     useEffect(() => {
+      console.log('initial render');
       // Populate formData with initialData when editing an existing record
       if (initialData) {
         setFormData(initialData.data());

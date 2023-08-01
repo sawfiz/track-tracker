@@ -2,8 +2,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 
 // Contexts
-import { UserContext } from '../contexts/UserContext';
-import { AthleteContext } from '../contexts/AthleteContext';
+import { UserContext } from '../../../contexts/UserContext';
+import { AthleteContext } from '../../../contexts/AthleteContext';
 
 // Styling
 import Modal from 'react-bootstrap/Modal';

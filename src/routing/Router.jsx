@@ -14,7 +14,7 @@ import Home from '../pages/home/Home'
 import AboutUs from '../pages/AboutUs';
 import NewsDetails from '../components/news/NewsDetails';
 import Admin from '../pages/admin/Admin';
-import AddAttendance from '../pages/admin/AddAttendance';
+import AddAttendance from '../pages/admin/addAttendance/AddAttendance';
 import ShowAttendance from '../pages/admin/ShowAttendance';
 import ManageAthletes from '../pages/admin/manageAthletes/ManageAthletes';
 import AthleteDetails from '../pages/admin/manageAthletes/AthleteDetails';

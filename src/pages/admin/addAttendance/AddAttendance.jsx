@@ -11,15 +11,15 @@ import {
 } from 'firebase/firestore';
 
 // Config
-import { db } from '../../config/firebase';
+import { db } from '../../../config/firebase';
 
 // Components
-import Attendee from '../../components/Attendee';
-import { AttendanceContext } from '../../contexts/AttendanceContext';
-import { AthleteContext } from '../../contexts/AthleteContext';
+import Attendee from '../../../components/Attendee';
+import { AttendanceContext } from '../../../contexts/AttendanceContext';
+import { AthleteContext } from '../../../contexts/AthleteContext';
 
 // Modal
-import SubmitAttendanceModal from '../../modals/SubmitAttendanceModal';
+import SubmitAttendanceModal from './SubmitAttendanceModal';
 
 // Styling
 import Form from 'react-bootstrap/Form';

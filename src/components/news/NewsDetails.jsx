@@ -6,9 +6,7 @@ import {
   doc,
   getDoc,
   deleteDoc,
-  updateDoc,
 } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 // Config
 import { db } from '../../config/firebase';
@@ -20,7 +18,7 @@ import { UserContext } from '../../contexts/UserContext';
 import withModalForm from '../withModalForm';
 
 // Modals
-import DelNewsModal from '../../modals/DelNewsModal';
+import DelNewsModal from './DelNewsModal';
 // import EditNewsModal from '../modals/EditNewsModal';
 
 // Styling

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 
 // Modals
-import UnmanagedUserModal from '../../../modals/UnmanagedUserModal';
+import UnmanagedUserModal from './UnmanagedUserModal';
 
 export default function UnmanagedUser({ user }) {
   const [show, setShow] = useState(false);

@@ -14,7 +14,7 @@ import { UserContext } from '../contexts/UserContext';
 import { Auth } from '../components/Auth';
 
 // Modals
-import SignOutModal from '../modals/SignOutModal';
+import SignOutModal from './SignOutModal';
 
 export default function Header() {
   const { userInfo, setUserInfo, isLoggedIn, setIsLoggedIn } = useContext(UserContext);

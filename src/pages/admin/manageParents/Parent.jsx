@@ -2,7 +2,7 @@
 import React, { useState, useContext } from 'react';
 
 // Modals
-import EditParentModal from '../../../modals/EditParentModal';
+import EditParentModal from './EditParentModal';
 
 export default function Parent({ user }) {
   const [show, setShow] = useState(false);

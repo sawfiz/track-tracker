@@ -65,7 +65,7 @@ export default function AthleteDetails() {
         </p>
       )}
 
-      <h2 className='mt-16'>{athleteInfo.name}</h2>
+      <h2 className="mt-16">{athleteInfo.name}</h2>
 
       <div className=" absolute top-[3.5rem] right-[0.5rem] w-28 h-28 overflow-hidden">
         <img
@@ -79,7 +79,13 @@ export default function AthleteDetails() {
         <Chevron expand={expand.personalDetails} />
         Personal Details
       </h3>
-      {expand.personalDetails && <AthletePersonalDetails id={id} showModal={showEditModal} setShowModal={setShowEditModal} />}
+      {expand.personalDetails && (
+        <AthletePersonalDetails
+          id={id}
+          showModal={showEditModal}
+          setShowModal={setShowEditModal}
+        />
+      )}
 
       <h3 onClick={() => handleToggle('attendances')}>
         <Chevron expand={expand.attendances} />
@@ -88,13 +94,13 @@ export default function AthleteDetails() {
       {expand.attendances && <AthleteAttendance athleteID={id} />}
 
       <h3 onClick={() => handleToggle('notes')}>
-      <Chevron expand={expand.notes} />
+        <Chevron expand={expand.notes} />
         Notes
       </h3>
       {expand.notes && <AthleteNotes athleteID={id} />}
 
       <h3 onClick={() => handleToggle('payments')}>
-      <Chevron expand={expand.payments} />
+        <Chevron expand={expand.payments} />
         Payments
       </h3>
       {expand.payments && <AthletePayments athleteID={id} />}

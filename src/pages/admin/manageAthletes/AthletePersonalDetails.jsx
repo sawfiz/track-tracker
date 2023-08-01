@@ -14,27 +14,25 @@ import withModalForm from '../../../components/withModalForm';
 // Styling
 import Button from 'react-bootstrap/esm/Button';
 
-export default function AthletePersonalDetails({ id, showModal, setShowModal }) {
+export default function AthletePersonalDetails({
+  id,
+  showModal,
+  setShowModal,
+}) {
   const { getAthleteInfo } = useContext(AthleteContext);
 
   const myCollection = collection(db, 'users');
-  // const [showModal, setShowModal] = useState(false);
   const [initialData, setInitialData] = useState(null);
   const athleteInfo = initialData ? initialData.data() : {};
 
   const fetchData = async () => {
     const document = await getAthleteInfo(id);
-    setInitialData(document); 
+    setInitialData(document);
   };
 
   useEffect(() => {
     fetchData();
   }, [showModal]);
-
-  // Component to trigger the modal form
-  const TriggerModalButton = ({ openModal, label }) => {
-    return <button onClick={openModal}>{label}</button>;
-  };
 
   // Configuration for the input elements
   const inputConfig = [
@@ -83,6 +81,11 @@ export default function AthletePersonalDetails({ id, showModal, setShowModal }) 
     },
   ];
 
+  // Component to trigger the modal form
+  const TriggerModalButton = ({ openModal, label }) => {
+    return <button onClick={openModal}>{label}</button>;
+  };
+
   const EnhancedModalForm = withModalForm(
     TriggerModalButton,
     inputConfig,
@@ -114,7 +117,7 @@ export default function AthletePersonalDetails({ id, showModal, setShowModal }) 
             showModal={showModal}
             setShowModal={setShowModal}
             label="Edit"
-            title="About Us"
+            title="Edit Athlete Details"
             cancelLabel="Cancel"
             saveLabel="Save"
             initialData={initialData}
