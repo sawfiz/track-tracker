@@ -11,7 +11,6 @@ import withModalForm from '../../components/withModalForm';
 
 // Styling
 import Button from 'react-bootstrap/esm/Button';
-// import AddNewsModal from '../modals/AddNewsModal';
 
 export default function ManageNews() {
   const myCollection = collection(db, 'news');
@@ -20,6 +19,7 @@ export default function ManageNews() {
   const [news, setNews] = useState([]);
 
   const fetchData = async () => {
+    console.log('fetching data');
     const docRefs = await getDocs(myCollection);
     const sortedNews = docRefs.docs.sort((a, b) => {
       const dateA = a.data().date;
@@ -30,16 +30,12 @@ export default function ManageNews() {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  useEffect(() => {
     if (!showModal) fetchData();
   }, [showModal]);
 
   // Component to trigger the modal form
   const TriggerModalButton = ({ openModal, label }) => {
-    return <button onClick={openModal}>{label}</button>;
+    return <Button onClick={openModal}>{label}</Button>;
   };
 
   // Configuration for the input elements
@@ -56,7 +52,7 @@ export default function ManageNews() {
       type: 'textarea',
       required: true,
       rows: 3,
-      placeholder: "News headline..."
+      placeholder: 'News headline...',
     },
     {
       name: 'text',
@@ -64,7 +60,7 @@ export default function ManageNews() {
       type: 'textarea',
       required: true,
       rows: 8,
-      placeholder: "News text..."
+      placeholder: 'News text...',
     },
     {
       name: 'photoURL',
@@ -92,16 +88,14 @@ export default function ManageNews() {
         <NewsBrief key={item.id} news={item} headlineOnly={true} />
       ))}
       <div className="flex justify-center mt-4">
-        <Button>
-          <EnhancedModalForm
-            showModal={showModal}
-            setShowModal={setShowModal}
-            label="Add"
-            title="Add News"
-            cancelLabel="Cancel"
-            saveLabel="Save"
-          />
-        </Button>
+        <EnhancedModalForm
+          showModal={showModal}
+          setShowModal={setShowModal}
+          label="Add"
+          title="Add News"
+          cancelLabel="Cancel"
+          saveLabel="Save"
+        />
       </div>
     </main>
   );

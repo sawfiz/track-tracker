@@ -15,11 +15,13 @@ import AthletePayments from './AthletePayments';
 import Chevron from './Chevron';
 
 export default function AthleteDetails() {
+  console.log("AtleteDetails Component rendered");
   const { id } = useParams();
   const { getAthleteInfo } = useContext(AthleteContext);
   const { userInfo } = useContext(UserContext);
 
   const [showEditModal, setShowEditModal] = useState(false);
+  console.log("🚀 ~ file: AthleteDetails.jsx:23 ~ AthleteDetails ~ showEditModal:", showEditModal)
   const [athleteInfo, setAthleteInfo] = useState({});
 
   const [expand, setExpand] = useState({
@@ -40,10 +42,6 @@ export default function AthleteDetails() {
     const document = await getAthleteInfo(id);
     setAthleteInfo(document.data());
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   // This is needed so that when athlete name is changed
   // A rerender is forced

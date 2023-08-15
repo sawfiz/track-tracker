@@ -60,7 +60,7 @@ export default function ManageAthletes() {
 
   // Component to trigger the modal form
   const TriggerModalButton = ({ openModal, label }) => {
-    return <button onClick={openModal}>{label}</button>;
+    return <div onClick={openModal}>{label}</div>;
   };
 
   // Configuration for the input elements

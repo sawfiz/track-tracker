@@ -2,13 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import { doc, addDoc, updateDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { v4 as uuidv4 } from 'uuid';
 
 // Styling
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/esm/Button';
-import { faTruckPlane } from '@fortawesome/free-solid-svg-icons';
 
 // Higher Order Component
 export default function withModalForm(
@@ -20,28 +20,46 @@ export default function withModalForm(
     const { initialData } = props;
 
     const [isSavingModalOpen, setIsSavingModalOpen] = useState(false);
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState(null);
 
     const setInitFormData = () => {
       // Initialize formData when creating a new record
       const initialFormData = {};
       inputConfig.forEach((input) => {
-        initialFormData[input.name] = input.type === 'checkbox' ? false : '';
-        initialFormData[input.name] =
-          input.type === 'date' ? new Date().toISOString().split('T')[0] : '';
-        // initialFormData[input.name] = '';
+        switch (input.type) {
+          case 'checkbox':
+            initialFormData[input.name] = false;
+            break;
+          case 'date':
+            initialFormData[input.name] = new Date()
+              .toISOString()
+              .split('T')[0];
+            break;
+          case 'hidden':
+            initialFormData[input.name] = input.value;
+            break;
+          default:
+            initialFormData[input.name] = '';
+            break;
+        }
       });
+      console.log("🚀 ~ file: withModalForm.jsx:47 ~ setInitFormData ~ initialFormData:", initialFormData)
       setFormData(initialFormData);
     };
 
     // Set up initial state of formData
     useEffect(() => {
-      console.log('initial render');
+      console.log('Modal Form mounted');
       // Populate formData with initialData when editing an existing record
+      console.log("🚀 ~ file: withModalForm.jsx:58 ~ useEffect ~ initialData:", initialData)
       if (initialData) {
         setFormData(initialData.data());
       } else {
         setInitFormData();
+        console.log("set initial data");
+      }
+      return () => {
+        console.log('Modal Form unmounted');
       }
     }, []);
 
@@ -76,7 +94,7 @@ export default function withModalForm(
     };
 
     const handleCancel = () => {
-      setFormData({});
+      setInitFormData();
       closeModal();
     };
 
@@ -153,153 +171,157 @@ export default function withModalForm(
     return (
       <React.Fragment>
         <WrappedComponent openModal={openModal} {...props} />
-        <Modal
-          show={props.showModal}
-          onHide={closeModal}
-          backdrop="static"
-          centered
-        >
-          <Modal.Dialog>
-            <Modal.Header>
-              <Modal.Title>{props.title}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form>
-                {inputConfig.map((input) => {
-                  const {
-                    name,
-                    type,
-                    label,
-                    rows,
-                    placeholder,
-                    options,
-                    value,
-                  } = input;
-                  switch (type) {
-                    case 'text':
-                      return (
-                        <InputGroup className="mb-2">
-                          <InputGroup.Text>{label}</InputGroup.Text>
+        { props.showModal && formData && (
+          <Modal
+            show={props.showModal}
+            onHide={closeModal}
+            backdrop="static"
+            centered
+          >
+            <Modal.Dialog>
+              <Modal.Header>
+                <Modal.Title>{props.title}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form>
+                  {inputConfig.map((input) => {
+                    const { name, type, label, rows, placeholder, options } =
+                      input;
+                    const myKey = uuidv4()
+                    
+                    switch (type) {
+                      case 'text':
+                        return (
+                          <InputGroup className="mb-2">
+                            <InputGroup.Text>{label}</InputGroup.Text>
+                            <Form.Control
+                              // key={name}
+                              key={myKey}
+                              type="text"
+                              name={name}
+                              value={formData[name]}
+                              onChange={handleInputChange}
+                            />
+                          </InputGroup>
+                        );
+
+                      case 'number':
+                        return (
+                          <InputGroup className="mb-2">
+                            <InputGroup.Text>{label}</InputGroup.Text>
+                            <Form.Control
+                              // key={name}
+                              key={myKey}
+                              type="number"
+                              name={name}
+                              value={formData[name]}
+                              onChange={handleInputChange}
+                            />
+                          </InputGroup>
+                        );
+
+                      case 'textarea':
+                        return (
                           <Form.Control
-                            key={name}
-                            type="text"
+                            className="mb-2"
+                            // key={name}
+                            key={myKey}
+                            as="textarea"
+                            rows={rows}
                             name={name}
                             value={formData[name]}
+                            placeholder={placeholder}
                             onChange={handleInputChange}
                           />
-                        </InputGroup>
-                      );
+                        );
 
-                    case 'number':
-                      return (
-                        <InputGroup className="mb-2">
-                          <InputGroup.Text>{label}</InputGroup.Text>
-                          <Form.Control
-                            key={name}
-                            type="number"
-                            name={name}
-                            value={formData[name]}
-                            onChange={handleInputChange}
-                          />
-                        </InputGroup>
-                      );
+                      case 'date':
+                        return (
+                          <InputGroup className="mb-2">
+                            <InputGroup.Text>{label}</InputGroup.Text>
+                            <Form.Control
+                              // key={name}
+                              key={myKey}
+                              type="date"
+                              name={name}
+                              value={formData[name]}
+                              onChange={handleInputChange}
+                            />
+                          </InputGroup>
+                        );
 
-                    case 'textarea':
-                      return (
-                        <Form.Control
-                          className="mb-2"
-                          key={name}
-                          as="textarea"
-                          rows={rows}
-                          name={name}
-                          value={formData[name]}
-                          placeholder={placeholder}
-                          onChange={handleInputChange}
-                        />
-                      );
+                      case 'select':
+                        return (
+                          <InputGroup className="mb-2">
+                            <InputGroup.Text>{label}</InputGroup.Text>
+                            <Form.Select
+                              // key={name}
+                              key={myKey}
+                              name={name}
+                              value={formData[name]}
+                              onChange={handleInputChange}
+                            >
+                              {options.map((option) => (
+                                <option key={option} value={option}>
+                                  {option}
+                                </option>
+                              ))}
+                            </Form.Select>
+                          </InputGroup>
+                        );
 
-                    case 'date':
-                      return (
-                        <InputGroup className="mb-2">
-                          <InputGroup.Text>{label}</InputGroup.Text>
-                          <Form.Control
-                            key={name}
-                            type="date"
-                            name={name}
-                            value={formData[name]}
-                            onChange={handleInputChange}
-                          />
-                        </InputGroup>
-                      );
+                      case 'checkbox':
+                        return (
+                          <InputGroup className="mb-3">
+                            <InputGroup.Text>{label} </InputGroup.Text>
+                            <Form.Check
+                              // key={name}
+                              key={myKey}
+                              type="checkbox"
+                              name={name}
+                              checked={formData[name]}
+                              onChange={handleInputChange}
+                              className="m-auto"
+                            />
+                          </InputGroup>
+                        );
 
-                    case 'select':
-                      return (
-                        <InputGroup className="mb-2">
-                          <InputGroup.Text>{label}</InputGroup.Text>
-                          <Form.Select
-                            key={name}
-                            name={name}
-                            value={formData[name]}
-                            onChange={handleInputChange}
-                          >
-                            {options.map((option) => (
-                              <option key={option} value={option}>
-                                {option}
-                              </option>
-                            ))}
-                          </Form.Select>
-                        </InputGroup>
-                      );
+                      case 'file':
+                        return (
+                          <InputGroup className="mb-2">
+                            <InputGroup.Text>{label} </InputGroup.Text>
+                            <Form.Control
+                              // key={name}
+                              key={myKey}
+                              name={name}
+                              type="file"
+                              accept="image/*"
+                              onChange={handleInputChange}
+                            />
+                          </InputGroup>
+                        );
 
-                    case 'checkbox':
-                      return (
-                        <InputGroup className="mb-3">
-                          <InputGroup.Text>{label} </InputGroup.Text>
-                          <Form.Check
-                            key={name}
-                            type="checkbox"
-                            name={name}
-                            checked={formData[name]}
-                            onChange={handleInputChange}
-                            className="m-auto"
-                          />
-                        </InputGroup>
-                      );
-
-                    case 'file':
-                      return (
-                        <InputGroup className="mb-2">
-                          <InputGroup.Text>{label} </InputGroup.Text>
-                          <Form.Control
-                            key={name}
-                            name={name}
-                            type="file"
-                            accept="image/*"
-                            onChange={handleInputChange}
-                          />
-                        </InputGroup>
-                      );
-
-                    default:
-                      return null;
-                  }
-                })}
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleCancel}>
-                {props.cancelLabel || 'Cancel'}
-              </Button>
-              <Button
-                variant="primary"
-                onClick={handleSave}
-                disabled={isUploading}
-              >
-                {props.saveLabel || 'Save'}
-              </Button>
-            </Modal.Footer>
-          </Modal.Dialog>
-        </Modal>
+                      default:
+                        return null;
+                    }
+                  })}
+                </Form>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleCancel}>
+                  {props.cancelLabel || 'Cancel'}
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={handleSave}
+                  disabled={isUploading}
+                >
+                  {props.saveLabel || 'Save'}
+                </Button>
+              </Modal.Footer>
+            </Modal.Dialog>
+          </Modal>
+        )}
 
         {/* "Saving..." modal */}
         <Modal
